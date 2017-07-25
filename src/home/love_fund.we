@@ -1,0 +1,219 @@
+<template>
+	<div class="body">
+		<yd-navbar navbar="{{navbar}}"></yd-navbar>
+		<scroller onloadmore="onloadmore" loadmoreoffset="10">
+			<div class="love-wrapper">
+				<div class="love-list" repeat="item in loveList" onclick="goNext" url="{{ item.url }}">
+					<div class="love-img">
+						<image src="{{ resurl+item.img }}" style="width:338;height:260;"></image>
+					</div>
+					<div class="love-detail">
+						<text class="love-name love-name2">{{ item.name }}</text>
+						<div class="love-all">
+							<div class="love-part"></div>
+						</div>
+						<div class="love-people">
+							<text class="love-name" style="flex:1;">参与人数：{{ item.people }}人</text>
+							<div class="love-good">
+								<image src="{{ resurl+item.lImg }}" style="width:23;height:19;margin-right:15;margin-top:6;"></image>
+								<text style="font-size:24;color:#e6491a;">{{ item.number }}</text>
+							</div>
+						</div>
+						<text class="love-name">救助人：{{ item.help }}</text>
+						<text class="love-name" style="lines:2;">{{ item.detail }}</text>
+					</div>
+					<!--<div class="love-end">
+						<image src="{{ resurl+eImg }}" style="width:204;height:178;"></image>
+					</div>-->
+				</div>
+			</div>
+		</scroller>
+		<yd-footer></yd-footer>
+	</div>
+</template>
+
+<style>
+.body{
+	background-color: #F1F1F1;
+	width:750;
+}
+.love-wrapper{
+	width:750;
+	margin-bottom:100;
+}
+
+.love-list{
+	width:750;
+	height:260;
+	background-color: #fff;
+	padding-left:28;
+	padding-right:28;
+	flex-direction: row;
+	margin-bottom:15;
+	position: relative;
+}
+.love-img{
+	width:338;
+	height:260;
+}
+.love-detail{
+	padding-left:15;
+	width:356;
+	height:260;
+}
+.love-name{
+	color:#989898;
+	font-size:24;
+	margin-bottom:10;
+}
+.love-name2{
+	margin-top:10;
+}
+.love-all{
+	width:341;
+	height:31px;
+	border-color:#dfdfde;
+	border-width:1;
+	border-radius: 20;
+	margin-bottom:10;
+}
+.love-part{
+	width:141;
+	height:30;
+	border-top-left-radius: 20;
+	border-bottom-left-radius: 20;
+	background-color: #f25b38;
+}
+.love-people{
+	flex-direction: row;
+}
+.love-good{
+	flex-direction: row;
+}
+.love-end{
+	width:750;
+	height:260px;
+	background-color: #000;
+	opacity: 0.6;
+	position: absolute;
+	top:0;
+	left:0;
+	justify-content: center;
+	align-items: center;
+}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-navbar.we');
+	require('../components/yd-footer.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '爱心众筹',
+		        rightTitle: '',
+		        rightImage: 'icon_jixingwanyi@3x.png' ,
+		        rightColor: '#a2a9b2',
+		        centerColor: '#fff',
+		        backgroundColor: "#ebac51"
+	      	},
+	      	loveList:[
+	      		{
+	      			img:'ditu_BBBB@3x.png',
+	      			name:'百搭休闲衣男',
+	      			people:'50',
+	      			lImg:'icon_hongsexiaoxingxing@3x.png',
+	      			number:'199',
+	      			help:'胡歌',
+	      			detail:'详情：贫困山区孩子，为让他得到更好的教育，呼吁大家、、、',
+	      			url:'shop/love_detail.js'
+	      		},
+	      		{
+	      			img:'ditu_BBBB@3x.png',
+	      			name:'百搭休闲衣男',
+	      			people:'50',
+	      			lImg:'icon_hongsexiaoxingxing@3x.png',
+	      			number:'199',
+	      			help:'胡歌',
+	      			detail:'详情：贫困山区孩子，为让他得到更好的教育，呼吁大家、、、',
+	      			url:'shop/love_detail.js'
+	      		},
+	      		{
+	      			img:'ditu_BBBB@3x.png',
+	      			name:'百搭休闲衣男',
+	      			people:'50',
+	      			lImg:'icon_hongsexiaoxingxing@3x.png',
+	      			number:'199',
+	      			help:'胡歌',
+	      			detail:'详情：贫困山区孩子，为让他得到更好的教育，呼吁大家、、、',
+	      			url:'shop/love_detail.js'
+	      		},
+	      		{
+	      			img:'ditu_BBBB@3x.png',
+	      			name:'百搭休闲衣男',
+	      			people:'50',
+	      			lImg:'icon_hongsexiaoxingxing@3x.png',
+	      			number:'199',
+	      			help:'胡歌',
+	      			detail:'详情：贫困山区孩子，为让他得到更好的教育，呼吁大家、、、',
+	      			url:'shop/love_detail.js'
+	      		},
+	      		{
+	      			img:'ditu_BBBB@3x.png',
+	      			name:'百搭休闲衣男',
+	      			people:'50',
+	      			lImg:'icon_hongsexiaoxingxing@3x.png',
+	      			number:'199',
+	      			help:'胡歌',
+	      			detail:'详情：贫困山区孩子，为让他得到更好的教育，呼吁大家、、、',
+	      			url:'shop/love_detail.js'
+	      		},
+	      		{
+	      			img:'ditu_BBBB@3x.png',
+	      			name:'百搭休闲衣男',
+	      			people:'50',
+	      			lImg:'icon_hongsexiaoxingxing@3x.png',
+	      			number:'199',
+	      			help:'胡歌',
+	      			detail:'详情：贫困山区孩子，为让他得到更好的教育，呼吁大家、、、',
+	      			url:'shop/love_detail.js'
+	      		}
+	      	],
+	      	eImg:'icon_yicangyu@3x.png',
+		},
+		methods:{
+			goNext:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			onloadmore:function(){
+				if(!this.triggered){
+					for( var i = 0 ; i <= 10 ;i++ ){
+						this.loveList.push({
+							img:'ditu_BBBB@3x.png',
+			      			name:'百搭休闲衣男'+ i,
+			      			people:'50',
+			      			lImg:'icon_hongsexiaoxingxing@3x.png',
+			      			number:'199',
+			      			help:'胡歌',
+			      			detail:'详情：贫困山区孩子，为让他得到更好的教育，呼吁大家、、、',
+			      			url:'shop/love_detail.js'
+						})
+					}
+				}
+				this.triggered = false;
+			}
+		},
+		created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		}
+	}
+</script>

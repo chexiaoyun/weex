@@ -1,0 +1,222 @@
+<template>
+	<div class="body">
+		<scroller>
+			<div class="crowd-top">
+				<div class="corwd-min-top">
+					<image src="{{ resurl+tImg }}" style="width:750;height:362;"></image>
+				</div>
+				<div class="crowd-min-name">
+					<div class="crowd-title">
+						<div class="crowd-title-left">
+							<text style="color:#ff4f00;font-size:28;">原创：</text>
+							<text class="title">{{ title }}</text>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="crowd-center">
+				<div class="crowd-fail">
+					<image src="{{ resurl+allImg }}" style="width:34;height:38;margin-right:10;"></image>
+					<text class="red">5天8时20分30秒</text>
+				</div>
+				<text class="red">{{ jiage }}</text>
+			</div>
+			<div class='comment-list'>
+				<text style="color:#000;font-size:36;">商品详情，请您自己上传图片</text>
+			</div>
+		</scroller>
+		<div class="crowd-fixed">
+			<div class="crowd-one">
+				<div class="crowd-contact">
+					<image src="{{ resurl+conImg }}" style="width:45;height:42;"></image>
+					<text class="contact">联系商家</text>
+				</div>
+				<div class="crowd-collect">
+					<image src="{{ resurl+collImg }}" style="width:39;height:37"></image>
+					<text class="contact">收藏</text>
+				</div>
+			</div>
+			<div class="crowd-one crowd-two">
+				<text class="white">加入购物车</text>
+			</div>
+			<div class="crowd-one crowd-three">
+				<text class="white">立即购买</text>
+			</div>
+		</div>
+	</div>
+</template>
+
+<style>
+	.body{
+		width:750;
+		background-color: #f1f1f1;
+	}
+	.white{
+		color:#fff;
+		font-size:30;
+	}
+	.red{
+		color:#f23232;
+		font-size: 36;
+	}
+	.contact{
+		color:#999;
+		font-size:22;
+	}
+	.crowd-top{
+		width:750;
+		background-color: #fff;
+	}
+	.crowd-min-top{
+		width:750;
+		height:362;
+	}
+	.title{
+		color:#333;
+		font-size:28;
+		lines:2;
+		flex-wrap: wrap;
+		flex:1;
+	}
+	.crowd-min-name{
+		padding-left:28;
+		padding-right:28;
+		background-color: #fff;
+		padding-top:20;
+		padding-bottom:20;
+	}
+	.crowd-title{
+		flex-direction: row;
+	}
+	.crowd-title-left{
+		flex-direction: row;
+		flex:1;
+	}
+	.crowd-title-right{
+		border-left-color:#dedede;
+		border-left-width:1 ;
+		flex:0.2;
+		justify-content: center;
+		align-items: center;
+	}
+	.cloth-progress{
+		width:690;
+		height:34;
+		border-color:#ccc;
+		border-width:1;
+		background-color: #fff;
+		border-radius: 20;
+		margin-top:15;
+		margin-bottom:15;
+	}
+	.cloth-part{
+		width:284;
+		background-color: #EBAC51;
+		height:33;
+		border-top-left-radius: 20;
+		border-bottom-left-radius: 20;
+	}
+	.cloth-price{
+		flex-direction: row;
+		margin-bottom:15;
+	}
+	.cloth-people{
+		flex-direction: row;
+	}
+	.crowd-center{
+		background-color: #fff;
+		width:750;
+		height:100;
+		margin-top:18;
+		margin-bottom:18;
+		border-top-width:1;
+		border-bottom-width:1;
+		border-color:#dedede;
+		padding-left:28;
+		padding-right:28;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+	.crowd-fail{
+		flex:1;
+		justify-content: flex-start;
+		align-items: flex-start;
+		flex-direction: row;
+	}
+	.comment-list{
+		width:750;
+		background-color:#fff;
+		height:345;
+		justify-content: center;
+		align-items: center;
+	}
+	.crowd-fixed{
+		width:750;
+		height:100;
+		background-color: #fff;
+		position: fixed;
+		bottom:0;
+		left:0;
+		flex-direction: row;
+		border-top-width:1;
+		border-top-color:#dedede;
+	}
+	.crowd-one{
+		flex:1;
+		height:100;
+		justify-content: center;
+		align-items: center;
+		flex-direction: row;
+	}
+	.crowd-two{
+		background-color: #ff9503;
+	}
+	.crowd-three{
+		background-color: #ff4f00;
+	}
+	.crowd-contact{
+		flex:1;
+		justify-content: center;
+		align-items: center;
+		border-right-width:1;
+		border-right-color:#dedede;
+	}
+	.crowd-collect{
+		flex:1;
+		justify-content: center;
+		align-items: center;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+			tImg:'ditu_BBBdatu@3x.png',
+			title:'复古民族风毛衣链长款女秋冬 仿蜜蜡吊坠百搭配饰项链挂件饰品',
+			fImg:'enjoy.png',
+			price:'¥2099',
+  			part:'10',
+  			all:'/100',
+  			yuanPrice:'¥2999',
+  			deposit:699.00,
+  			allImg:'icon_sand-clock@3x.png',
+  			listColor:'卡其色',
+	      	listSize:'L',
+	      	hImg:'ditu_pangzi176@3x.png',
+  			listName:'天空一声巨响',
+	      	vipImg:'icon_huangsevip@3x.png',
+	      	loveImg:'icon_huangseaixin@3x.png',
+	      	date:'2016.6.26',
+	      	detail:'宝贝很好~很适合，穿着老舒服了呢~好评、好评、好评、大家快行动起来。',
+	      	oImg:'ditu_BBBB@3x.png',
+	      	downImg:'down.png',
+	      	conImg:'icon_erji@3x.png',
+	      	collImg:'icon_xingxing1hao@3x.png',
+	      	jiage:'¥2099'
+		}
+	}
+</script>

@@ -1,0 +1,139 @@
+<template>
+	<div class="body">
+		<div id="header">
+			<wxc-navpage background-color="{{ nav.bgColor }}" title="{{ nav.title }}" title-color="{{ nav.titleColor }}" right-item-src="{{ url + nav.rightImgSrc }}" left-item-src="{{ url + nav.leftImgSrc }}"></wxc-navpage>
+		</div>
+	
+		<scroller class="scroller">
+			<div class="order-item" repeat="item in list" onclick="goNext" url="{{ jumpUrl }}">
+				<div class="od-info"><text class="od-text">{{ item.expert }}</text></div>
+				<div class="od-info"><text class="od-text">{{ item.hospital }}</text></div>
+				<div class="od-info"><text class="od-text">{{ item.time }}</text></div>
+				<div class="od-info"><text class="od-text od-state">{{ item.state }}</text></div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.body{
+		background-color: #f8f8f8;
+	}
+	.scroller{
+		margin-top: 88;
+	}
+	.order-item{
+		width: 748;
+		height: 218;
+		background: #fff;
+		border-width: 1;
+		border-style: solid;
+		border-color: #ebebeb;
+		padding-top:10;
+		padding-bottom: 10;
+		padding-left: 40;
+		padding-right: 40;
+	}
+	.od-info{
+		height: 50;
+		justify-content: center;
+	}
+	.od-text{
+		lines: 1;
+		font-size: 30;
+		color: #333;
+	}
+	.od-state{
+		color: #f93;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+
+	module.exports = {
+		data: {
+			dir: 'dist',
+			url: api.apiurl.resurl,
+			jumpUrl: 'home/order-details.js',
+			nav: {
+				title: '预约挂号订单',
+				bgColor: '#58bf65',
+				titleColor: '#fff',
+				leftImgSrc: '/images/back.png'
+			},
+			list:[
+				{
+					id: 1,
+					url: '/home/order-details.js',
+					expert: '田建辉 主任医师',
+					hospital: '上海中医药大学附属龙华医院',
+					time: '10-25 周二 下午',
+					state: '退号'
+				},
+				{
+					id: 2,
+					url: '/home/order-details.js',
+					expert: '田建辉 主任医师',
+					hospital: '上海中医药大学附属龙华医院',
+					time: '10-25 周二 下午',
+					state: '已预约'
+				},
+				{
+					id: 3,
+					url: '/home/order-details.js',
+					expert: '田建辉 主任医师',
+					hospital: '上海中医药大学附属龙华医院',
+					time: '10-25 周二 下午',
+					state: '处理中'
+				}
+			]
+		},
+		methods:{
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+    	}
+	}
+</script>

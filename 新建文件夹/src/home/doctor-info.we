@@ -1,0 +1,158 @@
+<template>
+	<div class="body">
+		<div id="header">
+			<wxc-navpage background-color="{{ nav.bgColor }}" title="{{ nav.title }}" title-color="{{ nav.titleColor }}" left-item-src="{{ url + nav.leftImgSrc }}"></wxc-navpage>
+		</div>
+		
+		<div class="dct-info">
+			<div class="dct-info-d">
+				<text class="dct-key">医院：</text>
+				<text class="dct-value">{{ doctorInfo.hospital }}</text>
+			</div>
+			<div class="dct-info-d">
+				<text class="dct-key">科室：</text>
+				<text class="dct-value">{{ doctorInfo.department }}</text>
+			</div>
+			<div class="dct-info-d">
+				<text class="dct-key">专家：</text>
+				<text class="dct-value">{{ doctorInfo.expert }}</text>
+			</div>
+			<div class="dct-info-d">
+				<text class="dct-key">门诊时间：</text>
+				<text class="dct-value">{{ doctorInfo.time }}</text>
+			</div>
+		</div>
+		
+		<div class="dct-p" onclick="goNext" url="{{ jumpUrl }}">
+			<text class="dct-p-text">就诊人</text>
+			<image class="dct-p-icon" src="{{ url + moreIcon }}"></image>
+		</div>
+	
+	</div>
+			
+</template>
+
+<style>
+	.body{
+		background-color: #f8f8f8;
+	}
+	.dct-info{
+		border-width: 1;
+		border-color: #ebebeb;
+		border-style: solid;
+		background: #fff;
+		padding-left:42;
+		padding-right: 42;
+		padding-top: 36;
+		padding-bottom: 36;
+		background-color: #fff;
+		margin-top: 88;
+	}
+	.dct-info-d{
+		height: 52;
+		line-height: 52;
+		flex-direction: row;
+		align-items: center;
+	}
+	.dct-key{
+		font-size: 30;
+		color: #333;
+		lines: 1;
+	}
+	.dct-value{
+		font-size: 30;
+		color: #333;
+		lines: 1;
+	}
+	.dct-p{
+		height: 88;
+		background-color: #fff;
+		margin-top: 24;
+		border-width: 1;
+		border-color: #ebebeb;
+		padding-left: 40;
+		padding-right: 40;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.dct-p-text{
+		font-size: 30;
+		color: #333;
+	}
+	.dct-p-icon{
+		width: 13;
+		height: 21;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+
+	module.exports = {
+		data: {
+			dir: 'dist',
+			url: api.apiurl.resurl,
+			moreIcon: '/images/youjiantou.png',
+			jumpUrl: 'home/relation.js',
+			nav: {
+				title: '就诊信息',
+				bgColor: '#58bf65',
+				titleColor: '#fff',
+				leftImgSrc: '/images/back.png'
+			},
+			doctorInfo:{
+				hospital: '上海中医药大学附属龙华医院',
+				department: '肿瘤科',
+				expert: '田建辉 主任医师',
+				time: '10-25 周二 下午'
+			}
+		},
+		methods:{
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+    	}
+	}
+</script>

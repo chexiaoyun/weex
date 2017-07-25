@@ -1,0 +1,192 @@
+<template>
+	<div class="body">
+		<div id="header">
+			<wxc-navpage background-color="{{ nav.bgColor }}" title="{{ nav.title }}" title-color="{{ nav.titleColor }}" left-item-src="{{ url + nav.leftImgSrc }}"></wxc-navpage>
+		</div>
+		
+		<scroller class="scroller">
+			<div class="relation-item {{ item.sex == 0 ? 'bg-man' : 'bg-women' }}" repeat="item in list">
+				<div class="info">
+					<text class="name">{{ item.name }}</text>
+					<text class="sex">{{ item.sex == 0 ? '男' : '女' }}</text>
+				</div>
+				<div class="id-number">
+					<text class="id-number-text">{{ item.idNumber }}</text>
+				</div>
+				<image class="edit" src="{{ url + editIcon }}" onclick="goNext" url="{{ jumpUrl }}"></image>
+				<image class="bg-img" src="{{ url }}{{ item.sex == 0 ? man : women }}"></image>
+			</div>
+			
+			<div class="add-relation" onclick="goNext" url="{{ jumpUrl }}">
+				<image class="add-icon" src="{{ url + addIcon }}"></image>
+				<text class="add-text">添加</text>
+			</div>
+		</scroller>
+		
+	</div>
+</template>
+ 
+<style>
+	.body {
+		background-color: #f8f8f8;
+	}
+	.scroller{
+		padding-left: 40;
+		padding-right: 40;
+		margin-top: 88;
+	}
+	.relation-item{
+		height: 200;
+		position: relative;
+		margin-top: 24;
+		overflow: hidden;
+		border-radius: 10;
+	}
+	.info{
+		height: 40;
+		flex-direction: row;
+		align-items: center;
+		margin-left: 30;
+		margin-top: 40;
+	}
+	.name{
+		font-size: 36;
+		color: #cfcfcf;
+	}
+	.sex{
+		font-size: 36;
+		color: #cfcfcf;
+		margin-left: 60;
+	}
+	.id-number{
+		height: 40;
+		align-items: center;
+		justify-content: center;
+		margin-top: 50;
+	}
+	.id-number-text{
+		font-size: 40;
+		color: #cfcfcf;
+	}
+	.bg-img{
+		width: 330;
+		height: 200;
+		position: absolute;
+		right: 98;
+		top: 0;
+	}
+	.bg-man{
+		background-color: #ebebee;
+	}
+	.bg-women{
+		background-color: #fff;
+	}
+	.edit{
+		position: absolute;
+		right: 30;
+		top: 14;
+		width: 44;
+		height: 44;
+	}
+	.add-relation{
+		height: 200;
+		position: relative;
+		margin-top: 24;
+		overflow: hidden;
+		border-radius: 10;
+		background-color: #ebebee;
+		justify-content: center;
+		align-items: center;
+	}
+	.add-icon{
+		width: 66;
+		height: 66;
+	}
+	.add-text{
+		font-size: 30;
+		color: #cfcfcf;
+		margin-top: 18;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+
+	module.exports = {
+		data: {
+			dir: 'dist',
+			url: api.apiurl.resurl,
+			editIcon: '/images/edit_44.png',
+			addIcon: '/images/add_66.png',
+			man: '/images/man.png',
+			women: '/images/women.png',
+			jumpUrl: 'home/relation-add.js',
+			nav: {
+				title: '常用关联人',
+				bgColor: '#58bf65',
+				titleColor: '#fff',
+				leftImgSrc: '/images/back.png'
+			},
+			list:[
+				{
+					id: 1,
+					name: '吴某某',
+					sex: 0,
+					idNumber: '320681189729304450'
+				},
+				{
+					id: 2,
+					name: '吴某某',
+					sex: 1,
+					idNumber: '320681189729304450'
+				}
+			]
+		},
+		methods:{
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+    	}
+	}
+</script>

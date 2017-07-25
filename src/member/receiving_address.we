@@ -1,0 +1,191 @@
+<template>
+	<div class="body">
+		<yd-min-navbar navbar="{{navbar}}"></yd-min-navbar>
+		<scroller>
+			<div class="add-wrapper">
+				<div class="add-list">
+					<div class="add-top">
+						<div class="add-top-detail">
+							<div class="add-name">
+								<text class="text">赵思景</text>
+							</div>
+							<div class="add-tel">
+								<text class="text">18866669999</text>
+							</div>
+						</div>
+						<div class="add-center">
+							<text class="text" lines="2">上海市上海市宝山区吴淞街道淞桥东路111号联合滨江大厦916室</text>
+						</div>
+					</div>
+					<div class="add-bottom">
+						<div class="add-left">
+							<div class="add-select"></div>
+							<text class="add-default">默认地址</text>
+						</div>
+						<div class="add-right">
+							<div class="add-edit" style="margin-right:48;" onclick="goNext" url="member/modify_address.js">
+								<image src="{{ resurl+eImg }}" style="width:41;height:36;" class="add-img"></image>
+								<text class="add-gray">编辑</text>
+							</div>
+							<div class="add-edit">
+								<image src="{{ resurl+rImg }}" style="width:37;height:36;"class="add-img"></image>
+								<text class="add-gray">删除</text>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</scroller>
+		<div class="add-click" onclick="goNext" url="member/add_address.js">
+			<text style='color:#fff;font-size:32;'>添加新地址</text>
+		</div>
+	</div>
+</template>
+
+<style>
+	.body{
+		background-color: #f1f1f1;
+		width:750;
+	}
+	.add-wrapper{
+		width:750;
+	}
+	.input{
+		border:0;
+		outline:0;
+		width:100%;
+		height:95;
+		flex:0.8;
+		color:#323333;
+		font-size:28;
+	}
+	.input2{
+		height:68;
+	}
+	.add-list{
+		width:750;
+		/*height:270;*/
+		border-bottom-color:#ccc;
+		border-bottom-width:1;
+		background-color: #fff;
+		margin-bottom:20;
+	}
+	.add-top{
+		height:195;
+		border-bottom-width:1;
+		border-bottom-color:#ccc;
+	}
+	.add-top-detail{
+		flex-direction: row;
+		margin-top:20;
+		margin-bottom:20;
+		margin-left:28;
+		margin-right:28;
+	}
+	.text{
+		color:#323333;
+		font-size:32;
+	}
+	.add-name{
+		align-items: flex-start;
+		flex:1;
+	}
+	.add-tel{
+		align-items: flex-end;
+	}
+	.add-center{
+		margin-bottom:30;
+		margin-left:28;
+		margin-right:28;
+	}
+	.add-bottom{
+		flex-direction: row;
+		margin-left:28;
+		margin-right:28;
+		justify-content: center;
+		align-items: center;
+		height:95;
+	}
+	.add-left{
+		flex:1;
+		flex-direction:row;
+		justify-content: flex-start;
+		align-items:center;
+		height:95;
+	}
+	.add-select{
+		width:27;
+		height:27;
+		border-width:2;
+		border-color:#666;
+		margin-right:24;
+		justify-content: center;
+		align-items: center;
+	}
+	.add-right{
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		flex:1;
+	}
+	.add-edit{
+		flex-direction: row;
+	}
+	.add-img{
+		margin-right:20;
+	}
+	.add-default{
+		color:#333;
+		font-size:28;
+	}
+	.add-gray{
+		color:#666;
+		font-size:28;
+	}
+	.add-click{
+		width:750;
+		height:100;
+		background-color: #ebac51;
+		position: fixed;
+		bottom:0;
+		left:0;
+		justify-content: center;
+		align-items: center;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-min-navbar.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '收货地址',
+		        rightTitle: '',
+		        rightImage: '',
+		        rightColor: '#323333',
+		        centerColor: '#323333',
+		        backgroundColor: "#eadbc7"
+	      	},
+	      	eImg:'icon_daipinglun@3x.png',
+	      	rImg:'icon_shanchu@3x.png',
+	   },
+	   methods:{
+			goNext:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			}
+		},
+		created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		}
+	}
+</script>

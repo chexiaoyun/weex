@@ -1,0 +1,263 @@
+<template>
+	<div class="wrapper">
+		<wxc-navpage height={{navHeight}} background-color={{bgColor}} title={{title}} title-color={{color}}  left-item-src="{{resUrl+lSrc}}"  right-item-src="{{resUrl+rImg}}"></wxc-navpage>
+		<scroller>
+			<div class="personal-conter">
+				<div class="personal-head">
+					<image src="{{resUrl+hImg}}" style="width:150;height:150;margin-left:300;"></image>
+				</div>
+				<div class="personal-me">
+					<div class="me-post" onclick="goNext" url="personal/me_post.js">
+						<image src="{{ resUrl+pImg }}" style="width:49;height:49;justify-content: center;align-items: center;"></image>
+						<text class="me-text">我的发帖</text>
+					</div>
+					<div class="me-reply" onclick="goNext" url="personal/me_reply.js">
+						<image src="{{ resUrl+lImg }}" style="width:58.5;height:50;justify-content: center;align-items: center;"></image>
+						<text class="me-text">我的回复</text>
+					</div>
+					<div class="me-give" onclick="goNext" url="personal/me_give.js">
+						<image src="{{ resUrl+gImg }}" style="width:53;height:50;justify-content: center;align-items: center;"></image>
+						<text class="me-text">我的点赞</text>
+					</div>
+				</div>
+			</div>
+			<div class="personal-bottom">
+				<div class="personal-list" onclick="goNext" url="personal/heart.js">
+					<div class="name">
+						<text class="nickname">个人信息</text>
+					</div>
+					<div class="statue">
+						<image src="{{resUrl+jumpImg}}" style="width:13;height:21;"></image>
+					</div>
+				</div>
+				<div class="personal-list" onclick="goNext" url="personal/test.js">
+					<div class="name">
+						<text class="nickname">我的测试</text>
+					</div>
+					<div class="statue">
+						<image src="{{resUrl+jumpImg}}" style="width:13;height:21;"></image>
+					</div>
+				</div>
+				<div class="nickname2" onclick="goNext" url="personal/help.js">
+					<div class="list">
+						<div class="min-name">
+							<text class="min-nickname">帮助中心</text>
+						</div>
+						<div class="min-statue" style="justify-content:center;">
+							<image src="{{resUrl+jumpImg}}" style="width:13;height:21;"></image>
+						</div>
+					</div>
+				</div>
+				<div class="edition">
+					<text style="color:#848385;font-size:24;">v1.1.1</text>
+				</div>
+				<div class="button" onclick="goBack" url="personal/login.js">
+					<text style="color:#fff;font-size:36;">退出账号</text>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.wrapper{
+		background-color:#f8f8f8;
+		flex-direction: column;
+	}
+	.personal-conter{
+		background-color: #58BF65;
+		width:750;
+		height:490;
+	}
+	.personal-head{
+		margin-top:120;
+		margin-bottom:70;
+	}
+	.personal-bottom{
+		width:750;
+	}
+	.personal-me{
+		width:100%;
+		padding-left:131;
+		padding-right:131;
+		flex-direction: row;
+	}
+	.me-text{
+		font-size:24;
+		color:#fff;
+		flex:1;
+		justify-content: center;
+		align-items: center;
+		margin-top:25;
+	}
+	.me-reply{
+		margin-left:100;
+		margin-right:100;
+		justify-content: center;
+		align-items: center;
+	}
+	.me-post{
+		justify-content: center;
+		align-items: center;
+	}
+	.me-give{
+		justify-content: center;
+		align-items: center;
+	}
+	.personal-list{
+		width:750;
+		background-color: #fff;
+		height:80;
+		border-bottom-width:1;
+		border-bottom-color:#ebebeb;
+		flex-direction: row;
+	}
+	.nickname{
+		font-size:30;
+		color:#333;
+		justify-content: center;
+		align-items: center;
+		margin-left:40;
+	}
+	.list{
+		height:80;
+		width:749;
+		border-bottom-width:1;
+		border-bottom-color:#ebebeb;
+		justify-content: flex-start;
+		align-items:center;
+		flex-direction: row;
+	}
+	.nickname2{
+		margin-top:24;
+		background-color:#fff;
+		width:750;
+		flex-direction: column;
+	}
+	.name{
+		height:80;
+		flex:0.9;
+		justify-content: center;
+		align-items: flex-start;
+	}
+	.statue{
+		flex: 0.1;
+		height:80;
+		justify-content: center;
+		align-items: center;
+	}
+	.min-name{
+		height:80;
+		flex:0.9;
+		justify-content: center;
+	}
+	.min-statue{
+		flex: 0.1;
+		height:80;
+		justify-content: center;
+		align-items: center;
+	}
+	.min-nickname{
+		font-size:30;
+		color:#333;
+		justify-content: center;
+		align-items: flex-start;
+		margin-left:40;
+	}
+	.edition{
+		margin-top:239;
+		width:750;
+		height:26;
+		justify-content: center;
+		align-items:center;
+		margin-bottom:59;
+	}
+	.button{
+		background-color:#e64340;
+		border-radius:2;
+		width:666;
+		height:80;
+		justify-content: center;
+		align-items: center;
+		margin-left:42;
+		margin-right:42;
+		margin-bottom:57;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+	module.exports = {
+		data: {
+			dir: 'dist',
+			resUrl:api.apiurl.resurl,
+			navHeight:88,
+			bgColor:'#58bf65',
+			title:'个人中心',
+			color:'#fff',
+			lSrc:'/images/back.png',
+			rImg:'/images/notice.png',
+			hImg:'/images/touxiang_150.png',
+			jumpImg:'/images/jump.png',
+			pImg:'/images/post.png',
+			lImg:'/images/reply.png',
+			gImg:'/images/give.png'
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+	      	this.$on('naviBar.rightItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator');
+				var nextUrl = this.getBase() + 'personal/news.js';
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+	      	});
+    	},
+		methods: {
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			goBack:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				navigator.pop({'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		}
+	};
+</script>

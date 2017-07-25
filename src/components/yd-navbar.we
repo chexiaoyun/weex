@@ -1,0 +1,83 @@
+<template>
+    <div class="header">
+        <div class="navbar" style="background-color:{{ navbar.backgroundColor }}">
+            <div class="navbar-left" onclick="onclickleftitem">
+                <image class="leftImage" src="{{ resurl + logo }}"></image>
+            </div>
+            <div class="navbar-center">
+                <text class="centerTitle"  style="color:{{ navbar.centerColor }}">{{ navbar.centerTitle }}</text>
+            </div>
+            <div class="navbar-right">
+                <image class="rightImage" src="{{ resurl + navbar.rightImage }}" if="{{ navbar.rightImage != '' }}" onclick="onclickrightitem"></image>
+            </div>
+        </div>
+    <div>
+</template>
+
+<style>
+    .header{
+        height: 88;
+        width: 750;
+    }
+    .navbar{
+        height: 88;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding-left: 25;
+        padding-right: 25;
+    }
+    .navbar-left{
+        width: 200;
+    }
+    .navbar-center{
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+    .navbar-right{
+        width: 200;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+    }
+    .leftTitle{
+        font-size: 28;
+        font-family: 'Open Sans', sans-serif;
+    }
+    .leftImage{
+        height: 42;
+        width: 50;
+    }
+    .rightTitle{
+        font-size: 28;
+        font-family: 'Open Sans', sans-serif;
+    }
+    .centerTitle{
+        font-size: 36;
+        /*font-weight: bold;*/
+    }
+    .rightImage{
+        height: 40;
+        width: 41;
+    }
+</style>
+
+<script>
+    var api = require('../api.js');
+    module.exports = {
+        data: {
+            resurl: api.apiurl.resurl,
+            navbar: null,
+            logo: 'logo.png',
+        },
+        methods: {
+            onclickrightitem: function (e) {
+                this.$dispatch('navBar.rightItem.click', {});
+            },
+            onclickleftitem: function (e) {
+                this.$dispatch('navBar.leftItem.click', {});
+            }
+        }
+    }
+</script>

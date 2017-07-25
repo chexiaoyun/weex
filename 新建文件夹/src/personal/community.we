@@ -1,0 +1,316 @@
+<template>
+	<div class="wrapper">
+		<wxc-navpage height={{navHeight}} background-color={{bgColor}} title={{title}} title-color={{color}}   right-item-title={{rTitle}} right-item-color="#fff" left-item-src={{resUrl+lSrc}}></wxc-navpage>
+		<scroller loadmoreoffset="100">
+			<div class="content">
+				<div class="banner">
+					<image src="{{resUrl+bImg}}" style="width:750;height:310;"></image>
+					<div class="tip">
+						<text style="color:#fff;font-size:34;margin-left:57;">{{text}}</text>
+					</div>
+				</div>
+				<div class="stick-list">
+					<div class="stick" repeat="{{rows}}">
+						<text class="hot">置顶</text>
+						<text style="color:#333;font-size:30;flex:1;">{{rows[$index].name}}</text>
+					</div>
+				</div>
+				<div class="news-list">
+					<div class="new" repeat="item in list">
+						<div class="new-top" onclick="goNext" url="personal/card_detail.js">
+							<div class="new-left">
+								<text style="color:#333;font-size:36;lines:1;">{{item.title}}</text>
+								<text style="color:#9b9b9b;font-size:30;margin-top:30;lines:2;">{{item.content}}</text>
+							</div>
+							<div class="new-right">
+								<image src="{{resUrl+item.img}}" style="width:218;height:140;"></image>
+							</div>
+						</div>
+						<div class="new-bottom">
+							<div class="new-bottom-left" onclick="goNext" url="personal/add_friends.js">
+								<image src="{{resUrl+item.headImg}}" style="width:44;height:44;margin-right:7;"></image>
+								<text style="color:#bbb;font-size:26;">{{item.author}}</text>
+							</div>
+							<div class="new-bottom-right">
+								<div class="help" onclick="dot" index="{{$index}}">
+									<text class="number {{ item.is_state ==1 ? 'num-active' : '' }}">{{item.num}}</text>
+									<image src="{{resUrl}}{{item.is_state == 1 ? hands2 : hands}} " style="width:32;height:30;"></image>
+								</div>
+								<div class="talk">
+									<text class="number">{{item.num2}}</text>
+									<image src="{{resUrl+item.talk}}" style="width:38;height:36;"></image>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</scroller>
+    	<tabbar></tabbar>
+	</div>
+</template>
+
+<style>
+	.wrapper{
+		background-color:#f8f8f8;
+		flex-direction: column;
+		width:750;
+	}
+	.header{
+		width:750;
+		background-color:#58bf65;
+		height:88;
+		position:absolute;
+		top:0;
+		left:0;
+		flex-direction: row;
+	}
+	.com{
+		flex:1;
+		height:88;
+		justify-content: center;
+		align-items:flex-start;
+	}
+	.word{
+		color:#fff;
+		font-size:36;
+		margin-left:330;
+	}
+	.post{
+		color:#fff;
+		font-size:30;
+	}
+	.right{
+		flex:0.2;
+		height:88;
+		justify-content: center;
+		align-items: center;
+	}
+	.content{
+		margin-top:88;
+	}
+	.banner{
+		width:750;
+		height:310;
+		background-color: #fff;
+		position:relative;
+		justify-content: center;
+		align-items: center;
+	}
+	.tip{
+		width:750;
+		height:60;
+		background-color: #4a4a4a;
+		justify-content: center;
+		align-items: flex-start;
+		position: absolute;
+		bottom:0;
+		left:0;
+		opacity:0.6;
+	}
+	.stick-list{
+		margin-top:41;
+	}
+	.stick{
+		width:750;
+		height:87;
+		background-color: #fff;
+		border-bottom-width:1;
+		border-bottom-color:#ebebeb;
+		justify-content: center;
+		align-items: center;
+		flex-direction: row;
+	}
+	.hot{
+		color:#4a90e2;
+		font-size:30;
+		margin-left:30;
+		margin-right:30;
+	}
+	.news-list{
+		margin-top:24;
+		margin-bottom:120;
+	}
+	.new{
+		width:750;
+		height:296;
+		background-color: #fff;
+		padding-left:30;
+		padding-right:30;
+		padding-top:26;
+		padding-bottom:26;
+		border-width:1;
+		border-color:#ebebeb;
+	}
+	.new-top{
+		flex-direction: row;
+	}
+	.new-left{
+		flex:1;
+		margin-right:45;
+	}
+	.new-bottom{
+		flex-direction: row;
+		margin-top:40;
+	}
+	.new-bottom-left{
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+		flex:1;
+	}
+	.new-bottom-right{
+		flex-direction: row;
+		justify-content: center;
+		align-items: flex-end;
+		flex:1;
+	}
+	.number{
+		color:#bbb;
+		font-size:36;
+		margin-right:10;
+	}
+	.help{
+		flex-direction: row;
+		justify-content: flex-end;
+		align-items: center;
+		margin-right:44;
+		flex:1;
+	}
+	.talk{
+		flex-direction: row;
+		justify-content: flex-end;
+		align-items: flex-end;
+		flex:1;
+	}
+	.num-active {
+		color: #58bf65;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+	require('../tabbar.we');
+	module.exports = {
+		data: {
+			dir:'dist',
+			resUrl:api.apiurl.resurl,
+			navHeight:88,
+			bgColor:'#58bf65',
+			title:'社区',
+			color:'#fff',
+			lSrc:'/images/search_2.png',
+			rTitle:'发帖',
+			bImg:'/images/aom.png',
+			text:'小苹果广场舞图解教程',
+			hands:'/images/Fill_30.png',
+			hands2:'/images/Fill_30_zhun.png',
+			rows:[
+				{name:"中国大妈让日本汗颜"},
+				{name:"冬季来临，该怎么样跳好广场舞？"}
+			],
+			list: [
+				{
+					title:'怎样才能带好团队',
+					content:'我以前带十几个人跳舞，觉得很轻松，现在也就二十来个人，总觉得意见不…',
+					img:'/images/png_03.png',
+					headImg:'/images/o_6_44.png',
+					author:'驴小龙',
+					num:'2323',
+					num2:'12323',
+					talk:'/images/talk_02.png',
+					is_state:0
+				},
+				{
+					title:'大家都爱吃零食 但不要让零食…',
+					content:'零食，通常是指一日三餐时间点之外的时间里所食用的食品。一般情况下…',
+					img:'/images/png_04.png',
+					headImg:'/images/o_8_44.png',
+					author:'Chelse',
+					num:'5578',
+					num2:'23647',
+					talk:'/images/talk_02.png',
+					is_state:0
+				},
+				{
+					title:'怎样才能带好团队',
+					content:'我以前带十几个人跳舞，觉得很轻松，现在也就二十来个人，总觉得意见不…',
+					img:'/images/png_03.png',
+					headImg:'/images/o_6_44.png',
+					author:'驴小龙',
+					num:'2323',
+					num2:'12323',
+					talk:'/images/talk_02.png',
+					is_state:0
+				},
+				{
+					title:'大家都爱吃零食 但不要让零食…',
+					content:'零食，通常是指一日三餐时间点之外的时间里所食用的食品。一般情况下…',
+					img:'/images/png_04.png',
+					headImg:'/images/o_8_44.png',
+					author:'Chelse',
+					num:'5578',
+					num2:'23647',
+					talk:'/images/talk_02.png',
+					is_state:0
+				}
+			]
+		},
+		methods: {
+			dot: function(e){
+				if( this.list[e.target.attr.index].is_state === 0 ){
+					this.list[e.target.attr.index].is_state = 1;
+					this.list[e.target.attr.index].num++;
+				}else{
+					this.list[e.target.attr.index].is_state = 0;
+					this.list[e.target.attr.index].num--;
+				}
+			},
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf(dist) + "dist");
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		},
+		created: function() {
+	      	this.$on('naviBar.rightItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator');
+				var nextUrl = this.getBase() + 'talk/found_card.js';
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+	      	});
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator');
+				var nextUrl = this.getBase() + 'personal/community_search.js';
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+	      	});
+    	}
+	};
+</script>

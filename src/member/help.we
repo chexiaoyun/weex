@@ -1,0 +1,80 @@
+<template>
+	<div class="body">
+		<yd-min-navbar navbar="{{navbar}}"></yd-min-navbar>
+		<scroller>
+			<div class="help-wrapper">
+				<div class="help-list" onclick="goNext" url="fund/cloth_fund.js">
+					<text class="help">服装众筹</text>
+				</div>
+				<div class="help-list" onclick="goNext" url="member/love_center.js">
+					<text class="help">爱心会员</text>
+				</div>
+				<div class="help-list" onclick="goNext" url="fund/cloth_fund.js">
+					<text class="help">商品定价</text>
+				</div>
+				<div class="help-list" onclick="goNext" url="fund/original_designer.js">
+					<text class="help">原创设计师</text>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.body{
+		background-color: #f1f1f1;
+		width:750;
+	}
+	.help-wrapper{
+		width:750;
+		background-color: #fff;
+	}
+	.help-list{
+		width:750;
+		height:80;
+		border-bottom-width:2;
+		border-color:#dedede;
+		justify-content: center;
+		align-items: flex-start;
+		padding-left:25;
+		padding-right:25;
+	}
+	.help{
+		color:#323333;
+		font-size:28;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-min-navbar.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '帮助',
+		        rightTitle: '',
+		        rightImage: '',
+		        rightColor: '#323333',
+		        centerColor: '#323333',
+		        backgroundColor: "#eadbc7"
+	      	}
+		},
+		methods:{
+			goNext:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+		},
+		created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			});
+		}
+	}
+</script>

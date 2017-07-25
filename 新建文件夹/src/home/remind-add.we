@@ -1,0 +1,364 @@
+<template>
+	<div class="body">
+		<div id="header">
+			<wxc-navpage background-color="{{ nav.bgColor }}" title="{{ nav.title }}" title-color="{{ nav.titleColor }}" left-item-src="{{ url + nav.leftImgSrc }}" right-item-title="{{ nav.rightItemTitle }}" right-item-color="{{ nav.titleColor }}"></wxc-navpage>
+		</div>
+		
+		
+		<div class="remind">
+			<div class="remind-box" id="remind-box" onswipe="remindSwipe">
+				<!-- 吃药名称 -->
+				<div class="item">
+					<div class="top">
+						<text class="title">请输入您的药品名称</text>
+					</div>
+					<div class="content">
+						<div class="input-box">
+							<input class="input" value="" placeholder="感冒药" />
+						</div>
+					</div>
+				</div>
+				<!-- 吃药时间 -->
+				<div class="item">
+					<div class="top">
+						<text class="title">您希望什么时间吃药？</text>
+					</div>
+					<div class="content">
+						<div class="input-box" onclick="pickerChange" index="two">
+							<text class="tiptext">{{ picker.eatTime }}</text>
+						</div>
+					</div>
+				</div>
+				<!-- 吃药时间 -->
+				<div class="item">
+					<div class="top">
+						<text class="title">在一周的哪几天提醒？</text>
+					</div>
+					<div class="content">
+						<div class="week">
+							<div class="week-item {{ item.state ? 'active' : '' }}" repeat="item in picker.week" onclick="changeWeek" index="{{ $index }}">
+								<text class="week-text {{ item.state ? 'active-color' : '' }}">{{ item.text }}</text>
+							</div>
+						</div>
+						<div class="week-tip">
+							<text class="week-tip-text">{{ picker.weekText }}</text>
+						</div>
+					</div>
+				</div>
+				<!-- 吃药时间 -->
+				<div class="item">
+					<div class="top">
+						<text class="title">每隔多久提醒一次？</text>
+					</div>
+					<div class="content">
+						<div class="input-box"  onclick="pickerOption">
+							<text class="tiptext">{{ picker.tipTime }}</text>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+	</div>
+</template>
+
+<style>
+	.body{
+		background-color: #fff;
+	}
+	.remind{
+		flex-direction: row;
+		margin-top: 88;
+		width: 750;
+		overflow: hidden;
+	}
+	.remind-box{
+		padding-top: 15;
+		flex-direction: row;
+		flex-wrap: nowrap;
+	}
+	.item{
+		width: 750;
+		padding-left: 35;
+		padding-right: 35;
+	}
+	.top{
+		margin-top: 180;
+		flex-direction: row;
+		height: 50;
+		align-items: center;
+		justify-content: center;
+	}
+	.title{
+		font-size: 48;
+		color: #333;
+	}
+	.content{
+		margin-top: 20;
+		flex-direction: row;
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+	.input-box{
+		margin-top: 150;
+		width: 428;
+		height: 84;
+		background-color: #fff;
+		border-width: 1;
+		border-color: #ebebeb;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+		padding-left: 20;
+		padding-right: 20;
+	}
+	.input{
+		flex: 1;
+		height: 40;
+		font-size: 36;
+		color: #9b9b9b;
+		placeholder-color: #9b9b9b;
+	}
+	.tiptext{
+		height: 40;
+		font-size: 36;
+		color: #9b9b9b;
+	}
+	.week{
+		margin-top: 180;
+		width: 650;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.week-item{
+		width: 68;
+		height: 68;
+		border-radius: 12;
+		background-color: #ebebeb;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+	.active{
+		background-color: #4a90e2;
+	}
+	.week-text{
+		font-size: 48;
+		color: #9b9b9b;
+	}
+	.active-color{
+		color: #fff;
+	}
+	.week-tip{
+		margin-top: 50;
+	}
+	.week-tip-text{
+		font-size: 36;
+		color: #333;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+	var animation = require('@weex-module/animation');
+
+	module.exports = {
+		data: {
+			dir: 'dist',
+			url: api.apiurl.resurl,
+			nav: {
+				title: '吃药提醒',
+				bgColor: '#58bf65',
+				titleColor: '#fff',
+				leftImgSrc: '/images/back.png',
+				rightItemTitle: '下一步'
+			},
+			pageNum: 0,
+			picker:{
+				eatTime: '19:28',
+				hourArr: [],
+				tipTime: '1小时',
+				week:[
+					{
+						text: '日',
+						state: false
+					},
+					{
+						text: '1',
+						state: false
+					},
+					{
+						text: '2',
+						state: false
+					},
+					{
+						text: '3',
+						state: false
+					},
+					{
+						text: '4',
+						state: false
+					},
+					{
+						text: '5',
+						state: false
+					},
+					{
+						text: '6',
+						state: false
+					}
+				],
+				weekText: ''
+			}
+		},
+		methods:{
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			},
+			remindSwipe:function(e){
+				var self = this;
+	      		var el = this.$el('remind-box');
+	      		var index = self.pageNum;
+				if( e.direction == 'right' ){
+		      		if( index > 0 ){
+		      			index = self.pageNum - 1;
+						self.pageNum = index;
+		      		}
+				}else if( e.direction == 'left' ){
+					if( index < 3 ){
+						index = self.pageNum + 1;
+						self.pageNum = index;
+					}
+				}
+				if( self.pageNum == 3 ){
+					self.nav.rightItemTitle = '保存';
+				}else{
+					self.nav.rightItemTitle = '下一步';
+				}
+				animation.transition(el, {
+		          	styles: {
+		            	transform: 'translate(-' + index * 750 + 'px, 0)'
+		          	},
+		          	duration: 500,
+		          	timingFunction: 'ease-in-out',
+		          	'transform-origin': 'center center',
+		          	delay: 0 
+		        },function(){
+		        	
+		        });
+			},
+			pickerChange:function(){
+				var picker = require('@weex-module/picker');
+		        var self = this;
+		        picker.pickTime({
+		          	'value':'19:24'
+		        },function (ret) {
+		          	var result = ret.result;
+		          	if(result == 'success')
+		          	{
+		            	self.picker.eatTime = ret.data;
+		          	}
+		        });
+			},
+			pickerOption:function(){
+				var self = this;
+				var picker = require('@weex-module/picker');
+				var items = self.picker.hourArr;
+				picker.pick({
+                    'items':items,
+                    'index':self.index
+                },function (ret) {
+                    var result = ret.result;
+                    if(result == 'success')
+                    {
+                    	self.picker.tipTime = items[ret.data];
+                    }
+				});
+			},
+			changeWeek:function(e){
+				var self = this;
+				var index= e.target.attr.index;
+				self.picker.week[index].state = !self.picker.week[index].state;
+				if( self.picker.week[1].state && self.picker.week[2].state && self.picker.week[3].state && self.picker.week[4].state && self.picker.week[5].state ){
+					self.picker.weekText = '工作日';
+				}else if( self.picker.week[0].state && self.picker.week[6].state ){
+					self.picker.weekText = '周末';
+				}else{
+					self.picker.weekText = '';
+				}
+			}
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+	      	this.$on('naviBar.rightItem.click',function(e){
+	      		var self = this;
+	      		var el = this.$el('remind-box');
+	      		var index = self.pageNum;
+	      		if( index < 3 ){
+					index = self.pageNum + 1;
+					self.pageNum = index;
+				}
+	      		if( self.pageNum == 3 ){
+					self.nav.rightItemTitle = '保存';
+				}else{
+					self.nav.rightItemTitle = '下一步';
+				}
+				animation.transition(el, {
+		          	styles: {
+		            	transform: 'translate(-' + index * 750 + 'px, 0)'
+		          	},
+		          	duration: 500,
+		          	timingFunction: 'ease-in-out',
+		          	'transform-origin': 'center center',
+		          	delay: 0 
+		        },function(){
+		        	
+		        });
+	      	});
+	      	
+	      	// 小时
+	      	for( var i = 1 ; i <= 24 ; i++ ){
+	      		this.picker.hourArr.push( i + '小时' );
+	      	}
+    	}
+	}
+</script>

@@ -1,0 +1,258 @@
+<template>
+	<div class="wrapper">
+		<wxc-navpage height={{navHeight}} background-color={{bgColor}} title={{title}} title-color={{color}}  left-item-src="{{resUrl+lSrc}}"  right-item-title={{rTitle}} right-item-color="#fff"></wxc-navpage>
+		<div class="login">
+			<div class="tel">
+				<div class="telImg">
+					<image src="{{resUrl+imgSrc}}" style="width:44;height:44;"></image>
+				</div>
+				<div class="telInput">
+					<input type="text" placeholder="请输入手机号码" class="input" value="" maxlength="11" placeholder-color="#bbb" />
+				</div>
+			</div>
+			<div class="tel">
+				<div class="telImg">
+					<image src="{{resUrl+numImg}}" style="width:38;height:44;"></image>
+				</div>
+				<div class="teiInput passInput">
+					<input type="text" placeholder="请输入验证码" class="input input2"  value="" maxlength="6" placeholder-color="#bbb" style="width:180;" />
+					<div class="code">
+						<text style="color:#fff;font-size:30;text-align: center;font-size: 28;" onclick="timeCount">{{text}}</text>
+					</div>
+				</div>
+			</div>
+			<div class="tel">
+				<div class="telImg">
+					<image src="{{resUrl+wordSrc}}" style="width:40;height:44;"></image>
+				</div>
+				<div class="telInput passInput">
+					<input id="word" type="{{type[0].state}}" placeholder="请输入密码" class="input input2" maxlength="6" placeholder-color="#bbb" value="" />
+					<image src="{{resUrl+eyeImg}}" style="width:45;height:30;justify-content: center;margin-top:35;margin-right:30;" onclick="changeType"></image>
+				</div>
+			</div>
+			<div class="button" onclick="goNext" url="personal/enroll_success.js">
+				<text style="font-size:36;color:#fff;">注册</text>
+			</div>
+			<div class="agreement">
+				<div class="pitch">
+					<image src="{{resUrl+pImg}}" style="width:25;height:18;" onclick="changeImg" index="{{$index}}"></image>
+				</div>
+				<div class="content">
+					<text style="font-size:30;color:#333;">我已阅读并同意该</text>
+					<a href="#" style="border-bottom-width:3;border-bottom-color:#037AFF ;" >
+						<text style="color:#037AFF;font-size:30;" onclick="goNext" url="personal/agreement.js">服务协议</text>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
+
+<style>
+	.wrapper{
+		background-color:#F8F8F8;
+		flex-direction:column;
+	}
+	.header{
+		height:88;
+		width:750;
+		background-color:#58bf65;
+		position:fixed;
+		top:0;
+		left:0;
+		flex-direction: row;
+	}
+	.left{
+		flex:0.3;
+		height:88;
+		justify-content: center;
+		align-content: center;
+	}
+	.enroll{
+		flex:1;
+		align-content: center;
+		justify-content: center;
+	}
+	.log{
+		flex:0.3;
+		align-content: center;
+		justify-content: center;
+	}
+	.login{
+		flex-direction: column;
+		margin-top:88;
+		padding-left:41;
+		padding-right:41;
+	}
+	.tel{
+		flex-direction: row;
+		background-color:#fff;
+		border-width:2;
+		border-color:#ebebeb;
+		width:664;
+		height:96;
+		margin-top:24;
+	}
+	.telImg{
+		height:96;
+		width:99;
+		justify-content: center;
+		align-items: center;
+	}
+	.telInput{
+		height:96;
+		width:560;
+		justify-content: center;
+	}
+	.input{
+		outline:none;
+		font-size:30;
+		color:#333;
+		border-left-width:2;
+		border-left-color:#bbb;
+		height:53;
+		padding-left:27;
+	}
+	.input2{
+		flex: 1;
+		margin-top:24;
+	}
+	.passInput{
+		flex-direction: row;
+	}
+	.button{
+		background-color:#58bf65;
+		width:668;
+		height:88;
+		justify-content: center;
+		align-items: center;
+		margin-top:24;
+	}
+	.code{
+		width:161;
+		height:60;
+		background-color:#58bf65;
+		margin-left:200;
+		justify-content: center;
+		margin-top:15;
+	}
+	.agreement{
+		margin-top:24;
+		flex-direction: row;
+	}
+	.pitch{
+		border-width:2;
+		border-color:#bbb;
+		border-radius:2px;
+		width:26;
+		height:26;
+		margin-right:15;
+		justify-content: center;
+		margin-top:8;
+	}
+	.content{
+		width:360;
+		flex-direction: row;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+	module.exports = {
+		data: {
+			dir:'dist',
+			resUrl:api.apiurl.resurl,
+			navHeight:88,
+			bgColor:'#58bf65',
+			title:'注册',
+			color:'#fff',
+			lSrc:'/images/back.png',
+			rTitle:'登录',
+			leftImg:'/images/back.png',
+			imgSrc:'/images/phone.png',
+			wordSrc:'/images/suo.png',
+			eyeImg:'/images/eye_01.png',
+			eyeFlag: 0,
+			type:[
+				{index:'0',state:'password'},
+				{index:'1',state:'text'}
+			],
+			numImg:'/images/yanzheng.png',
+			pImg:'/images/endui.png',
+			pImgFlag:0,
+			text:'发送验证码'
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+	      	this.$on('naviBar.rightItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator');
+				var nextUrl = this.getBase() + 'personal/login.js';
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+	      	});
+    	},
+		methods: {
+	      	changeType: function (e) {
+				if( this.eyeFlag === 0 ){
+					this.eyeFlag = 1 ;
+					this.eyeImg = '/images/eye_02.png';
+				}else{
+					this.eyeFlag = 0 ;
+					this.eyeImg = '/images/eye_01.png';
+				}
+			},
+			changeImg: function (e) {
+//				this.pImg[e.target.attr.index].src = !this.pImg[e.target.attr.index].src;
+				if(this.pImgFlag === 0 ){
+					this.pImgFlag = 1;
+					this.pImg = '/images/endui.png';
+				}else{
+					this.pImgFlag = 0;
+					this.pImg = '';
+				}
+			},
+			timeCount: function (e) {
+			},
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+	    }
+	}
+</script>

@@ -1,0 +1,198 @@
+<template>
+	<div class="body">
+		<yd-navbar navbar="{{navbar}}"></yd-navbar>
+		<scroller onloadmore="onloadmore" loadmoreoffset="10">
+			<div class="cloth-container">
+				<div class="des-style">
+					<div class="des-minstyle" style="margin-right:90;">
+						<text class="style">设计风格：小清新</text>
+					</div>
+					<div class="des-minstyle">
+						<text class="style">人气：由高到低</text>
+					</div>
+				</div>
+				<div class="cloth-wrapper">
+					<div class="cloth-all" repeat="item in clothList" onclick="goNext" url="{{ item.url }}">
+						<div class="cloth-img">
+							<image src="{{ item.title_pic }}" style="width:340;height:293;"></image>
+						</div>
+						<div class="cloth-detail">
+							<text style="color:#333;font-size:24;margin-top:15;text-overflow:ellipsis;lines:1;">{{ item.goods_name }}</text>
+							<div class="cloth-price">
+								<div class="part-price">
+									<text style="color:#E6491A;font-size:26;">¥{{ item.origin_price }}</text>
+								</div>
+								<div class="cloth-people">
+									<text style="color:#999;font-size:24;">成交量：{{ item.buy_count }}</text>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+.body{
+	background-color: #F1F1F1;
+}
+.cloth-container{
+	width:750;
+}
+.des-style{
+	width:750;
+	height:80;
+	background-color: #fff;
+	border-bottom-color:#dfdfdf;
+	border-bottom-width:1;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+}
+.style{
+	color:#333;
+	font-size:26;
+}
+.cloth-choice{
+	width:750;
+	height:80;
+	background-color: #fff;
+}	
+.cloth-wrapper{
+	padding-left:25;
+	padding-right:25;
+	padding-top:20px;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+.cloth-all{
+	border-color:#ccc;
+	border-width:1;
+	margin-bottom:15;
+	width: 340;
+}
+.cloth-img{
+	width:340;
+	height:293;
+}
+.cloth-detail{
+	width:340;
+	padding-left:15;
+	padding-right:15;
+	background-color: #fff;
+}
+.cloth-price{
+	flex-direction: row;
+	margin-bottom:15;
+	margin-top:10;
+}
+.cloth-people{
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+.part-price{
+	flex:1;
+}
+.cloth-choice{
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+}
+.cloth-line{
+	width:4;
+	height:50;
+	background-color: #dfdfdf;
+}
+.text{
+	color:#333;
+	font-size:24;
+}
+.cloth-left{
+	flex-direction: row;
+	justify-content: center;
+	align-items: flex-start;
+}
+.part-people{
+	flex-direction: row;
+	margin-right:107;
+}
+.cloth-right{
+	flex:0.7;
+	justify-content: center;
+	align-items: center;
+}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-navbar.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '热销',
+		        rightTitle: '',
+		        rightImage: 'icon_jixingwanyi@3x.png' ,
+		        rightColor: '#a2a9b2',
+		        centerColor: '#fff',
+		        backgroundColor: "#ebac51"
+	      	},
+	      	clothList:[],
+	      	seleImg:'icon_shenghuashiyan@3x.png',
+		},
+		methods:{
+			goNext:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			onloadmore: function () {
+		        if (!this.triggered) {
+		          	for (var i = 0; i <= 10; i++) {
+			            this.clothList.push({
+				            img:title_pic,
+			      			name: goods_name + i,
+			      			price:origin_price,
+			      			part:buy_count,
+			      			url:'shop/cloth_detail.js'
+		            	});
+		        	}
+		     	}
+		        this.triggered = false;
+		    }
+		},
+		created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		},
+		init:function(){
+			var self = this;
+			//截取传过来的cat_id
+//          var url = self.$getConfig().bundleUrl;   
+//          var param = url.split('?');
+            var stream = require("@weex-module/stream");
+            //给后台传cat_id
+            stream.fetch({
+				method:'POST',
+				url:api.apiurl.apiurl + 'api/more/goods',
+				type: 'json',
+//				body: param[1]
+				body:`cat_id=1`
+			},function(data){
+				self.clothList = data.data.data.data;
+				console.log(data.data.data)
+			},function(e){
+				
+			})
+		}
+	}
+</script>

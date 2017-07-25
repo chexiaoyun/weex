@@ -1,0 +1,455 @@
+<template>
+	<div class="body">
+		<yd-navbar-one navbar="{{navbar}}"></yd-navbar-one>
+		<scroller>
+			<div class="cloth-container">
+				<div class="cloth-select">
+					<div class="list-one" repeat="item in orderList">
+						<div class="list-order">
+							<!--<div class="order-number">
+								<text class="order-size">订单号：{{ item.number }}</text>
+							</div>-->
+							<div class="order-time" onclick="remove" index="{{ $index }}">
+								<!--<text class="order-size">下单时间：{{ item.add_time }}</text>-->
+								<text class="order-size">删除</text>
+							</div>
+						</div>
+						<div class="list-top">
+							<div class="list-select {{ type ==true ?'list-bgselect':'' }}" onclick="payShop"></div>
+							<div class="one-img">
+								<image src="{{ item.title_pic }}" style="width:170;height:170;"></image>
+							</div>
+							<div class="one-detail">
+								<text class="one-title">{{ item.goods_name }}</text>
+								<div class="one-choice">
+									<div class="one-color">
+										<text class="color">规格：{{ item.color }}</text>
+									</div>
+									<div class="one-num">
+										<text class="num">x{{ item.num }}</text>
+									</div>
+								</div>
+								<div class="one-start">
+									<text class="one-red">¥{{ item.current_price }}</text>
+									<text class="one-red on-gray">¥{{ item.startPrice }}</text>
+									<text class="one-red">定金：¥{{ item.deposit }}</text>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="cloth-wrapper">
+					<div class="cloth-line">
+						<div class="cloth-line-top"></div>
+						<div class="cloth-like">
+							<text style="color:#666;font-size:26;">猜你喜欢</text>
+						</div>
+					</div>
+					<div class="cloth-all" repeat="item in clothList" onclick="goNext" url="{{ item.url }}">
+						<div class="cloth-img">
+							<image src="{{ resurl + item.img }}" style="width:340;height:293;"></image>
+						</div>
+						<div class="cloth-detail">
+							<text style="color:#989898;font-size:24;margin-top:15;">{{ item.name }}</text>
+							<div class="cloth-progress">
+								<div class="cloth-part"></div>
+							</div>
+							<div class="cloth-price">
+								<div class="part-price">
+									<text style="color:#E6491A;font-size:26;">¥{{ item.price }}</text>
+								</div>
+								<div class="cloth-people">
+									<text style="color:#E6491A;font-size:20;">{{ item.part }}</text>
+									<text style="color:#989898;font-size:20;">{{ item.all }}</text>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="list-bottom">
+					<div class="list-count">
+						<div class="count-select" onclick="goChecked">
+							<div class="list-select {{ type ==true ?'list-bgselect':'' }}"></div>
+							<text style="color:#989898;font-size:30;">全选</text>
+						</div>
+						<div class="count-all">
+							<text style="color:#989898;font-size:30;">合计：</text>
+							<text style="color:#E6491A;font-size:30;">{{ count }}</text>
+						</div>
+					</div>
+					<div class="list-shop">
+						<text style="color:#fff;font-size:30;">立即购买</text>
+					</div>
+				</div>
+			</div>
+		</scroller>
+		<yd-footer></yd-footer>
+	</div>
+</template>
+
+<style>
+.body{
+	background-color: #F1F1F1;
+}
+.cloth-container{
+	width:750;
+	margin-bottom:100;
+}
+.cloth-line{
+	width:2;
+	height:50;
+}	
+.cloth-wrapper{
+	padding-left:25;
+	padding-right:25;
+	padding-top:20;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	margin-bottom:100;
+}
+.cloth-all{
+	border-color:#ccc;
+	border-width:1;
+	margin-bottom:15;
+	width: 342;
+}
+.cloth-img{
+	width:340;
+	height:293;
+}
+.cloth-detail{
+	width:340;
+	padding-left:15;
+	padding-right:15;
+	background-color: #fff;
+}
+.cloth-progress{
+	width:321;
+	height:30;
+	border-color:#ccc;
+	border-width:1;
+	background-color: #fff;
+	border-radius: 20;
+	margin-top:15;
+	margin-bottom:15;
+}
+.cloth-part{
+	width:132;
+	background-color: #EBAC51;
+	height:30;
+	border-top-left-radius: 20;
+	border-bottom-left-radius: 20;
+}
+.cloth-price{
+	flex-direction: row;
+	margin-bottom:15;
+}
+.cloth-people{
+	flex-direction: row;
+}
+.part-price{
+	flex:1;
+}
+.cloth-line{
+	width:694;
+	position:relative;
+	margin-bottom:40;
+}
+.cloth-line-top{
+	width:694;
+	height:3;
+	background-color: #ccc;
+	position: absolute;
+	top:20;
+	left:0;
+}
+.cloth-like{
+	width:153;
+	height:80;
+	position:absolute;
+	top:-18;
+	left:269;
+	justify-content: center;
+	align-items: center;
+	background-color: #f1f1f1;
+}
+.cloth-select{
+	width:750;
+}
+	.list-one{
+		margin-bottom:25;
+		border-color:#dedede;
+		border-bottom-width:1;
+		border-top-width:1;
+		width:750;
+		background-color: #fff;
+		justify-content: center;
+		align-items: center;
+	}
+	.one-img{
+		width:170;
+		height:170;
+		margin-right:20;
+	}
+	.one-detail{
+		width:422;
+		height:170;
+	}
+	.list-top{
+		flex-direction: row;
+		width:750;
+		/*height:170;*/
+		padding-left:28;
+		padding-right:28;
+		padding-top:23;
+		padding-bottom:23;
+		justify-content: center;
+		align-items: center;
+	}
+	
+	.one-start{
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.one-title{
+		color:#323333;
+		font-size:24;
+		lines:2;
+	}
+	.one-choice{
+		flex-direction: row;
+	}
+	.color{
+		color:#989898;
+		font-size:24;
+	}
+	.one-color{
+		flex:1;
+	}
+	.num{
+		color:#323333;
+		font-size:24;
+	}
+	.one-choice{
+		margin-top:10;
+		margin-bottom:20;
+	}
+	.one-red{
+		color:#d9491e;
+		font-size:26;
+	}
+	.on-gray{
+		color:#989898;
+		font-size:26;
+		text-decoration:line-through;
+	}
+	.list-select{
+		width:42;
+		height:42;
+		border-width:1;
+		border-color:#333;
+		margin-right:20;
+		border-radius: 100;
+	}
+	.list-bgselect{
+		background-color: #ebac51;
+	}
+	.list-bottom{
+		width:750;
+		height:100;
+		background-color: #fff;
+		position: fixed;
+		bottom:100;
+		left:0;
+		justify-content: center;
+		align-items: center;
+		flex-direction: row;
+		border-top-width:1;
+		border-top-color:#dfdede;
+	}
+	.list-count{
+		width:510;
+		height:100;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+	.list-shop{
+		width:240;
+		height:100;
+		background-color: #ff4f00;
+		justify-content: center;
+		align-items: center;
+	}
+	.count-select{
+		flex-direction: row;
+		flex:1;
+		padding-left:28;
+	}
+	.count-all{
+		flex-direction: row;
+		flex:1;
+		height:100;
+		justify-content: center;
+		align-items: center;
+	}
+	.list-order{
+		width:750;
+		height:50;
+		background-color: #fff;
+		border-bottom-width:1;
+		border-bottom-color:#dfdfdf;
+		flex-direction: row;
+		padding-left:28;
+		padding-right:28;
+	}
+	.order-number{
+		flex:1;
+		height:50;
+		justify-content: center;
+		align-items: flex-start;
+	}
+	.order-time{
+		flex:1;
+		height:50;
+		justify-content: center;
+		align-items: flex-end;
+	}
+	.order-size{
+		font-size:26;
+		color:#333;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-navbar-one.we');
+	require('../components/yd-footer.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '购物车',
+		        rightTitle: '',
+		        rightImage: '' ,
+		        rightColor: '#fff',
+		        centerColor: '#fff',
+		        backgroundColor: "#ebac51"
+	      	},
+	      	clothList:[
+	      		{
+	      			img:'ditu_budabuxiaoyanjge@3x.png',
+	      			name:'百搭休闲衣男',
+	      			price:'1699',
+	      			part:'10',
+	      			all:'/100',
+	      			url:'shop/crowd_detail.js'
+	      		},
+	      		{
+	      			img:'ditu_budabuxiaoyanjge@3x.png',
+	      			name:'百搭休闲衣男',
+	      			price:'1699',
+	      			part:'10',
+	      			all:'/100',
+	      			url:'shop/crowd_detail.js'
+	      		},
+	      		{
+	      			img:'ditu_budabuxiaoyanjge@3x.png',
+	      			name:'百搭休闲衣男',
+	      			price:'1699',
+	      			part:'10',
+	      			all:'/100',
+	      			url:'shop/crowd_detail.js'
+	      		},
+	      		{
+	      			img:'ditu_budabuxiaoyanjge@3x.png',
+	      			name:'百搭休闲衣男',
+	      			price:'1699',
+	      			part:'10',
+	      			all:'/100',
+	      			url:'shop/crowd_detail.js'
+	      		},
+	      		{
+	      			img:'ditu_budabuxiaoyanjge@3x.png',
+	      			name:'百搭休闲衣男',
+	      			price:'1699',
+	      			part:'10',
+	      			all:'/100',
+	      			url:'shop/crowd_detail.js'
+	      		},
+	      		{
+	      			img:'ditu_budabuxiaoyanjge@3x.png',
+	      			name:'百搭休闲衣男',
+	      			price:'1699',
+	      			part:'10',
+	      			all:'/100',
+	      			url:'shop/crowd_detail.js'
+	      		}
+	      	],
+	      	seleImg:'icon_shenghuashiyan@3x.png',
+	      	orderList:[],
+	      	count:'¥1699',
+	      	type:false
+		},
+		methods:{
+			goNext:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			goChecked:function(e){
+				var self = this;
+				self.type = !self.type;
+			},
+			payShop:function(e){
+//				var self = this;
+//				self.type = !self.type;
+			},
+			remove:function(e){
+				var self = this ;
+				var obj = self.$el('item-' + e.target.attr.index );
+				self.orderList.splice( e.target.attr.index , 1 );
+				for( var i = 0 ; i < self.orderList.length ; i++ ){
+					var el = self.$el('content-' + i );
+				};
+				var stream = require('@weex-module/stream');
+				var modal = require('@weex-module/modal');
+				stream.fetch({
+					method:'POST',
+					url:api.apiurl.apiurl + 'api/del/user/cart',
+					type: 'json',
+					body:`mid=7&cat_id=3`
+				},function(data){
+					console.log(data);
+				},function(e){
+					
+				});
+			}
+		},
+		created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		},
+		init:function(){
+			var self = this;
+			var stream = require('@weex-module/stream');
+			stream.fetch({
+				method:'POST',
+				url:api.apiurl.apiurl + 'api/get/user/cart',
+				type: 'json',
+				body:`mid=7`
+			},function(data){
+				self.orderList = data.data.data.data;
+				console.log(data.data.data)
+			},function(e){
+				
+			})
+		}
+	}
+</script>

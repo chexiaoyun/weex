@@ -1,0 +1,198 @@
+<template>
+	<div class="body">
+		<yd-min-navbar navbar="{{navbar}}"></yd-min-navbar>
+		<scroller>
+			<div class="address-wrapper">
+				<div class="comment-top">
+					<div class="comment-text">
+						<div class="comment-img">
+							<image src="{{ resurl+cImg }}" style="width:153;height:153;"></image>
+						</div>
+						<div class="comment-textarea">
+							<textarea class="textarea" value="评论..."></textarea>
+						</div>
+					</div>
+					<div class="comment-photo">
+						<div class="comment-up">
+							<image src="{{ resurl+uImg }}" style="width:45;height:40;"></image>
+						</div>
+						<div class="comment-up"></div>
+						<div class="comment-up"></div>
+						<div class="comment-up"></div>
+					</div>
+				</div>
+				<div class="comment-remark">
+					<div class="remark {{ item.type == 1 ? 'remark-1' : 'remark-2' }}" repeat="item in remark">
+						<text class="{{ item.type == 1 ? 'remark-text' : 'remark-text2' }}">{{ item.remark }}</text>
+					</div>
+				</div>
+				<div class="comment-publish">
+					<div class="publish">
+						<text style="color:#fff;font-size:36;">发表评论</text>
+					</div>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.body{
+		width:750;
+		background-color: #f1f1f1;
+	}
+	.list-text{
+		color:#666;
+		font-size:28;
+		margin-left:10;
+	}
+	.address-wrapper{
+		width:750;
+		border-top-width:1;
+		border-top-color:#ad8e6c;
+		margin-bottom:50;
+	}
+	.comment-top{
+		padding-left:28;
+		padding-right:28;
+		padding-top:42;
+		padding-bottom:33;
+		background-color:#fff;
+	}
+	.comment-img{
+		width:153;
+		height:153;
+		margin-right:15;
+	}
+	.comment-textarea{
+		width:527;
+		height:155;
+		border-width:1;
+		border-color:#dedede;
+	}
+	.textarea{
+		width:520;
+		height:150;
+		border:none;
+		outline:none;
+		padding-left:10;
+		padding-right:10;
+		padding-top:5;
+		padding-bottom:5;
+		resize:none;
+		font-size:26;
+		color:#333;
+	}
+	.comment-text{
+		flex-direction: row;
+	}
+	.comment-photo{
+		margin-top:25;
+		flex-direction: row;
+		justify-content:space-between ;
+	}
+	.comment-up{
+		width:150;
+		height:150;
+		border-color:#dedede;
+		border-width:1;
+		justify-content: center;
+		align-items: center;
+	}
+	.comment-remark{
+		margin-top:25;
+		width:750;
+		height:150;
+		border-width:1;
+		border-color:#dedede;
+		background-color: #fff;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		padding-left:28;
+		padding-right:28;
+	}
+	.remark{
+		width:205;
+		height:68;
+		justify-content: center;
+		align-items: center;
+	}
+	.remark-1{
+		border-width:1;
+		border-color:#dedede;
+	}
+	.remark-2{
+		background-color:#e8be56 ;
+	}
+	.remark-text{
+		color:#999;
+		font-size:28;
+	}
+	.remark-text2{
+		color:#fff;
+		font-size:28;
+	}
+	.comment-publish{
+		position: fixed;
+		bottom:0;
+		left:0;
+		width:750;
+		height:129;
+		background-color: #fff;
+		border-top-color: #dedede;
+		border-top-width:1;
+		justify-content: center;
+		align-items: center;
+	}
+	.publish{
+		width:694;
+		height:82;
+		background-color: #e2a751;
+		justify-content: center;
+		align-items: center;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-min-navbar.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '发表评论',
+		        rightTitle: '',
+		        rightImage: '',
+		        rightColor: '',
+		        centerColor: '#323333',
+		        backgroundColor: "#eadbc7"
+	      	},
+	      	cImg:'ditu_xiaohaoyifu@3x.png',
+	      	uImg:'icon_xiangji@3x.png',
+	      	type:0,
+	      	remark:[
+	      		{
+	      			type:0,
+	      			remark:'好评'
+	      		},
+	      		{
+	      			type:1,
+	      			remark:'中评'
+	      		},
+	      		{
+	      			type:1,
+	      			remark:'差评'
+	      		}
+	      	]
+	   	},
+	   	created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		}
+	}
+</script>

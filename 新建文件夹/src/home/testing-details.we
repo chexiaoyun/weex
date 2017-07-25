@@ -1,0 +1,155 @@
+<template>
+	<div class="body">
+		<div id="header">
+			<wxc-navpage background-color="{{ nav.bgColor }}" title="{{ nav.title }}" title-color="{{ nav.titleColor }}" left-item-src="{{ url + nav.leftImgSrc }}" right-item-title="{{ nav.rightItemTitle }}" right-item-color="{{ nav.titleColor }}"></wxc-navpage>
+		</div>
+		
+		<scroller class="scroller">
+			<image class="arc-img" src="{{ url + article.src }}"></image>
+			<text class="arc-content">{{ article.content }}</text>
+			<div class="arc-info">
+				<text class="arc-num">{{ article.isTestNum }}</text>
+				<text class="arc-num-text">人参与了测试</text>
+			</div>
+			<div class="submit">
+				<div class="submit-text" onclick="goNext" url="home/testing-test.js">
+					<text class="sb-text">开始测试</text>
+				</div>
+			</div>
+		</scroller>
+	
+	</div>
+</template>
+
+<style>
+	.body{
+		background-color: #fff;
+	}
+	.scroller{
+		margin-top: 88;
+	}
+	.arc-img{
+		width: 750;
+		height: 480;
+	}
+	.arc-content{
+		padding-left: 45;
+		padding-right: 45;
+		padding-top: 40;
+		font-size: 36;
+		color: #333;
+		background-color: #fff;
+		line-height: 52;
+	}
+	.arc-info{
+		height: 50;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		margin-top: 20;
+	}
+	.arc-num{
+		font-size: 24;
+		color: #58bf65;
+	}
+	.arc-num-text{
+		font-size: 24;
+		color: #333;
+	}
+	.submit{
+		height: 88;
+		margin-top: 30;
+		margin-bottom: 50;
+		flex-direction: row;
+		justify-content: center;
+	}
+	.submit-text{
+		height: 88;
+		width: 600;
+		background-color: #58bf65;
+		border-radius: 4;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+	.sb-text{
+		color: #fff;
+		font-size: 36;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+	
+	
+	module.exports = {
+		data: {
+			dir: 'dist',
+			url: api.apiurl.resurl,
+			nav: {
+				title: '酸性体质自测',
+				bgColor: '#58bf65',
+				titleColor: '#fff',
+				leftImgSrc: '/images/back.png',
+				rightItemTitle: '关闭'
+			},
+			article:{
+				id: '1',
+				src: '/images/png_08.png',
+				content: '如果人体倾向酸性，人体细胞的作用就会变差，导致废物不易排出，肾脏、肝脏的负担加大，新陈代谢缓慢，各种器官的功能减弱，脂肪细胞不能正常代谢，就慢慢地堆积起来了。简单言之，酸性体质的人不仅容易疲劳，抵抗力差，还很容易长胖。那么你的体质是哪种？下面跟着小编一起做个测试，看看你的是不是酸性体质！',
+				isTestNum: '82893'
+			}
+		},
+		methods:{
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+	      	this.$on('naviBar.rightItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator');
+				var nextUrl = this.getBase() + 'home/index.js';
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+	      	});
+    	}
+	}
+</script>

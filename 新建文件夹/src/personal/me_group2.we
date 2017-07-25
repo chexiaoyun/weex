@@ -1,0 +1,157 @@
+<template>
+	<div class="wrapper">
+		<wxc-navpage height={{navHeight}} background-color={{bgColor}} title={{title}} title-color={{color}}  left-item-src="{{resUrl+lSrc}}"  ></wxc-navpage>
+		<scroller>
+			<div class="content">
+				<div class="me-box" repeat="item in rows">
+					<div class="me-left">
+						<image src="{{resUrl+item.img}}" style="width:100;height:100;"></image>
+					</div>
+					<div class="me-right">
+						<text style="font-size:36;color:#333;margin-bottom:17;">{{item.bigHead}}</text>
+						<text style="font-size:32;color:#9b9b9b;">{{item.minHead}}</text>
+					</div>
+				</div>
+				<div class="finish">
+					<text style="font-size:32;color:#bbb;">已加载全部数据</text>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.wrapper{
+		background-color:#f8f8f8;
+		flex-direction: column;
+	}
+	.header{
+		background-color:#58bf65;
+		height:88;
+		width:750;
+		position:fixed;
+		top:0;
+		left:0;
+		flex-direction: row;
+	}
+	.back{
+		flex:0.2;
+		height:88;
+		justify-content:center;
+		align-items:center;
+	}
+	.title{
+		flex:1;
+		justify-content: center;
+		align-items: flex-start;
+		height:88;
+	}
+	.next{
+		flex:0.2;
+		justify-content: center;
+		align-items:center;
+	}
+	.content{
+		margin-top:88;
+		width:750;
+		height:auto;
+	}
+	.me-box{
+		width:750;
+		height:159;
+		background-color: #fff;
+		border-bottom-color:#ebebeb;
+		border-bottom-width:1;
+		justify-content: center;
+		align-items: center;
+		flex-direction: row;
+	}
+	.me-left{
+		margin-left:30;
+		margin-right:30;
+		width:100;
+		height:100;
+	}
+	.me-right{
+		flex:1;
+		height:160;
+		justify-content: center;
+		align-items: flex-start;
+	}
+	.finish{
+		margin-top:10;
+		justify-content: center;
+		align-items:center;
+		margin-bottom:20;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+	module.exports = {
+		data: {
+			dir:'dist',
+			resUrl:api.apiurl.resurl,
+			navHeight:88,
+			bgColor:'#58bf65',
+			title:'我的社群',
+			color:'#fff',
+			lSrc:'/images/back.png',
+			rows:[
+				{img:'/images/r_10_100.png',bigHead:'舞曲新天地',minHead:'这是一个舞曲交流的火热平台'},
+				{img:'/images/r_10_100.png',bigHead:'舞曲新天地',minHead:'这是一个舞曲交流的火热平台'},
+				{img:'/images/r_10_100.png',bigHead:'舞曲新天地',minHead:'这是一个舞曲交流的火热平台'},
+				{img:'/images/r_10_100.png',bigHead:'舞曲新天地',minHead:'这是一个舞曲交流的火热平台'},
+				{img:'/images/r_10_100.png',bigHead:'舞曲新天地',minHead:'这是一个舞曲交流的火热平台'},
+				{img:'/images/r_10_100.png',bigHead:'舞曲新天地',minHead:'这是一个舞曲交流的火热平台'},
+				{img:'/images/r_10_100.png',bigHead:'舞曲新天地',minHead:'这是一个舞曲交流的火热平台'}
+			]
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+    	},
+		methods: {
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		}
+	};
+</script>

@@ -1,0 +1,283 @@
+<template>
+	<div class="body">
+		<yd-login-navbar navbar="{{navbar}}"></yd-login-navbar>
+		<scroller>
+			<div class="login-wrapper">
+				<div class="login-img">
+					<image src="{{ resurl+login }}" style="width:100;height:123;"></image>
+				</div>
+				<div class="login-form">
+					<div class="login-tel" style="margin-bottom: 0;">
+						<image src="{{ resurl+tImg }}" style="width:35;height:40;"></image>
+						<input type="tel" class="input" value="" maxlength="11" placeholder="请输入手机号/邮箱" oninput="changeInput" mold="tel" />
+					</div>
+					<div class="login-choice">
+						<div class="login-comment" repeat="item in choiceList" onclick="change" type="{{item.state}}">
+							<div class="circle {{ type == item.state ?'bgCircle':'' }}"></div>
+							<text class="switch">{{ item.vip }}</text>
+						</div>
+					</div>
+					<div class="login-tel">
+						<image src="{{ resurl+pImg }}" style="width:31;height:37;"></image>
+						<input type="password" class="input" value="" maxlength="6" placeholder="请输入密码" oninput="changeInput" mold="pwd" />
+					</div>
+					<div class="login-tel">
+						<image src="{{ resurl+pImg }}" style="width:31;height:37;"></image>
+						<input type="password" class="input" value="" maxlength="6" placeholder="请确认密码" oninput="changeInput" mold="ispwd" />
+					</div>
+					<div class="login-btn" onclick="jumpUrl" url="member/membership_apply.js">
+						<text class="btn">注册</text>
+					</div>
+					<div class="login-way">
+						<div class="way-line"></div>
+						<div class="way-login">
+							<text style="color:#999;font-size:26;">快速登录</text>
+						</div>
+						<div class="way-img">
+							<image src="{{ resurl+wImg }}" style="width:56;height:56;margin-right:42;"></image>
+							<!--<image src="{{ resurl+qImg }}" style="width:56;height:56;"></image>-->
+						</div>
+					</div>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.body{
+		width:750;
+		background-color: #fff;
+	}
+	.login-wrapper{
+		width:750;
+	}
+	.login-img{
+		width:750;
+		height:420;
+		justify-content: center;
+		align-items: center;
+	}
+	.login-form{
+		width:750;
+		justify-content: center;
+		align-items: center;
+	}
+	.login-tel{
+		width:548;
+		height:84;
+		border-color:#dfdfdf;
+		border-width:1;
+		margin-bottom:25;
+		border-radius: 50;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		padding-left:20;
+		padding-right:20;
+	}
+	.input{
+		border:none;
+		outline:none;
+		color:#333;
+		font-size:26;
+		flex:0.9;
+		placeholder-color:#dfdfdf;
+		padding-left:10;
+		padding-right:10;
+	}
+	.login-btn{
+		width:548;
+		height:84;
+		background-color: #fbc023;
+		justify-content: center;
+		align-items: center;
+		border-radius: 50;
+	}
+	.btn{
+		color:#fff;
+		font-size:36;
+	}
+	.login-switch{
+		margin-top:43;
+		width:548;
+		flex-direction: row;
+	}
+	.switch{
+		color:#999;
+		font-size:26;
+	}
+	.login-resg{
+		flex:1;
+	}
+	.login-way{
+		margin-top:50;
+		width: 548;
+		height:200;
+		justify-content: center;
+		align-items: center;
+	}
+	.way-line{
+		width:548;
+		height:1px;
+		background-color: #dfdfdf;
+		position: relative;
+	}
+	.way-login{
+		position: absolute;
+		top:35;
+		left:195;
+		background-color: #fff;
+		padding-left:20;
+		padding-right:20;
+		width:150;
+		height:100;
+	}
+	.way-img{
+		flex-direction: row;
+		margin-top:50;
+		width:548;
+		justify-content: center;
+		align-items: center;
+	}
+	.login-choice{
+		width:548;
+		height:84;
+		/*margin-bottom:25;*/  
+		justify-content: flex-start;
+		align-items: center;
+		flex-direction: row;
+		padding-left: 50;
+	}
+	.login-comment{
+		flex-direction: row;
+		justify-content: center;
+		margin-right: 40;
+		align-items: center;
+	}
+	.circle{
+		margin-right:10;
+		width:18;
+		height:18;
+		border-width:1;
+		border-color: #666;
+		border-radius: 100;
+	}
+	.bgCircle{
+		background-color: #fbc023;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-login-navbar.we');
+	var modal = require('@weex-module/modal'); 
+	var api = require('../api.js');
+	var account = '',password='',member_name='',type='1',idcard_code='',id_z='',id_f='',tel='',confirm_password='';
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '注册',
+		        rightTitle: '',
+		        rightImage: '',
+		        rightColor: '',
+		        centerColor: '#fff',
+		        backgroundColor: "#e3a852"
+	      	},
+	      	login:'icon_logo@3x.png',
+	      	tImg:'icon_personage@3x.png',
+	      	fImg:'icon_cancel@3x.png',
+	      	pImg:'icon_cipher@3x.png',
+	      	wImg:'icon_wechat@3x.png',
+	      	qImg:'icon_qq@3x.png',
+	      	type: 1,
+	      	choiceList:[
+	      		{
+	      			vip:'普通会员',
+	      			state:1
+	      		},
+	      		{
+	      			vip:'爱心会员',
+	      			state:2
+	      		}
+	      	]
+	  	},
+	  	created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		},
+		methods:{
+			change:function(e){
+				var self = this;
+				self.type = e.target.attr.type;
+				type = e.target.attr.type;
+			},
+			changeInput:function(e){
+				var self = this;
+				switch(e.target.attr.mold){
+					case 'tel':
+						account = e.value;
+						break;
+					case 'pwd':
+						password = e.value;
+						break;
+					case 'ispwd':
+						confirm_password = e.value;
+						break;
+				}
+			},
+
+            jumpUrl:function(e){
+            	var self = this;
+                var navigator = require('@weex-module/navigator');
+                var stream = require("@weex-module/stream");
+                if( confirm_password == password ){
+	                if( type == 1 ){
+	                	var body = 'account=' + account + '&password=' + password +'&confirm_password='+ confirm_password;
+	                	stream.fetch({
+	                        method: 'POST',
+	                        url: api.apiurl.apiurl + 'api/register',
+	                        type: 'json',
+	                        body: body
+	                    },function(data){
+	                        if(data.data.code == 2000){
+	                        	modal.toast({
+			                		message: '注册成功',
+			          				duration: 2
+			                	})
+								var params = {animated:'true'};
+								navigator.pop(params, function(){});
+	                        }else{
+								modal.toast({
+	                                message: data.data.msg,
+	                                duration: 2
+	                            });
+	                        }
+	                       console.log(data);
+	                    },function(data){
+	                        console.log(data);
+	                    });
+	                }else{
+	                	/*var body = 'account=' + account + '&password=' + password +'&confirm_password='+ confirm_password;
+	                	var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+                        navigator.push({'url':nextUrl, 'animated':'true'},null);*/
+                       	modal.toast({
+	                		message: '功能暂未开启',
+	          				duration: 2
+	                	})
+	                }
+                }else{
+                	modal.toast({
+                		message: '两次密码输入不一致',
+          				duration: 2
+                	})
+                }
+               console.log(body);
+            },
+		},
+	}
+</script>

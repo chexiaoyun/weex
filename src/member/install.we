@@ -1,0 +1,190 @@
+<template>
+	<div class="body">
+		<yd-min-navbar navbar="{{navbar}}"></yd-min-navbar>
+		<scroller>
+			<div class="address-wrapper">
+				<div class="install-head">
+					<div class="install-modify">
+						<text class="text-gray">修改头像</text>
+					</div>
+					<div class="install-photo">
+						<image src="{{ resurl+hImg }}" style="width:100;height:100;"></image>
+					</div>
+				</div>
+				<div class="install-list">
+					<div class="install-password" onclick="goNext" url="member/modify.js">
+						<text class="word">修改密码</text>
+					</div>
+					<div class="install-password" onclick="goNext" url="member/receiving_address.js">
+						<text class="word">地址管理</text>
+					</div>
+					<div class="install-password install-clear">
+						<div class="clear-left">
+							<text class="word">清除缓存</text>
+						</div>
+						<div class="clear-right">
+							<text class="gray">351M</text>
+						</div>
+					</div>
+				</div>
+				<div class="install-out">
+					<div class="sign-out" onclick='goBack'>
+						<text class="sign-white">退出登录</text>
+					</div>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.body{
+		width:750;
+		background-color: #f1f1f1;
+	}
+	.list-text{
+		color:#999;
+		font-size:24;
+		margin-bottom:8;
+	}
+	.address-wrapper{
+		width:750;
+		border-top-width:1;
+		border-top-color:#ad8e6c;
+		margin-bottom:50;
+	}
+	.install-head{
+		width:750;
+		height:134;
+		background-color: #fff;
+		justify-content: center;
+		align-items: center;
+		padding-left:28;
+		padding-right:28;
+		border-bottom-width:1;
+		border-bottom-color:#dfdede;
+		flex-direction: row;
+	}
+	.install-modify{
+		flex:1;
+		height:134;
+		justify-content: center;
+		align-items: flex-start;
+	}
+	.text-gray{
+		color:#323333;
+		font-size:26;
+	}
+	.install-photo{
+		flex:1;
+		height:134;
+		justify-content: center;
+		align-items: flex-end;
+	}
+	.install-list{
+		margin-top:28;
+		border-top-width:1;
+		border-bottom-width:1;
+		border-color:#dfdede;
+		padding-left:28;
+		padding-right:25;
+		background-color: #fff;
+	}
+	.install-password{
+		width:100%;
+		height:92;
+		border-bottom-color:#c4c4c4;
+		border-bottom-width:1;
+		justify-content: center;
+		align-items: flex-start;
+	}
+	.word{
+		color:#323333;
+		font-size:26;
+	}
+	.install-clear{
+		flex-direction: row;
+		border:0;
+	}
+	.clear-left{
+		flex:1;
+		height:92;
+		justify-content: center;
+		align-items: flex-start;
+	}
+	.clear-right{
+		flex:1;
+		height:92;
+		justify-content: center;
+		align-items: flex-end;
+	}
+	.gray{
+		color:#999899;
+		font-size:22;
+	}
+	.install-out{
+		background-color: #fff;
+		width:750;
+		height:129;
+		border-top-width:1;
+		border-top-color:#dedddd;
+		justify-content: center;
+		align-items: center;
+		position:fixed;
+		bottom:0;
+		left:0;
+	}
+	.sign-out{
+		width:694;
+		height:82;
+		background-color: #dba352;
+		justify-content: center;
+		align-items: center;
+	}
+	.sign-white{
+		color:#fff;
+		font-size:36;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-min-navbar.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '设置',
+		        rightTitle: '',
+		        rightImage: '',
+		        rightColor: '',
+		        centerColor: '#323333',
+		        backgroundColor: "#eadbc7"
+	      	},
+			hImg:'ditu_pangzi176@3x.png',
+	      	
+	   },
+	   methods:{
+			goNext:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			goBack:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+				navigator.pop({'animated':'true'},null);
+			}
+		},
+		created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		}
+	}
+</script>

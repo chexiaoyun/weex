@@ -1,0 +1,504 @@
+<template>
+	<div class="body">
+		<div id="header">
+			<wxc-navpage background-color="{{ nav.bgColor }}" title="{{ nav.title }}" title-color="{{ nav.titleColor }}" left-item-src="{{ url + nav.leftImgSrc }}" right-item-title="{{ nav.rightItemTitle }}" right-item-color="{{ nav.titleColor }}"></wxc-navpage>
+		</div>
+		
+		<scroller class="scroller">
+			
+			<div class="rs-title">
+				<text class="rs-title-text">测试结果</text>
+			</div>
+			<text class="rs-text">{{ result.title }}</text>
+			<text class="rs-content">{{ result.content }}</text>
+			
+			<div class="thing">
+				<div class="praise" index="1" onclick="praise">
+					<image class="icon-praise" src="{{ url }}{{ result.like == 1 ? iconIsPraise : iconPraise }}"></image>
+					<text class="praise-text {{ result.like == 1 ? 'num-active' : '' }}">准</text>
+				</div>
+				<div class="praise" index="2" onclick="praise">
+					<image class="icon-praise" src="{{ url + iconNoPraise }}"></image>
+					<text class="praise-text {{ result.like == 2 ? 'num-active' : '' }}">不准</text>
+				</div>
+			</div>
+			
+			<div class="tip">
+				<div class="line"></div>
+				<text class="tip-text">测试结果仅供参考</text>
+				<div class="line"></div>
+			</div>
+			
+			<div class="submit">
+				<div class="submit-text" onclick="goNext" url="home/testing-test.js">
+					<text class="sb-text">重新测试</text>
+				</div>
+			</div>
+			
+			<div class="comment">
+				<text class="comment-title">最新评论</text>
+				<div class="comment-line"></div>
+			</div>
+			
+			<div class="comment-list">
+				<div class="comment-item" repeat="item in result.comment">
+					<image class="cm-img" src="{{ url + item.attr }}"></image>
+					<div class="cm-info">
+						<div class="cm-user">
+							<div class="cm-username">
+								<text class="username">{{ item.username }}</text>
+								<text class="time">{{ item.time }}</text>
+							</div>
+							<div class="cm-praise" index="{{ $index }}" onclick="praiseComment">
+								<text class="cm-praise-num {{ item.is_praise == 1 ? 'num-active' : '' }}">{{ item.praise }}</text>
+								<image class="icon-praise" src="{{ url }}{{ item.is_praise == 1 ? iconIsPraise : iconPraise }}"></image>
+							</div>
+						</div>
+						<div class="cm-content">
+							<text class="cm-content-text">{{ item.content }}</text>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</scroller>
+		
+		<div class="want-comment" if="!inputState">
+			<div class="wcm-box" onclick="write">
+				<image class="icon-comment" src="{{ url + iconComment }}"></image>
+				<text class="comment-pl">评论一下吧。。。</text>
+			</div>
+		</div>
+		
+		<div class="cm-section" if="inputState">
+			<div class="cm-textarea-box">
+				<textarea class="cm-textarea" placeholder="请输入评论" autofocus="true"></textarea>
+				<image class="btn-send" src="{{ url + iconSend }}" onclick="sendCommnet"></image>
+			</div>
+		</div>
+		
+	</div>
+</template>
+
+<style>
+	.body{
+		background-color: #f8f8f8;
+	}
+	.scroller{
+		margin-top: 88;
+		margin-bottom: 88;
+	}
+	.rs-title{
+		height: 50;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		margin-top: 60;
+	}
+	.rs-title-text{
+		font-size: 36;
+		color: #333;
+	}
+	.rs-text{
+		font-size: 38;
+		color: #333;
+		line-height: 50;
+		margin-top: 50;
+		margin-left: 40;
+		margin-right: 40;
+	}
+	.rs-content{
+		font-size: 36;
+		color: #666;
+		line-height: 50;
+		margin-left: 40;
+		margin-right: 40;
+		margin-top: 10;
+	}
+	.thing{
+		height: 50;
+		margin-top: 20;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-end;
+		padding-left: 40;
+		padding-right: 40;
+	}
+	.praise{
+		height: 50;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-end;
+		margin-left: 30;
+		margin-right: 30;
+	}
+	.icon-praise{
+		width: 32;
+		height: 30;
+	}
+	.praise-text{
+		font-size: 30;
+		color: #9b9b9b;
+		margin-left: 5;
+	}
+	.num-active{
+		color: #58bf65;
+	}
+	.tip{
+		height: 50;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		margin-top: 50;
+	}
+	.line{
+		height: 2;
+		width: 83;
+		background-color: #979797;
+	}
+	.tip-text{
+		font-size: 24;
+		color: #848385;
+		margin-left: 26;
+		margin-right: 26;
+	}
+	.submit{
+		height: 88;
+		margin-top: 50;
+		margin-bottom: 60;
+		flex-direction: row;
+		justify-content: center;
+	}
+	.submit-text{
+		height: 88;
+		width: 600;
+		background-color: #58bf65;
+		border-radius: 4;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+	.sb-text{
+		color: #fff;
+		font-size: 36;
+	}
+	.comment{
+		height: 44;
+		flex-direction: row;
+		padding-left: 40;
+		padding-right: 40;
+	}
+	.comment-title{
+		width: 140;
+		height: 44;
+		font-size: 30px;
+		color: #848385;
+		border-bottom-width: 2;
+		border-color: #58bf65;
+		text-align: center;
+	}
+	.comment-line{
+		flex: 1;
+		height: 44;
+		border-bottom-width: 2;
+		border-color: #d8d8d8;
+	}
+	.comment-list{
+		padding-left: 40;
+		padding-right: 40;
+	}
+	.comment-item{
+		flex-direction: row;
+		height: 150;
+		border-bottom-width: 1;
+		border-color: #d8d8d8;
+		padding-left: 15;
+		padding-right: 15;
+		align-items: center;
+	}
+	.cm-img{
+		width: 85;
+		height: 85;
+	}
+	.cm-info{
+		height: 120;
+		margin-left: 30;
+		flex: 1;
+	}
+	.cm-user{
+		height: 32;
+		flex-direction: row;
+		justify-content: space-between;
+		margin-top: 2;
+	}
+	.cm-username{
+		flex: 1;
+		flex-direction: row;
+		align-items: flex-end;
+	}
+	.username{
+		font-size: 30;
+		color: #4a90e2;
+	}
+	.time{
+		font-size: 22;
+		color: #bbb;
+		margin-left: 35;
+	}
+	.cm-praise {
+		height: 30;
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-end;
+		font-size: 20;
+	}
+	.icon-praise {
+		width: 32;
+		height: 30;
+	}
+	.cm-praise-num {
+		font-size: 24;
+		height: 28;
+		line-height: 28;
+		justify-content: center;
+		text-align: left;
+		color: #bbb;
+		margin-top: 8;
+		margin-right: 5;
+	}
+	.cm-content{
+		margin-top: 3;
+	}
+	.cm-content-text{
+		font-size: 28;
+		color: #333;
+		line-height: 40;
+		lines: 2;
+	}
+	.want-comment{
+		width: 750;
+		padding-left: 40;
+		padding-right: 40;
+		padding-top: 14;
+		padding-bottom: 14;
+		background-color: #fff;
+		height: 88;
+		position: fixed;
+		left: 0;
+		bottom: 0;
+	}
+	.wcm-box{
+		height: 60;
+		border-width: 1;
+		border-color: #c4c4c4;
+		background-color: #f9f9f9;
+		border-radius: 8;
+		flex-direction: row;
+		align-items: center;
+		padding-left: 20;
+		padding-right: 20;
+	}
+	.icon-comment{
+		width: 31;
+		height: 30;
+	}
+	.comment-pl{
+		font-size: 26;
+		margin-left: 20;
+		color: #bbb;
+	}
+	.cm-section{
+		width: 750;
+		height: 290;
+		padding-left: 40;
+		padding-right: 40;
+		padding-top: 25;
+		padding-bottom: 25;
+		background-color: #fff;
+		position: fixed;
+		left: 0;
+		bottom: 0;
+	}
+	.cm-textarea-box{
+		height: 240;
+		position: relative;
+		padding-left: 24;
+		padding-right: 24;
+		border-width: 1;
+		border-color: #bbb;
+		background-color: #f8f8f8;
+		border-radius: 8;
+		padding-top: 5;
+		padding-bottom: 5;
+	}
+	.cm-textarea{
+		height: 230;
+		font-size: 30;
+		color: #333;
+		line-height: 40;
+		background-color: #f8f8f8;
+	}
+	.btn-send{
+		width: 60;
+		height: 60;
+		position: absolute;
+		right: 5;
+		bottom: 5;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+	
+	module.exports = {
+		data: {
+			dir: 'dist',
+			url: api.apiurl.resurl,
+			iconPraise: '/images/Fill_36.png',
+			iconIsPraise: '/images/Fill_30_zhun.png',
+			iconNoPraise: '/images/Fill_30_buzhun.png',
+			iconComment: '/images/pinglun.png',
+			iconSend: '/images/send.png',
+			inputState: false,
+			nav: {
+				title: '酸性体质自测',
+				bgColor: '#58bf65',
+				titleColor: '#fff',
+				leftImgSrc: '/images/back.png',
+				rightItemTitle: '关闭'
+			},
+			result:{
+				title: '你属于严重的酸性体质！',
+				content: '你的酸性体质已到了相当的程度。应该进行改善。自我改善酸性体质可先从饮食下手。保持营养摄入的平衡，多吃些偏碱性的食物。保证适量的运动和愉悦的心情，并杜绝抽烟、酗酒等不良习惯。',
+				like:'',
+				comment:[
+					{
+						id: 1,
+						attr: '/images/touxiang_150.png',
+						username: '喝醉的大侠',
+						time: '8分钟前',
+						praise: '2356',
+						is_praise: 0,
+						content:'这个测试还是非常准确的，和我身体情况相当符合。'
+					},
+					{
+						id: 2,
+						attr: '/images/touxiang_150.png',
+						username: '喝醉的大侠',
+						time: '8分钟前',
+						praise: '2356',
+						is_praise: 0,
+						content:'这个测试还是非常准确的，和我身体情况相当符合。'
+					},
+					{
+						id: 3,
+						attr: '/images/touxiang_150.png',
+						username: '喝醉的大侠',
+						time: '8分钟前',
+						praise: '2356',
+						is_praise: 0,
+						content:'这个测试还是非常准确的，和我身体情况相当符合。'
+					},
+					{
+						id: 4,
+						attr: '/images/touxiang_150.png',
+						username: '喝醉的大侠',
+						time: '8分钟前',
+						praise: '2356',
+						is_praise: 0,
+						content:'这个测试还是非常准确的，和我身体情况相当符合。'
+					},
+					{
+						id: 3,
+						attr: '/images/touxiang_150.png',
+						username: '喝醉的大侠',
+						time: '8分钟前',
+						praise: '2356',
+						is_praise: 0,
+						content:'这个测试还是非常准确的，和我身体情况相当符合。'
+					},
+					{
+						id: 4,
+						attr: '/images/touxiang_150.png',
+						username: '喝醉的大侠',
+						time: '8分钟前',
+						praise: '2356',
+						is_praise: 0,
+						content:'这个测试还是非常准确的，和我身体情况相当符合。'
+					}
+				]
+			}
+		},
+		methods:{
+			praise:function(e){
+				if( this.result.like == '' ){
+					this.result.like = e.target.attr.index;
+				}
+			},
+			praiseComment:function(e){
+				if(this.result.comment[e.target.attr.index].is_praise == 0) {
+					this.result.comment[e.target.attr.index].is_praise = 1;
+					this.result.comment[e.target.attr.index].praise++;
+				} else {
+					this.result.comment[e.target.attr.index].is_praise = 0;
+					this.result.comment[e.target.attr.index].praise--;
+				}
+			},
+			write:function(){
+				this.inputState = !this.inputState;
+			},
+			sendCommnet:function(){
+				this.inputState = !this.inputState;
+			},
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+	      	this.$on('naviBar.rightItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator');
+				var nextUrl = this.getBase() + 'home/index.js';
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+	      	});
+    	}
+	}
+</script>

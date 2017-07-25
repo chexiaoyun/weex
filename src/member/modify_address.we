@@ -1,0 +1,167 @@
+<template>
+	<div class="body">
+		<yd-min-navbar navbar="{{navbar}}"></yd-min-navbar>
+		<scroller>
+			<div class="add-wrapper">
+				<div class="add-list">
+					<div class="add-consignee">
+						<text class="add-size">收货人</text>
+					</div>
+					<div class="add-name">
+						<input value="赵思景" type="text" class="input" />
+					</div>
+				</div>
+				<div class="add-list">
+					<div class="add-consignee">
+						<text class="add-size">联系电话</text>
+					</div>
+					<div class="add-name">
+						<input value="18866669999" type="text" maxlength="11" class="input" />
+					</div>
+				</div>
+				<div class="add-list">
+					<div class="add-consignee">
+						<text class="add-size">所在地区</text>
+					</div>
+					<div class="add-name">
+						<input value="上海上海市宝山区" type="text" maxlength="11" class="input" />
+					</div>
+				</div>
+				<div class="add-list">
+					<div class="add-consignee">
+						<text class="add-size">街道</text>
+					</div>
+					<div class="add-name">
+						<input value="吴淞街道" type="text" maxlength="11" class="input" />
+					</div>
+				</div>
+				<div class="add-text">
+					<textarea class="textarea" value="淞桥东路111号联合滨江大厦916室" row="2"></textarea>
+				</div>
+				<div class="add-remove">
+					<text class="remove">删除地址</text>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.body{
+		background-color: #f1f1f1;
+		width:750;
+	}
+	.add-wrapper{
+		width:750;
+	}
+	.input{
+		border:0;
+		outline:0;
+		width:100%;
+		height:95;
+		flex:0.8;
+		color:#323333;
+		font-size:28;
+	}
+	.input2{
+		height:68;
+	}
+	.add-list{
+		width:750;
+		height:100;
+		border-bottom-width:1;
+		border-bottom-color:#dedede;
+		justify-content: center;
+		align-items: center;
+		padding-left:28;
+		padding-right:28;
+		flex-direction: row;
+		background-color: #fff;
+	}
+	.add-consignee{
+		flex:0.3;
+		height:100;
+		justify-content: center;
+		align-items: flex-start;
+	}
+	.add-name{
+		flex:1;
+		height:100;
+		justify-content: center;
+		align-items:flex-start;
+	}
+	.add-size{
+		color:#323333;
+		font-size:28;
+	}
+	.add-text{
+		width:750;
+		height:200;
+		border-bottom-width:1;
+		border-bottom-color:#dedede;
+		padding-left:28;
+		padding-right:28;
+		padding-top:30;
+		padding-bottom:30;
+		background-color: #fff;
+	}
+	.textarea{
+		color:#323333;
+		font-size:28;
+		outline:none;
+		border:0;
+		resize:none;
+		height:140;
+	}
+	.add-remove{
+		margin-top:20;
+		width:750;
+		height:100;
+		border-width:1;
+		border-color: #dedede;
+		padding-left:28;
+		padding-right:28;
+		justify-content: center;
+		align-items: flex-start;
+		background-color: #fff;
+	}
+	.remove{
+		color:#ebac51;
+		font-size:28;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-min-navbar.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '修改地址',
+		        rightTitle: '保存',
+		        rightImage: '',
+		        rightColor: '#323333',
+		        centerColor: '#323333',
+		        backgroundColor: "#eadbc7"
+	      	},
+	      	
+	   },
+	   methods:{
+			goNext:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			}
+		},
+		created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		}
+	}
+</script>

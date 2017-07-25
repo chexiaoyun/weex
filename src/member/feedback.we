@@ -1,0 +1,177 @@
+<template>
+	<div class="body">
+		<yd-min-navbar navbar="{{navbar}}"></yd-min-navbar>
+		<scroller>
+			<div class="feed-wrapper">
+				<div class="feed-inform">
+					<div class="feed-tel">
+						<text class="feed-name">手机：</text>
+						<div class="feed-input" val="mid">
+							<input type="text" class="input" />
+						</div>
+					</div>
+					<div class="feed-tel">
+						<text class="feed-name feed-QQ">QQ：</text>
+						<div class="feed-input" val="qq">
+							<input type="text" class="input" />
+						</div>
+					</div>
+					<div class="feed-tel" >
+						<text class="feed-name" style="margin-right:21;">问题：</text>
+						<div class="feed-input" style="height:100;" val="content">
+							<textarea value="" class="textarea"></textarea>
+						</div>
+					</div>
+					<div class="feed-btn" onclick="goFeed">
+						<text class="btn">保存</text>
+					</div>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.body{
+		background-color: #f1f1f1;
+		width:750;
+	}
+	.feed-wrapper{
+		width:750;
+		background-color: #fff;
+	}
+	.feed-inform{
+		width:750;
+		background-color: #fff;
+		padding-left:28;
+		padding-right:28;
+		padding-top:23;
+		padding-bottom:23;
+		border-bottom-width: 1;
+		border-bottom-color:#ddd;
+		align-items: center;
+		justify-content: center;
+	}
+	.feed-tel{
+		flex-direction: row;
+		margin-bottom:23;
+		justify-content: center;
+		align-items: center;
+	}
+	.feed-name{
+		color:#666;
+		font-size:26;
+		margin-right:20;
+		justify-content: center;
+		align-items: center;
+	}
+	.feed-QQ{
+		margin-right:30;
+	}
+	.textarea{
+		border:0;
+		outline:0;
+		height:100;
+		width:544;
+	}
+	.feed-input{
+		width:558;
+		height:60;
+		border-color:#ddd;
+		border-width:1;
+	}
+	.input{
+		border:0;
+		outline:0;
+		flex: 1;
+		height:58;
+		width:545;
+	}
+	.input2{
+		height:68;
+	}
+	.feed-footer{
+		position: fixed;
+		bottom:0;
+		left:0;
+		width:750;
+		height:100;
+		border-width:1;
+		border-color:#ddd;
+		flex-direction: row;
+		padding-left:30;
+		padding-right:30;
+		padding-top:15;
+		padding-bottom:15;
+		justify-content: center;
+		align-items: center;
+	}
+	.feed-put{
+		width:603;
+		height:70;
+		border-width:1;
+		border-color:#ccc;
+		border-radius: 10;
+		margin-right:18;
+	}
+	.feed-btn{
+		width:200;
+		height:80;
+		background-color: #fbc023;
+		justify-content: center;
+		align-items: center;
+		border-radius: 50;
+	}
+	.btn{
+		color:#fff;
+		font-size:36;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-min-navbar.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '反馈',
+		        rightTitle: '',
+		        rightImage: '',
+		        rightColor: '#323333',
+		        centerColor: '#323333',
+		        backgroundColor: "#eadbc7"
+	      	},
+	  	},
+		created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		},
+		methods:{
+			goFeed:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var mid = e.target.attr.val;
+				var qq = e.target.attr.val;
+				var content = e.target.attr.val;
+				var navigator = require('@weex-module/navigator');
+				var stream = require('@weex-module/stream');
+				var modal = require('@weex-module/modal');
+				stream.fetch({
+					method:'POST',
+					url:api.apiurl.apiurl + 'api/set/feedback',
+					type: 'json',
+					body:`mid=7&qq=111&content=1111`
+				},function(data){
+					console.log(data);
+				},function(e){
+					
+				})
+			}
+		}
+	}
+</script>

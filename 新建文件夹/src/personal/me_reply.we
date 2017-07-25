@@ -1,0 +1,177 @@
+<template>
+	<div class="wrapper">
+		<wxc-navpage height={{navHeight}} background-color={{bgColor}} title={{title}} title-color={{color}}  left-item-src="{{resUrl+lSrc}}"  ></wxc-navpage>
+		<scroller>
+			<div class="me-container">
+				<div class="me-wrapper" repeat="item in list">
+					<div class="me-list">
+						<div class="list-top" onclick="goNext" url="{{ item.minUrl }}">
+							<div class="top-left">
+								<image src="{{ resUrl }}{{ item.img }}" style="width:80;height:80;"></image>
+							</div>
+							<div class="top-name">
+								<text style="font-size:28;color:#333;margin-bottom:12;">{{ item.name }}</text>
+								<text style="font-size:24;color:#bbb;">{{ item.time }}</text>
+							</div>
+						</div>
+						<div class="list-bottom" onclick="goNext" url="{{ item.url }}">
+							<text style="font-size:26;color:#333;lines:2;margin-top:31;margin-bottom:22;">{{ item.text }}</text>
+							<div class="list-reply">
+								<text style="font-size:26;color:#9b9b9b;lines:1;">{{ item.reply }}</text>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.wrapper{
+		background-color:#f8f8f8;
+		flex-direction: column;
+	}
+	.me-container{
+		margin-top:88;
+		background-color:#fff;
+	}
+	.me-list{
+		width:750;
+		height:332;
+		border-bottom-width:1;
+		border-bottom-color:#ebebeb;
+		padding-top:40;
+		padding-bottom:20;
+		padding-left:30;
+		padding-right:30;
+	}
+	.list-top{
+		flex-direction: row;
+	}
+	.top-left{
+		width:80;
+		height:80;
+		margin-right:20;
+	}
+	.list-reply{
+		width:688;
+		height:60;
+		background-color: #ededed;
+		padding-top:8;
+		padding-bottom:8;
+		padding-left:16;
+		padding-right:16;
+	}
+
+</style>
+
+<script>
+	require('weex-components');
+	var animation = require('@weex-module/animation');
+	var api = require('../lib/api.js');
+	module.exports = {
+		data: {
+			dir: 'dist',
+			resUrl:api.apiurl.resurl,
+			navHeight:88,
+			bgColor:'#58bf65',
+			title:'我的发帖',
+			color:'#fff',
+			lSrc:'/images/back.png',
+			list:[
+				{
+					name:'冯敏',
+					time:'2016-10-10',
+					text:'嗯嗯，是的，我控制了两个月，瘦了好几斤。总之就一句老话，管住嘴、迈开腿。',
+					reply:'回复我的帖子：大家都爱吃零食 但不要让零食宣兵夺主',
+					url:'personal/card_detail.js',
+					minUrl:'personal/add_friends.js',
+					img:'/images/r_3_80.png'
+				},
+				{
+					name:'冯敏',
+					time:'2016-10-10',
+					text:'嗯嗯，是的，我控制了两个月，瘦了好几斤。总之就一句老话，管住嘴、迈开腿。',
+					reply:'回复我的帖子：大家都爱吃零食 但不要让零食宣兵夺主',
+					url:'personal/card_detail.js',
+					minUrl:'personal/add_friends.js',
+					img:'/images/r_3_80.png'
+				},
+				{
+					name:'冯敏',
+					time:'2016-10-10',
+					text:'嗯嗯，是的，我控制了两个月，瘦了好几斤。总之就一句老话，管住嘴、迈开腿。',
+					reply:'回复我的帖子：大家都爱吃零食 但不要让零食宣兵夺主',
+					url:'personal/card_detail.js',
+					minUrl:'personal/add_friends.js',
+					img:'/images/r_3_80.png'
+				},
+				{
+					name:'冯敏',
+					time:'2016-10-10',
+					text:'嗯嗯，是的，我控制了两个月，瘦了好几斤。总之就一句老话，管住嘴、迈开腿。',
+					reply:'回复我的帖子：大家都爱吃零食 但不要让零食宣兵夺主',
+					url:'personal/card_detail.js',
+					minUrl:'personal/add_friends.js',
+					img:'/images/r_3_80.png'
+				},
+			]
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+	      	this.$on('naviBar.rightItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator');
+				var nextUrl = this.getBase() + 'personal/news.js';
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+	      	});
+    	},
+		methods: {
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			goBack:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				navigator.pop({'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';	
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		}
+	};
+</script>

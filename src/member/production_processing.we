@@ -1,0 +1,154 @@
+<template>
+	<div class="body">
+		<yd-min-navbar navbar="{{navbar}}"></yd-min-navbar>
+		<scroller>
+			<div class="address-wrapper">
+				<div class="product-top">
+					<image src="{{ resurl+productImg }}" style="width:750;height:150;"></image>
+				</div>
+				<div class="product-start">
+					<div class="start start-1">
+						<image src="{{ resurl+sImg }}" style="width:30;height:30;"></image>
+						<text class="start-text">{{ start }}</text>
+					</div>
+					<div class="start">
+						<image src="{{ resurl+eImg }}" style="width:31;height:27;"></image>
+						<text class="start-text">{{ end }}</text>
+					</div>
+				</div>
+				<div class="product-time">
+					<image src="{{ resurl+tImg }}" style="width:312;height:312;"></image>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.body{
+		width:750;
+		background-color: #f1f1f1;
+	}
+	.list-text{
+		color:#333;
+		font-size:26;
+	}
+	.address-wrapper{
+		width:750;
+		border-top-width:1;
+		border-top-color:#ad8e6c;
+		margin-bottom:50;
+	}
+	.product-top{
+		background-color: #fff;
+		width:750;
+		height:150;
+		border-bottom-color:#dedede;
+		border-bottom-width:1;
+		justify-content: center;
+		align-items: center;
+		position:relative;
+	}
+	.product-detail{
+		flex-direction: row;
+		width:750;
+		height:150;
+		position: relative;
+	}
+	.product-line{
+		width:490;
+		height:1;
+		background-color: #c6c6c6;
+	}
+	.detail{
+		justify-content: center;
+		align-items: center;
+		position:absolute;
+		width:110;
+		height:150;
+	}
+	.detail-1{
+		top:-21;
+		left:-298;
+	}
+	.detail-2{
+		top:-18;
+		left:-57;
+	}
+	.detail-3{
+		top:-18;
+		left:185;
+	}
+	.product-start{
+		width:750;
+		height:157;
+		background-color: #fff;
+		border-bottom-width:1;
+		border-top-width:1;
+		border-color:#dedede;
+		margin-top:24;
+		justify-content: center;
+		align-items: flex-start;
+		padding-left:28;
+		padding-right:28;
+	}
+	.start-text{
+		color:#666;
+		font-size:24;
+		margin-left:24;
+	}
+	.start{
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: flex-start;
+		width:750;
+	}
+	.start-1{
+		margin-bottom:40;
+	}
+	.product-time{
+		width:750;
+		height:398;
+		border-bottom-width:1;
+		border-top-width:1;
+		border-color:#dedede;
+		justify-content: center;
+		align-items: center;
+		margin-top:24;
+		background-color: #fff;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-min-navbar.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '生产加工',
+		        rightTitle: '',
+		        rightImage: '',
+		        rightColor: '',
+		        centerColor: '#323333',
+		        backgroundColor: "#eadbc7"
+	      	},
+	      	dImg:'icon_xiaolvdian@3x.png',
+	      	yImg:'icon_shixinxiaohundian@3x.png',
+	      	start:'开始于2016年6月1日',
+	      	end:'预计于2016年7月1日完成',
+	      	sImg:'icon_kaishi@3x.png',
+	      	eImg:'icon_yuji@3x.png',
+	      	tImg:'icon_day15@3x.png',
+	      	productImg:'product.png'
+	   	},
+	   	created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		}
+	}
+</script>

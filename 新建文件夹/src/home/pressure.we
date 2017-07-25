@@ -1,0 +1,186 @@
+<template>
+	<div class="body">
+		<div id="header">
+			<wxc-navpage background-color="{{ nav.bgColor }}" title="{{ nav.title }}" title-color="{{ nav.titleColor }}" left-item-src="{{ url + nav.leftImgSrc }}"></wxc-navpage>
+		</div>
+		
+		<scroller class="scroller">
+			<div class="box">
+				<div class="item">
+					<text class="key">测量时间</text>
+					<text class="value">2017-01-04</text>
+				</div>
+				
+				<div class="item margin">
+					<text class="key">收缩压</text>
+					<div class="input-box">
+						<input class="input" type="text" placeholder="请输入高压" value="" />
+						<text class="company">mmHg</text>
+					</div>
+				</div>
+				<div class="item">
+					<text class="key">舒张压</text>
+					<div class="input-box">
+						<input class="input" type="text" placeholder="请输入高压" value="" />
+						<text class="company">mmHg</text>
+					</div>
+				</div>
+				<div class="item">
+					<text class="key">心率</text>
+					<div class="input-box">
+						<input class="input" type="text" placeholder="请输入心率" value="" />
+						<text class="company">次</text>
+					</div>
+				</div>
+				
+			</div>
+			
+			<div class="submit">
+				<div class="submit-text" onclick="goNext" url="home/my-healthy.js">
+					<text class="sb-text">保存</text>
+				</div>
+			</div>
+		</scroll>
+		
+	</div>
+</template>
+
+<style>
+	.body{
+		background-color: #f8f8f8;
+	}
+	.scroller{
+		margin-top: 88;
+	}
+	.box{
+		margin-top: 25;
+	}
+	.item{
+		height: 78;
+		background-color: #fff;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		padding-left: 30;
+		padding-right: 30;
+		border-top-width: 1;
+		border-bottom-width: 1;
+		border-color: #ebebeb;
+		margin-top: -1;
+	}
+	.margin{
+		margin-top: 25;
+	}
+	.key{
+		font-size: 30;
+		color: #9b9b9b;
+	}
+	.value{
+		font-size: 30;
+		color: #9b9b9b;
+	}
+	.input-box{
+		flex-direction: row;
+		align-items: center;
+		justify-content: flex-end;
+	}
+	.input{
+		width: 250;
+		text-align: right;
+		color: #333;
+		font-size: 30;
+		placeholder-color:#bbb;
+		margin-right: 16;
+	}
+	.company{
+		font-size: 30;
+		color: #58bf65;
+		width: 100;
+		text-align: center;
+	}
+	.submit{
+		height: 88;
+		flex-direction: row;
+		justify-content: center;
+		position: fixed;
+		width: 750;
+		left: 0;
+		bottom: 60;
+	}
+	.submit-text{
+		height: 88;
+		width: 666;
+		background-color: #58bf65;
+		border-radius: 4;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+	.sb-text{
+		color: #fff;
+		font-size: 36;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+
+	module.exports = {
+		data: {
+			dir: 'dist',
+			url: api.apiurl.resurl,
+			nav: {
+				title: '血压',
+				bgColor: '#58bf65',
+				titleColor: '#fff',
+				leftImgSrc: '/images/back.png'
+			}
+		},
+		methods:{
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+    	}
+	}
+</script>

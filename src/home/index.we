@@ -1,0 +1,269 @@
+<template>
+  <div class="body">  
+    <yd-navbar navbar="{{navbar}}"></yd-navbar>
+
+    <scroller class="scroller">
+
+      <div style="width:750;height:290;overflow:hidden;">
+        <slider class="slider" interval="5000" auto-play="true">
+          <div class="frame" repeat="item in result.banner" onclick="jumpUrl">
+            <image class="banner-pic" resize="cover" src="{{ item[0] }}"></image>
+          </div>
+          <indicator class="indicator"></indicator>
+        </slider>
+      </div>
+
+      <div class="original-wrap">
+        <div class="original-minwrap">
+          <div class="original-top">
+          	<div class="original-title">
+          		<text class="original-text">{{ originalTitle }}</text>
+          	</div>
+          	<div class="original-right" onclick="goNext" url="member/hot.js">
+          		<text class="more">更多</text>
+          	</div>
+          </div>
+          <div class="origial-bottom">
+          	<div class="hot-left" repeat="item in hotList" onclick="goNext" url="{{ item.url }}">
+          		<div class="hot-img">
+          			<image src="{{ item.member_headimg }}" style="width:177;height:177;"></image>
+          		</div>
+          		<div class="hot-information">
+          			<text style="font-size:28;color:#333;lines:1;">{{ item.member_name }}</text>
+          			<text style="font-size:26;color:#EBAC51;lines:1;margin-top:8;">{{ item.designer_follow }}人气</text>
+          			<text style="font-size:28;color:#989898;lines:1;margin-top:8;" repeat="sitem in item.design_style" if="{{$index<2}}">{{ sitem }}</text>
+          		</div>
+          	</div>
+          </div>
+        </div>
+      </div>
+      <!--热销上衣-->
+			<div class="hot-coat original-wrap" repeat="items in hotShow">
+				<div class="original-minwrap">
+					<div class="original-top">
+          	<div class="original-title">
+          		<text class="original-text">{{ items.title }}</text>
+          	</div>
+          	<div class="original-right" onclick="goJumpurl"  url="member/selling.js?car_id={{ items.cat_id }}">
+          		<text class="more">更多</text>
+          	</div>
+          </div>
+          <div class="origial-bottom"  >
+          	<div class="coat-left" if="{{$index==0}}" repeat="sitem in items.arr">
+          		<div class="coat-img">
+          			<image src="{{ sitem.title_long_pic }}" class="coat"></image>
+          		</div>
+          	</div>
+          	
+          	<div class="coat-right">
+          		<div class="coat-min" onclick="goNext" url="shop/cloth_detail.js" if="{{$index!=0}}" repeat="sitem in items.arr">
+          			<div class="coat-minimg">
+          				<image src="{{ sitem.title_pic }}" class="coat-minimg"></image>
+          			</div>
+          			<!--<text class="coat-text">{{ sitem.goods_name }}</text>-->
+          		</div>
+          	</div>
+          </div>
+				</div>
+			</div>
+    </scroller>
+		<yd-footer></yd-footer>
+  </div>
+</template>
+
+<style>
+.body{
+	background-color: #f1f1f1;
+	margin-bottom:100;
+}
+.scroller{
+	padding-bottom:100;
+}
+.frame{
+  width: 750;
+  height: 290;
+}
+.banner-pic{
+  width: 750;
+  height: 290;
+}
+.indicator {
+  width: 750;
+  height: 40;
+  item-color: #fff;
+  item-selected-color: #ebac51;
+  item-size: 12;
+  bottom: 0;
+}
+.slider{
+	flex-direction: row;
+	width:750;
+	height:290;
+}
+.original-wrap{
+	margin-top:18;
+	width:750;
+	background-color: #fff;
+	padding-left:22;
+	padding-right:22;
+}
+.original-minwrap{
+	width:694;
+}
+.original-top{
+	border-bottom-color:#666;
+	border-bottom-width:1;
+	padding-top:16;
+	padding-bottom:16;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+.original-title{
+	border-left-color:#D45A41;
+	border-left-width:4;
+	flex: 1;
+}
+.original-text{
+	font-size:28;
+	color:#323333;
+	margin-left:15;
+	justify-content: center;
+	align-items: flex-start;
+}
+.more{
+	font-size:26;
+	color:#a1a1a1;
+	justify-content: center;
+	align-items: flex-end;
+}
+.origial-bottom{
+	padding-top:18;
+	padding-bottom:18;
+	flex-direction: row;
+	width:694;
+}
+.hot-left{
+	flex: 1;
+	flex-direction: row;
+}
+.hot-img{
+	height:177;
+	width: 177;
+}
+.hot-information{
+	flex:1;
+	height:177;
+	justify-content: flex-start;
+	align-items:flex-start;
+	padding-left:13;
+	padding-right:10;
+}
+.coat{
+	width: 244;
+	height:400;
+}
+.coat-left{
+	position: relative;
+	width: 244;
+	height:400;
+}
+.coat-brand{
+	width: 244;
+	height:80;
+	background-color: #75c195;
+	justify-content: center;
+	align-items: center;
+	position:absolute;
+	bottom:0;
+	left:0;
+}
+.coat-right{
+	flex:1;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+.coat-min{
+	width:200;
+	margin-left:20;
+	height:200;
+	margin-bottom:10;
+}
+.coat-text{
+	color:#B0B0B0;
+	font-size:26;
+	padding-top:10;
+}
+.coat-minimg{
+	width:200;
+	height:190;
+}
+</style>
+
+<script>
+  require('weex-components'); 
+  require('../components/yd-navbar.we');
+  require('../components/yd-footer.we');
+  var api = require('../api.js');
+  module.exports = {
+    data: {
+      resurl: api.apiurl.resurl,
+      apiurl:api.apiurl.apiurl,
+      navbar:{
+          centerTitle: '',
+          rightTitle: '',
+          rightImage: 'icon_jixingwanyi@3x.png' ,
+          rightColor: '#a2a9b2',
+          centerColor: '#8bbff8',
+          backgroundColor: "#ebac51"
+      },
+      result:{
+        banner:[]
+      },
+      originalTitle:'热门原创设计师',
+      hotList:[],
+      hotShow:[]
+    },
+//  created: function(){
+//    console.log(api.getDevice(this));
+//  },
+    methods:{
+    	goNext:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			goJumpurl:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+    },
+    created: function(){
+			this.$on('navBar.rightItem.click',function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + 'member/search.js';
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			});
+		},
+		init:function(){
+			var self = this;
+			var stream = require('@weex-module/stream');
+			var modal = require('@weex-module/modal');
+			stream.fetch({
+				method:'POST',
+				url:api.apiurl.apiurl + 'api/index',
+				type: 'json'
+			},function(data){
+				self.result.banner = data.data.data.banner;
+				self.hotList = data.data.data.hotList;
+				self.hotShow = data.data.data.hotShow;
+			},function(e){
+				
+			})
+		}
+  }
+</script>

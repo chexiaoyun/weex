@@ -1,0 +1,338 @@
+<template>
+	<div class="body">
+		<yd-min-navbar navbar="{{navbar}}"></yd-min-navbar>
+		<scroller>
+			<div class="address-wrapper">
+				<div class="order-nav">
+					<div class="order-all {{ item.type == 1? 'active' : 'order' }}" repeat="item in orderNav" onclick="goNext" url="{{ item.url }}">
+						<text class="all">{{ item.nav }}</text>
+					</div>
+				</div>
+				<div class="order-list">
+					<div class="list-one" repeat="item in orderList">
+						<div class="list-order">
+							<div class="order-number">
+								<text class="order-size">订单号：{{ item.number }}</text>
+							</div>
+							<div class="order-time">
+								<text class="order-size">下单时间：{{ item.time }}</text>
+							</div>
+						</div>
+						<div class="list-top">
+							<div class="one-img">
+								<image src="{{ resurl+item.img }}" style="width:170;height:170;"></image>
+							</div>
+							<div class="one-detail">
+								<text class="one-title">{{ item.title }}</text>
+								<div class="one-choice">
+									<div class="one-color">
+										<text class="color">颜色分类：{{ item.color }}</text>
+									</div>
+									<div class="one-num">
+										<text class="num">x{{ item.num }}</text>
+									</div>
+								</div>
+								<div class="one-start">
+									<text class="one-red">{{ item.endPrice }}</text>
+									<text class="one-red on-gray">{{ item.startPrice }}</text>
+									<text class="one-red">定金：{{ item.deposit }}</text>
+								</div>
+							</div>
+						</div>
+						<div class="list-bototm">
+							<div class="list-seller">
+								<text class="list-black">联系卖家</text>
+							</div>
+							<div class="list-seller" onclick="remove">
+								<text class="list-black">取消订单</text>
+							</div>
+							<div class="list-pay">
+								<text class="list-white">付款</text>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.body{
+		width:750;
+		background-color: #f1f1f1;
+	}
+	.list-text{
+		color:#999;
+		font-size:24;
+		margin-bottom:8;
+	}
+	.address-wrapper{
+		width:750;
+		border-top-width:1;
+		border-top-color:#ad8e6c;
+		margin-bottom:50;
+	}
+	.order-nav{
+		width:750;
+		height:80;
+		background-color: #fff;
+		justify-content: space-between;
+		align-items: center;
+		flex-direction: row;
+		border-bottom-width:1;
+		border-bottom-color:#dedede;
+	}
+	.all{
+		color:#323333;
+		font-size:26;
+	}
+	.order-all{
+		width:121;
+		height:80;
+		justify-content: center;
+		align-items: center;
+	}
+	.active{
+		border-bottom-width:2;
+		border-bottom-color:#e2a751;
+	}
+	.order-list{
+		width:750;
+	}
+	.list-one{
+		margin-top:25;
+		border-color:#dedede;
+		border-bottom-width:1;
+		border-top-width:1;
+		width:750;
+		height:422;
+		padding-left:28;
+		padding-right:28;
+		background-color: #fff;
+		/*justify-content: center;*/
+		/*align-items: center;*/
+	}
+	.one-img{
+		width:170;
+		height:170;
+		margin-right:35;
+	}
+	.one-detail{
+		width:489;
+	}
+	.list-top{
+		flex-direction: row;
+		width:694;
+		height:216;
+		padding-top:23;
+		padding-bottom:23;
+	}
+	.one-choice{
+		flex-direction: row;
+	}
+	.one-start{
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.one-title{
+		color:#323333;
+		font-size:24;
+		lines:2;
+	}
+	.color{
+		color:#989898;
+		font-size:24;
+	}
+	.one-color{
+		flex:1;
+	}
+	.num{
+		color:#323333;
+		font-size:24;
+	}
+	.one-choice{
+		margin-top:10;
+		margin-bottom:20;
+	}
+	.one-red{
+		color:#d9491e;
+		font-size:26;
+	}
+	.on-gray{
+		color:#989898;
+		font-size:26;
+		text-decoration:line-through;
+	}
+	.list-bototm{
+		flex-direction: row;
+		justify-content: space-between;
+		margin-left:213;
+		width:489;
+		height:60;
+		margin-top:20;
+	}
+	.list-seller{
+		width:144;
+		height:60;
+		border-color:#dedede;
+		border-width:1;
+		justify-content: center;
+		align-items: center;
+	}
+	.list-black{
+		color:#323333;
+		font-size:28;
+	}
+	.list-pay{
+		width:87;
+		height:60;
+		background-color: #e2a751;
+		justify-content: center;
+		align-items: center;
+	}
+	.list-white{
+		color:#fff;
+		font-size:28;
+	}
+	.list-order{
+		width:694;
+		height:80;
+		background-color: #fff;
+		border-bottom-width:1;
+		border-bottom-color:#dfdfdf;
+		flex-direction: row;
+		padding-left:28;
+		padding-right:28;
+	}
+	.order-number{
+		flex:1;
+		height:80;
+		justify-content: center;
+		align-items: flex-start;
+	}
+	.order-time{
+		flex:1;
+		height:80;
+		justify-content: center;
+		align-items: flex-end;
+	}
+	.order-size{
+		font-size:26;
+		color:#333;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-min-navbar.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '我的订单',
+		        rightTitle: '',
+		        rightImage: '',
+		        rightColor: '',
+		        centerColor: '#323333',
+		        backgroundColor: "#eadbc7"
+	      	},
+	      	orderNav:[
+	      		{
+	      			type:0,
+	      			nav:'全部'
+	      		},
+	      		{
+	      			type:1,
+	      			nav:'代付款',
+	      			url:'member/my_order.js'
+	      		},
+	      		{
+	      			type:0,
+	      			nav:'代发货',
+	      			url:'member/deliver_goods.js'
+	      		},
+	      		{
+	      			type:0,
+	      			nav:'待收货',
+	      			url:'member/goods_receipt.js'
+	      		},
+	      		{
+	      			type:0,
+	      			nav:'待评价',
+	      			url:'member/evaluate.js'
+	      		}
+	      	],
+	      	orderList:[
+	      		{
+	      			img:'ditu_xiaohaoyifu@3x.png',
+	      			title:'萨法瑞亚麻短袖男加肥加大码衬衫男中国风亚麻男上衣',
+	      			color:'灰色',
+	      			num:'1',
+	      			endPrice:'¥1299',
+	      			startPrice:'¥2099',
+	      			deposit:'699.00',
+	      			number:'111111111111',
+	      			time:'2017.4.5'
+	      		},
+	      		{
+	      			img:'ditu_xiaohaoyifu@3x.png',
+	      			title:'萨法瑞亚麻短袖男加肥加大码衬衫男中国风亚麻男上衣',
+	      			color:'灰色',
+	      			num:'1',
+	      			endPrice:'¥1299',
+	      			startPrice:'¥2099',
+	      			deposit:'699.00',
+	      			number:'111111111111',
+	      			time:'2017.4.5'
+	      		},
+	      		{
+	      			img:'ditu_xiaohaoyifu@3x.png',
+	      			title:'萨法瑞亚麻短袖男加肥加大码衬衫男中国风亚麻男上衣',
+	      			color:'灰色',
+	      			num:'1',
+	      			endPrice:'¥1299',
+	      			startPrice:'¥2099',
+	      			deposit:'699.00',
+	      			number:'111111111111',
+	      			time:'2017.4.5'
+	      		},
+	      		{
+	      			img:'ditu_xiaohaoyifu@3x.png',
+	      			title:'萨法瑞亚麻短袖男加肥加大码衬衫男中国风亚麻男上衣',
+	      			color:'灰色',
+	      			num:'1',
+	      			endPrice:'¥1299',
+	      			startPrice:'¥2099',
+	      			deposit:'699.00',
+	      			number:'111111111111',
+	      			time:'2017.4.5'
+	      		}
+	      	]
+	   },
+	   methods:{
+			goNext:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			remove:function(e){
+				var self = this ;
+				var obj = self.$el('item-' + e.target.attr.index );
+				self.orderList.splice( e.target.attr.index , 1 );
+				for( var i = 0 ; i < self.orderList.length ; i++ ){
+					var el = self.$el('content-' + i );
+				};
+			}
+		},
+		created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		}
+	}
+</script>

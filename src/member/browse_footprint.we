@@ -1,0 +1,130 @@
+<template>
+	<div class="body">
+		<yd-min-navbar navbar="{{navbar}}"></yd-min-navbar>
+		<scroller>
+			<div class="attent-wrapper">
+				<div class="attent-list" repeat="item in attentList">
+					<div class="attent-img">
+						<image src="{{ item.title_pic }}" style="width:235;height:235;"></image>
+					</div>
+					<div class="atten-detail">
+						<text class="atten-title">{{ item.goods_name }}</text>
+						<div class="atten-bottom">
+							<div class="attent-price">
+								<text class="price">¥{{ item.current_price }}</text>
+							</div>
+							<div class="attent-find">
+								<text class="find">找相似</text>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.body{
+		background-color: #f1f1f1;
+		width:750;
+	}
+	.attent-wrapper{
+		width:750;
+		padding-bottom:100;
+		background-color: #fff;
+	}
+	.attent-list{
+		padding-left:28;
+		padding-right:28;
+		padding-top:35;
+		flex-direction: row;
+		background-color: #fff;
+	}
+	.attent-img{
+		width:235;
+		height:235;
+	}
+	.atten-detail{
+		border-bottom-color:#aa8b6b;
+		border-bottom-width:1;
+		margin-left:28;
+		width:428;
+		height:235;
+	}
+	.atten-title{
+		color:#333;
+		font-size:28;
+		lines:2;
+	}
+	.atten-bottom{
+		flex-direction: row;
+		margin-top:80;
+	}
+	.attent-price{
+		flex:1;
+	}
+	.price{
+		color:#e6491a;
+		font-size:44;
+	}
+	.attent-find{
+		width:111;
+		height:60;
+		border-color:#ff6d00;
+		border-width:1;
+		justify-content: center;
+		align-items: center;
+	}
+	.find{
+		color:#ff6d00;
+		font-size:28;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-min-navbar.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '浏览足迹',
+		        rightTitle: '',
+		        rightImage: '',
+		        rightColor: '#323333',
+		        centerColor: '#323333',
+		        backgroundColor: "#eadbc7"
+	      	},
+	      	eImg:'icon_daipinglun@3x.png',
+	      	rImg:'icon_shanchu@3x.png',
+	      	attentList:[]
+	   	},
+	   	created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		},
+		methods:{
+			
+		},
+		init:function(){
+			var self = this;
+			var stream = require('@weex-module/stream');
+			var modal = require('@weex-module/modal');
+			stream.fetch({
+				method:'POST',
+				url:api.apiurl.apiurl + 'api/get/member/browse',
+				type: 'json',
+				body:`mid=7`
+			},function(data){
+				self.attentList = data.data.data.data;
+			},function(e){
+				
+			})
+		}
+	}
+</script>

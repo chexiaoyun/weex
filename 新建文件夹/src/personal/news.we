@@ -1,0 +1,139 @@
+<template>
+	<div class="wrapper">
+		<wxc-navpage height={{navHeight}} background-color={{bgColor}} title={{title}} title-color={{color}}  left-item-src="{{resUrl+lSrc}}"  ></wxc-navpage>
+		<scroller>
+			<div class="content">
+				<div class="list" repeat="item in rows">
+					<div class="list-top">
+						<text style="color:#bbb;font-size:26;">{{item.text}}</text>
+					</div>
+					<div class="list-bottom">
+						<text style="color:#bbb;font-size:26;">{{item.time}}</text>
+					</div>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.wrapper{
+		background-color:#f8f8f8;
+		flex-direction: column;
+		width:750;
+	}
+	.header{
+		height:88;
+		width:750;
+		background-color:#58bf65;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		position: absolute;
+		top:0;
+		left:0;
+	}
+	.left{
+		flex:0.13;
+		height:88;
+		justify-content: center;
+		align-items: center;
+	}
+	.new{
+		flex:1;
+		justify-content: center;
+		align-items:flex-start;
+	}
+	.text{
+		font-size:36;
+		color:#fff;
+		margin-left:210;
+	}
+	.content{
+		margin-top:88;
+		width:750;
+	}
+	.list{
+		width:750;
+		height:220;
+		border-bottom-width:1;
+		border-bottom-color:#ebebeb;
+		background-color:#fff ;
+		padding-left:30;
+		padding-right:30;
+		padding-top:24;
+		padding-bottom:24;
+	}
+	.list-top{
+		height:138;
+		background-color: #fff;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+	module.exports = {
+		data: {
+			dir:'dist',
+			resUrl:api.apiurl.resurl,
+			navHeight:88,
+			bgColor:'#58bf65',
+			title:'消息中心',
+			color:'#fff',
+			lSrc:'/images/back.png',
+			bImg:'/images/back.png',
+			rows:[
+				{text:'您的帖子已经被删除',time:'2016-10-24'},
+				{text:'您的帖子已经被删除',time:'2016-10-24'},
+				{text:'您的帖子已经被删除',time:'2016-10-24'},
+				{text:'您的帖子已经被删除',time:'2016-10-24'}
+			]
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+    	},
+		methods:{
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		}
+	}
+</script>

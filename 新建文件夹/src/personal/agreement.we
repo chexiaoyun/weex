@@ -1,0 +1,100 @@
+<template>
+	<scroller>
+		<div class="wrapper">
+			<wxc-navpage height={{navHeight}} background-color={{bgColor}} title={{title}} title-color={{color}}  left-item-src="{{resUrl+lSrc}}"  ></wxc-navpage>
+			<div class="user">
+				<text style="color:#333;font-size:28;" class="text tel">{{text}}</text>
+			</div>
+		</div>
+	</scroller>
+</template>
+
+<style>
+	.wrapper{
+		background-color:#f8f8f8;
+	}
+	.header{
+		height:88;
+		width:750;
+		background-color:#58bf65;
+		flex-direction: row;
+		position:fixed;
+		top:0;
+		left:0;
+	}
+	.user{
+		margin-top:88;
+		width:750;
+		padding-left:41;
+		padding-right:41;
+		padding-top:18;
+		padding-bottom:18;
+	}
+	.text{
+		flex-direction: space-between;
+	}
+</style>
+
+<script>
+	
+	require('weex-components');
+	var api = require('../lib/api.js');
+	module.exports = {
+		data: {
+			dir:'dist',
+			resUrl:api.apiurl.resurl,
+			navHeight:88,
+			bgColor:'#58bf65',
+			title:'用户服务协议',
+			color:'#fff',
+			lSrc:'/images/back.png',
+			bImg:'/images/back.png',
+			text:'本协议是由用户（以下“您”）与XXXX公司（以下简称为“我们”）就我们所提供的产品和服务（包括我们的网站以及我们现在正在提供和将来可能向您提供的网络服务和游戏服务，以下统称为“产品和服务”）所订立的协议。      如果您获得并使用我们所提供的产品和服务，则应视为您已经详细阅读了本协议的内容，同意本协议的内容，并同意遵守本协议的规定。为保障您的权益，请于注册使用本公司所提供的各种服务之前，仔细阅读以下规定。一旦您注册成为飞视会员，即表示您同意并愿意遵守以下所有规定；另外提醒您，此处之规定随时可能会进行适当的变更，请定期查询。一、关于服务内容（1）飞视网络服务的具体内容由我们根据实际情况提供，例如论坛(BBS)、聊天室、电子邮件、发表个人评论等。保留随时变更、中断或终止部分或全部网络服务的权利。（2）飞视在提供网络服务时，可能会对部分网络服务用户收取一定的费用。在此情况下，会在相关页面上做明确的提示。如用户不同意支付该等费用，则可不接受相关的网络服务。（3）用户理解：仅提供相关的网络服务，除此之外与相关网络服务有关的设备(如电脑、调制解调器及其他与接入互联网有关的装置)及所需的费用(如为接入互联网而支付的电话费及上网费)均应由用户自行负担。（4）用户应使用正版软件接受网络服务。  二、有关注册资料     1.提供个人注册资料 （1）在申请飞视通行证会员账号时，您向我们提供的是及时、详细及准确的个人资料；（2）所有由您提供的个人资料将被我们用来作为识别您和其他用户的依据；（3）如果您所提供的个人注册资料与事实不符，或已变更而未及时更新，或有任何误导之嫌，导致我们无法为您提供或进一步提供产品和服务，我们将不承担任何责任。2.修改注册资料      您可以在任何时候，通过我们官方网站提供的会员服务或我们公布的其他途径，更新或修改您申请注册时所提供的资料。3.个人资料的披露 为了向您提供产品和服务，您同意授权我们以我们认为适当的方式向第三方透露您的注册资料。但是，我们不会公开您的姓名、住址、通讯地址、电子邮箱、账号、密码等个人资料。除非：（1）您允许我们披露这些个人资料；（2）有关法律法规或行政规章要求我们披露您的个人资料；（3）司法机关或行政机关基于法定程序要求我们披露您的个人资料；     （4）为保护我们的知识产权和其他财产权益，需要披露您的个人资料；（5）在紧急情况下为保护其他用户和社会大众的人身安全，需要披露您的个人资料。     我们将采取商业上合理的方式以保护您的个人资料的安全。我们将使用通常可以获得的安全技术和程序来保护您的个人资料不被未经授权的访问、使用或泄漏。对于非因我们的疏忽而造成您账号的丢失或您个人资料的泄密，我们不承担任何责任。     三、关于账号和密码      此处指的是您注册成功的账号及密码。请了解账号在注册之后不可变更，而密码可以通过我们提供的服务进行修改。您对于您的账号及密码的保管以及使用该账号和密码所进行的一切行动负有完全的责任。请不要将账号、密码转让或出借给他人使用。因为您的保管疏忽或其他任何个人行为导致您的账号或密码遭他人非法使用及因此所衍生的任何后果，我们不承担任何责任。四、您的权利      1.您可以根据本协议以及我们不时更新和公布的其他规则使用我们提供的产品和服务'
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+    	},
+		methods:{
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		}
+	};
+</script>

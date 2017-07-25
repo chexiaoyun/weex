@@ -1,0 +1,554 @@
+<template>
+	<div class="body">
+		<scroller>
+			<div class="wrapper">
+				<div class="crowd-top">
+					<div class="corwd-min-top">
+						<image src="{{ resurl+tImg }}" style="width:750;height:362;"></image>
+					</div>
+					<div class="crowd-min-name">
+						<div class="crowd-title">
+							<div class="crowd-title-left">
+								<text class="title">{{ title }}</text>
+							</div>
+						</div>
+						<div class="cloth-price">
+							<div class="part-price" style="flex-direction: row;justify-content: center;align-items: center;margin-top:15;">
+								<image src="{{ resurl+loveImg }}" style="width:26;height:22;margin-right:10;"></image>
+								<text style="color:#E6491A;font-size:26;">{{ price }}</text>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="crowd-center" onclick="toggle">
+					<div class="crowd-fail">
+						<text style="color:#333;font-size:28;">数量</text>
+					</div>
+					<image src="{{ resurl+allImg }}" style="width:48;height:8;"></image>
+				</div>
+				<div class='comment-list'>
+					<div class="list-one">
+						<text style="color:#333;font-size:26;margin-bottom:20;">救助者：{{ people }}</text>
+						<div class="list-top">
+							<div class="list-right">
+								<div class="list-saya">
+									<text class="black">{{ detail }}</text>
+								</div>
+								<div class="list-date">
+									<text class="black">{{ date }}</text>
+								</div>
+							</div>
+							<div class="list-left">
+								<image src="{{ resurl+hImg }}" style='width:190;height:190;'></image>
+							</div>
+						</div>
+					</div>
+					<div class="look-comments" onclick="goNext" url="shop/all_comments.js">
+						<text style="color:#ff9503;font-size:24;">查看全部评论</text>
+					</div>
+				</div>
+				<div class="cloth-line" onclick="goNext" url="shop/product_details.js">
+					<div class="cloth-line-top"></div>
+					<div class="cloth-like">
+						<image src="{{ resurl+downImg }}" style="width:36;height:36;margin-right:10;"></image>
+						<text style="color:#666;font-size:26;">点击查看商品详情</text>
+					</div>
+				</div>
+			</div>
+		</scroller>
+		<div class="crowd-fixed">
+			<div class="crowd-one">
+				<div class="crowd-contact">
+					<image src="{{ resurl+conImg }}" style="width:45;height:42;"></image>
+					<text class="contact">联系商家</text>
+				</div>
+				<div class="crowd-collect">
+					<image src="{{ resurl+collImg }}" style="width:39;height:37"></image>
+					<text class="contact">收藏</text>
+				</div>
+			</div>
+			<div class="crowd-one crowd-two" onclick="toggle">
+				<text class="white">加入购物车</text>
+			</div>
+			<div class="crowd-one crowd-three" onclick="toggle">
+				<text class="white">立即购买</text>
+			</div>
+		</div>
+		<div class="num-choice" if="{{shown}}">
+			<div class="min-num">
+				<div class="num-top">
+					<div class="num-min-top">
+						<div class="num-img">
+							<image src="{{ resurl+clothImg }}" style="width:169;height:169;"></image>
+						</div>
+						<div class="num-detail">
+							<div class="detail-top">
+								<div class="num-price">
+									<text style="color:#e6491a;font-size:26;">{{ clothPrice }}</text>
+								</div>
+								<image src="{{ resurl+hideImg }}" style="width:30;height:30;" onclick="toggle"></image>
+							</div>
+							<text class="total">库存：{{ total }}件</text>
+							<text class="total">请选择 尺寸 颜色</text>
+						</div>
+					</div>
+					<scroller>
+						<div class="num-min-center">
+							<div class="num-size">
+								<text class="size">尺码</text>
+								<div class="size-choice">
+									<div class="min-size" repeat="item in sizeList">
+										<text style="color:#333;font-size:24;">{{ item.size }}</text>
+									</div>
+								</div>
+							</div>
+							<div class="num-size">
+								<text class="size">颜色</text>
+								<div class="size-choice">
+									<div class="min-size" repeat="item in colorList">
+										<text style="color:#333;font-size:24;">{{ item.color }}</text>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="pay-say">
+							<text class="pay-black">购买数量</text>
+							<div class="pay-add">
+								<image src="{{ resurl+moveImg }}" style="width:66;height:57;"></image>
+								<div class="pay-num">
+									<text style="color:#323333;font-size:28;">{{ num }}</text>
+								</div>
+								<image src="{{ resurl+addImg }}" style="width:66;height:57;"></image>
+							</div>
+						</div>
+					</scroller>
+				</div>
+				<div class="num-bottom">
+					<div class="num-pay" onclick="goNext" url="shop/shop.js">
+						<text class="white">加入购物车</text>
+					</div>
+					<div class="num-sell">
+						<text class="white">立即购买</text>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
+
+<style>
+	.body{
+		width:750;
+		background-color: #f1f1f1;
+	}
+	.wrapper{
+		width:750;
+		margin-bottom:200;
+	}
+	.white{
+		color:#fff;
+		font-size:30;
+	}
+	.total{
+		color:#666;
+		font-size:24;
+	}
+	.contact{
+		color:#999;
+		font-size:22;
+	}
+	.crowd-top{
+		width:750;
+		background-color: #fff;
+	}
+	.crowd-min-top{
+		width:750;
+		height:362;
+	}
+	.title{
+		color:#333;
+		font-size:28;
+		lines:2;
+		flex-wrap: wrap;
+		flex:1;
+	}
+	.crowd-min-name{
+		padding-left:28;
+		padding-right:28;
+		background-color: #fff;
+		padding-top:20;
+		padding-bottom:20;
+	}
+	.crowd-title{
+		flex-direction: row;
+	}
+	.crowd-title-left{
+		flex-direction: row;
+		flex:1;
+	}
+	.crowd-title-right{
+		border-left-color:#dedede;
+		border-left-width:1 ;
+		flex:0.2;
+		justify-content: center;
+		align-items: center;
+	}
+	.cloth-price{
+		flex-direction: row;
+		margin-bottom:15;
+	}
+	.cloth-people{
+		flex-direction: row;
+	}
+	.crowd-center{
+		background-color: #fff;
+		width:750;
+		height:100;
+		margin-top:18;
+		margin-bottom:18;
+		border-top-width:1;
+		border-bottom-width:1;
+		border-color:#dedede;
+		padding-left:28;
+		padding-right:28;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+	.crowd-fail{
+		flex:1;
+		justify-content: center;
+		align-items: flex-start;
+	}
+	.comment-list{
+		width:750;
+		background-color:#fff;
+		height:345;
+		justify-content: center;
+		align-items: center;
+	}
+	.list-one{
+		width:750;
+		padding-left:28;
+		padding-right:28;
+		padding-top:28;
+		padding-bottom:28;
+		justify-content: center;
+		align-items: flex-start;
+		height:246;
+	}
+	.gray{
+		color:#999;
+		font-size:24;
+	}
+	.list-top{
+		flex-direction: row;
+		width:694;
+	}
+	.list-bottom{
+		flex-direction: row;
+	}
+	.list-left{
+		width:190;
+		height:190;
+		border-radius: 100;
+		margin-left:20;
+	}
+	.black{
+		color:#333;
+		font-size:24;
+	}
+	.list-right{
+		width:482;
+	}
+	.list-name{
+		flex-direction: row;
+		height:35;
+		justify-content: flex-start;
+		align-items: center;
+	}
+	.list-date{
+		flex:1;
+		justify-content: flex-start;
+		align-items: flex-start;
+		margin-top:10;
+	}
+	.one-img{
+		margin-top:20;
+		flex-direction: row;
+		justify-content: space-between;
+		width:694;
+	}
+	.img{
+		width:100;
+		height:100;
+	}
+	.look-comments{
+		width:264;
+		height:60;
+		border-width:2;
+		border-color:#ff9503;
+		justify-content: center;
+		align-items: center;
+	}
+	.cloth-line{
+		width:750;
+		position:relative;
+		margin-bottom:80;
+		margin-top:40;
+		justify-content: center;
+		align-items: center;
+	}
+	.cloth-line-top{
+		width:750;
+		height:3;
+		background-color: #ccc;
+		position: absolute;
+		top:20;
+		left:0;
+	}
+	.cloth-like{
+		width:300;
+		height:80;
+		position:absolute;
+		top:-18;
+		left:233;
+		justify-content: center;
+		align-items: center;
+		background-color: #f1f1f1;
+		flex-direction: row;
+	}
+	.crowd-fixed{
+		width:750;
+		height:100;
+		background-color: #fff;
+		position: fixed;
+		bottom:0;
+		left:0;
+		flex-direction: row;
+		border-top-width:1;
+		border-top-color:#dedede;
+	}
+	.crowd-one{
+		flex:1;
+		height:100;
+		justify-content: center;
+		align-items: center;
+		flex-direction: row;
+	}
+	.crowd-two{
+		background-color: #ff9503;
+	}
+	.crowd-three{
+		background-color: #ff4f00;
+	}
+	.crowd-contact{
+		flex:1;
+		justify-content: center;
+		align-items: center;
+		border-right-width:1;
+		border-right-color:#dedede;
+	}
+	.crowd-collect{
+		flex:1;
+		justify-content: center;
+		align-items: center;
+	}
+	.num-choice{
+		width:750;
+		height:1334;
+		background-color: rgba(0,0,0,0.8);
+		position: fixed;
+		top:0;
+		left:0;
+	}
+	.min-num{
+		width:750;
+		/*height:892;*/
+		background-color: #fff;
+		position: fixed;
+		bottom:0;
+		left:0;
+	}
+	.num-top{
+		width:750;
+		padding-left:28;
+		padding-right:28;
+		margin-bottom:150;
+	}
+	.num-bottom{
+		position: fixed;
+		bottom:0;
+		left:0;
+		height:100;
+		width:750;
+		flex-direction: row;
+	}
+	.num-pay{
+		flex:1;
+		height:100;
+		background-color: #ff9503;
+		justify-content: center;
+		align-items: center;
+	}
+	.num-sell{
+		flex:1;
+		height:100;
+		background-color: #ff4f00;
+		justify-content: center;
+		align-items: center;
+	}
+	.pay-say{
+		background-color: #fff;
+		width:694;
+		height:108;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		margin-top:25;
+	}
+	.pay-black{
+		color:#323333;
+		font-size:30;
+	}
+	.pay-add{
+		flex:1;
+		flex-direction: row;
+		justify-content: flex-end;
+		align-items: flex-end;
+	}
+	.pay-num{
+		width:80;
+		height:57;
+		justify-content: center;
+		align-items: center;
+	}
+	.num-min-center{
+		width:694;
+		border-bottom-width:1;
+		border-top-width:1;
+		border-bottom-color:#ccc;
+		border-top-color:#ccc;
+		padding-top:10;
+		padding-bottom:10;
+	}
+	.num-size{
+		width:694;
+		padding-top:30;
+	}
+	.size{
+		color:#333;
+		font-size:28;
+		justify-content: center;
+		align-items: flex-start;
+		margin-bottom:30;
+	}
+	.size-choice{
+		flex-wrap: wrap;
+		width:694;
+		flex-direction: row;
+	}
+	.min-size{
+		padding-top:18;
+		padding-bottom:18;
+		padding-left:42;
+		padding-right:42;
+		border-radius: 20;
+		background-color: #f2f2f2;
+		justify-content: center;
+		align-items: center;
+		margin-bottom:20;
+		margin-right:30;
+	}
+	.num-min-top{
+		flex-direction: row;
+		width:694;
+		height:158;
+	}
+	.num-img{
+		width:184;
+		height:184;
+		justify-content: center;
+		align-items: center;
+		position: absolute;
+		top:-60;
+		left:0;
+		background-color: #fff;
+	}
+	.num-detail{
+		margin-left:200;
+		width:498;
+		padding-top:10;
+	}
+	.num-price{
+		flex:1;
+	}
+	.detail-top{
+		flex-direction: row;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+			tImg:'ditu_BBBdatu@3x.png',
+			title:'复古民族风毛衣链长款女秋冬 仿蜜蜡吊坠百搭配饰项链挂件饰品',
+			fImg:'enjoy.png',
+			price:'¥2099',
+  			part:'10',
+  			all:'/100',
+  			yuanPrice:'¥2999',
+  			deposit:699.00,
+  			allImg:'icon_suhliang@3x.png',
+  			listColor:'卡其色',
+	      	listSize:'L',
+	      	hImg:'ditu_pangzi176@3x.png',
+  			listName:'天空一声巨响',
+	      	vipImg:'icon_huangsevip@3x.png',
+	      	loveImg:'icon_huangseaixin@3x.png',
+	      	date:'2016.6.26',
+	      	detail:'宝贝很好~很适合，穿着老舒服了呢~好评、好评、好评、大家快行动起来。',
+	      	oImg:'ditu_BBBB@3x.png',
+	      	downImg:'down.png',
+	      	conImg:'icon_erji@3x.png',
+	      	collImg:'icon_xingxing1hao@3x.png',
+	      	addImg:'icon_yuanjiaojiahao@3x.png',
+	      	moveImg:'icon_yuanjiaojiaohao@3x.png',
+	      	num:'1',
+	      	sizeList:[
+	      		{size:"S"},{size:"M"},{size:"L"},{size:"XL"},{size:"XXL"},{size:"XXXL"},{size:'XXXXL'}
+	      	],
+	      	colorList:[
+	      		{color:'白色'},{color:'黑色'},{color:'黄色'},{color:'红色'},{color:'灰色'},{color:'绿色'},{color:'蓝色'},{color:'卡其色'}
+	      	],
+	      	clothImg:'banner_yifu@3x.png',
+	      	total:'963',
+	      	hideImg:'icon_heisexiaochacha@3x.png',
+	      	clothPrice:'¥2999',
+	      	loveImg:'icon_hongsexiaoxingxing@3x.png',
+	      	people:'啊啊啊',
+	      	shown:false
+		},
+		methods:{
+			goNext:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			toggle:function(){
+				this.shown = !this.shown;
+			}
+		},
+		created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		}
+	}
+</script>

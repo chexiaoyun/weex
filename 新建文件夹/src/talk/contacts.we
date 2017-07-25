@@ -1,0 +1,150 @@
+<template>
+	<div class="wrapper">
+		<wxc-navpage height={{navHeight}} background-color={{bgColor}} title={{title}} title-color={{color}} left-item-src={{resUrl+lSrc}} right-item-title={{rTitle}} right-item-color="#fff"></wxc-navpage>
+		<scroller>
+			<div class="content">
+				<div class="content-bottom">
+					<div class="list" repeat="item in rows" onclick="goNext" url="personal/friends.js">
+						<div class="list-left">
+							<image src="{{resUrl+item.img}}" style="width:80;height: 80;"></image>
+						</div>
+						<div class="list-right">
+							<text style="font-size:36;color:#333;">{{item.text}}</text>
+						</div>
+					</div>
+				</div>
+			</div>
+		</scroller>
+		<tabbar></tabbar>
+	</div>
+</template>
+
+<style>
+	.wrapper{
+		width:750;
+		background-color:#f8f8f8;
+	}
+	.content{
+		margin-top:88;
+		width:750;
+		margin-bottom:100;
+	}
+	.content-bottom{
+		margin-top:24;
+		width:750;
+		justify-content: center;
+		align-items: center;
+		margin-bottom:50;
+	}
+	.list{
+		width:750;
+		height:120;
+		background-color: #fff;
+		border-bottom-color: #ebebeb;
+		border-bottom-width: 1;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		padding-left:30;
+		padding-right:30;
+	}
+	.list-left{
+		width:80;
+		height:80;
+		margin-right:24;
+		background-color: #d8d8d8;
+		justify-content: center;
+		align-items: center;
+	}
+	.list-right{
+		flex: 1;
+		align-items: flex-start;
+		justify-content: flex-start;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+	require('../tabbar.we');
+	module.exports = {
+		data: {
+			dir:'dist',
+			resUrl:api.apiurl.resurl,
+			navHeight:88,
+			bgColor:'#58bf65',
+			title:'好友',
+			color:'#fff',
+			rTitle:'添加',
+			lSrc:'/images/back.png',
+			fImg:'/images/friend.png',
+			gImg:'/images/group.png',
+			nImg:'/images/new.png',
+			rows:[
+				{img:'/images/r_7_80.png',text:'狗蛋儿'},
+				{img:'/images/r_3_80.png',text:'冯敏'},
+				{img:'/images/r_7_80.png',text:'狗蛋儿'},
+				{img:'/images/r_3_80.png',text:'冯敏'},
+				{img:'/images/r_7_80.png',text:'狗蛋儿'},
+				{img:'/images/r_3_80.png',text:'冯敏'},
+				{img:'/images/r_7_80.png',text:'狗蛋儿'},
+				{img:'/images/r_3_80.png',text:'冯敏'},
+				{img:'',text:'abc'},
+				{img:'',text:'abc'},
+				{img:'',text:'abc'},
+				{img:'',text:'abc'},
+				{img:'',text:'abc'}
+			]
+		},
+		created: function() {
+			this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+	      	this.$on('naviBar.rightItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator');
+				var nextUrl = this.getBase() + 'personal/friend_search.js';
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+	      	});
+    	},
+		methods: {
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf(dist) + "dist");
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		}
+	};
+</script>

@@ -1,0 +1,109 @@
+<template>
+	<div class="body">
+		<yd-min-navbar navbar="{{navbar}}"></yd-min-navbar>
+		<scroller>
+			<div class="help-wrapper">
+				<div class="help-min-wrapper">
+					<div class="help-list">
+						<text class="help">前言</text>
+					</div>
+					<div class="help-list">
+						<text class="help">定价机制</text>
+					</div>
+					<div class="help-list help-say">
+						<text class="help">{{text}}</text>
+					</div>
+					<div class="help-list">
+						<text class="help">众筹价格</text>
+					</div>
+					<div class="help-list">
+						<text class="help">众筹商品流程</text>
+					</div>
+					<div class="help-list">
+						<text class="help">购买注意事项</text>
+					</div>
+				</div>
+				<div class="help-problem">
+					<text style="color:#999;font-size:24;">未解决你的问题？提交</text>
+					<text style="color:#0098ff;font-size:24;" onclick="goNext" url="member/feedback.js">反馈</text>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.body{
+		background-color: #fff;
+		width:750;
+	}
+	.help-wrapper{
+		width:750;
+		background-color: #fff;
+	}
+	.help-min-wrapper{
+		width:750;
+	}
+	.help-list{
+		width:750;
+		height:80;
+		border-bottom-width:2;
+		border-color:#dedede;
+		justify-content: center;
+		align-items: flex-start;
+		padding-left:25;
+		padding-right:25;
+	}
+	.help{
+		color:#323333;
+		font-size:28;
+	}
+	.help-say{
+		height:400;
+		padding-top:30;
+		padding-bottom:30;
+		font-size:24;
+		background-color: #f1f1f1;
+	}
+	.help-problem{
+		flex-direction: row;
+		margin-top:50;
+		justify-content: center;
+		align-items: center;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-min-navbar.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '服装众筹',
+		        rightTitle: '',
+		        rightImage: '',
+		        rightColor: '#323333',
+		        centerColor: '#323333',
+		        backgroundColor: "#eadbc7"
+	      	},
+	      	text:'高端服装定价公式：（面料辅料采购成本+生产成本）*倍数（高端品牌6~10）+（运营成本）=全国统一零售价（也就是吊牌价）例如：以全毛双面呢大衣为例，面料成本400元辅料成本5元 + 生产成本180元*6=3510元+运营成本60元=吊牌价3570元我们的定价公式：（面料辅料采购成本）+（生产成本）*（倍数6）+ （运营成本）— （商场扣点35%）=吊牌价例如：以全毛双面呢大衣为例，面料成本400元辅料成本5元 + 生产成本180元*6=3510元+运营成本60元=3570元 — 商场扣点35%（1250元）=吊牌价2320元'
+		},
+		methods:{
+			goNext:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			}
+		},
+		created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		}
+	}
+</script>

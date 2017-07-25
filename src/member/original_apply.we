@@ -1,0 +1,323 @@
+<template>
+	<div class="body">
+		<yd-min-navbar navbar="{{navbar}}"></yd-min-navbar>
+		<scroller>
+			<div class="address-wrapper">
+				<div class="member-top">
+					<div class="member-information">
+						<text class="member-black">个人信息</text>
+					</div>
+					<div class="member-specific">
+						<div class="member-name">
+							<div class="name">
+								<text class="min-black">姓名：</text>
+							</div>
+							<div class="member-input">
+								<input type="text" value="" class="input" />
+							</div>
+							<text class="red">*</text>
+						</div>
+						<div class="member-name">
+							<div class="name">
+								<text class="min-black">所在地：</text>
+							</div>
+							<div class="member-input">
+								<input type="text" value="" class="input" maxlength="18" />
+							</div>
+							<text class="red">*</text>
+						</div>
+						<div class="member-name">
+							<div class="name">
+								<text class="min-black">设计风格：</text>
+							</div>
+							<div class="member-input" style="height:120;">
+								<textarea class="textarea" value=""></textarea>
+							</div>
+							<text class="red">*</text>
+						</div>
+						<div class="member-name">
+							<div class="name">
+								<text class="min-black">个人介绍：</text>
+							</div>
+							<div class="member-input" style="height:120;">
+								<textarea class="textarea" value=""></textarea>
+							</div>
+							<text class="red">*</text>
+						</div>
+						<div class="member-up">
+							<div class="up-one">
+								<image src="{{ resurl+addImg }}" style="width:60;height:60;"></image>
+								<div class="up-add">
+									<text class='add'>上传身份证照</text>
+									<text class='red'>*</text>
+								</div>
+							</div>
+							<div class="up-one">
+								<image src="{{ resurl+addImg }}" style="width:60;height:60;"></image>
+								<div class="up-add">
+									<text class='add'>学历证</text>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="member-design">
+					<div class="member-information" style="flex-direction: row;">
+						<div class="member-text" style="align-items: flex-start;justify-content: center;flex:1;height:82;">
+							<text class="member-black" >设计图稿</text>
+						</div>
+						<div class="meb-put" style="flex:0.1;justify-content: center;align-items: center;height:82;">
+							<text class="red">*</text>
+						</div>
+					</div>
+					<div class="comment-photo">
+						<div class="comment-up">
+							<image src="{{ resurl+uImg }}" style="width:45;height:40;"></image>
+						</div>
+						<div class="comment-up"></div>
+						<div class="comment-up"></div>
+						<div class="comment-up"></div>
+					</div>
+					<div class="member-form">
+						<div class="form-idea">
+							<div class="form-text">
+								<text class="idea">设计理念</text>
+							</div>
+							<div class="form-textarea">
+								<textarea class="textarea" placeholder="说明图稿的设计理念"></textarea>
+							</div>
+						</div>
+						<div class="form-idea">
+							<div class="form-text">
+								<text class="idea">适合人群</text>
+							</div>
+							<div class="form-textarea" style="height:60;">
+								<textarea class="textarea" placeholder="适合人群说明" style="width:550;height:55;"></textarea>
+							</div>
+						</div>
+						<div class="form-idea">
+							<div class="form-text">
+								<text class="idea">产品定位</text>
+							</div>
+							<div class="form-textarea">
+								<textarea class="textarea" placeholder="产品定位说明"></textarea>
+							</div>
+						</div>
+						<div class="form-idea">
+							<div class="form-text">
+								<text class="idea">风格介绍</text>
+							</div>
+							<div class="form-textarea">
+								<textarea class="textarea" placeholder="风格介绍说明"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.body{
+		width:750;
+		background-color: #f1f1f1;
+	}
+	.list-text{
+		color:#999;
+		font-size:24;
+		margin-bottom:8;
+	}
+	.address-wrapper{
+		width:750;
+		border-top-width:1;
+		border-top-color:#ad8e6c;
+		margin-bottom:50;
+	}
+	.member-information{
+		width:750;
+		height:82;
+		border-bottom-color:#cbcccc;
+		border-bottom-width:1;
+		justify-content: center;
+		align-items: flex-start;
+		padding-left:28;
+		background-color: #fff;
+	}
+	.member-black{
+		color:#323333;
+		font-size:30;
+	}
+	.member-specific{
+		width:750;
+		padding-left:28;
+		padding-right:28;
+		background-color: #fff;
+		padding-top:30;
+		padding-bottom:46;
+	}
+	.member-name{
+		flex-direction: row;
+		margin-bottom:30;
+		justify-content: center;
+		align-items: center;
+	}
+	.min-black{
+		color:#323333;
+		font-size:24;
+		text-align: center;
+	}
+	.name{
+		width:140;
+		justify-content: center;
+		align-items: center;
+	}
+	.member-input{
+		width:520;
+		height:60;
+		border-width:1;
+		border-color:#dedddd;
+		justify-content: center;
+	}
+	.input{
+		border:none;
+		outline:none;
+		color:#323333;
+		font-size:26;
+		padding-left:10;
+		padding-right:10;
+	}
+	.red{
+		margin-left:12;
+		color:#e94f18;
+		justify-content: center;
+	}
+	.member-up{
+		flex-direction: row;
+		justify-content: space-between;
+		background-color: #fff;
+	}
+	.up-one{
+		width:329;
+		height:208;
+		border-color:#989898;
+		border-width:1;
+		border-style: dashed;
+		justify-content: center;
+		align-items: center;
+	}
+	.up-add{
+		flex-direction: row;
+		margin-top:15;
+	}
+	.add{
+		color:#656666;
+		font-size:30;
+	}
+	.comment-photo{
+		flex-direction: row;
+		justify-content:space-between ;
+		background-color: #fff;
+		padding-left:28;
+		padding-right:28;
+	}
+	.comment-up{
+		width:150;
+		height:150;
+		border-color:#dedede;
+		border-width:1;
+		justify-content: center;
+		align-items: center;
+		margin-top:28;
+	}
+	.member-design{
+		width:750;
+		background-color: #fff;
+		margin-top:25;
+		padding-bottom:45;
+	}
+	.member-top{
+		width:750;
+		background-color: #fff;
+	}
+	.member-form{
+		width:750;
+		padding-left:28;
+		padding-right:28;
+	}
+	.form-idea{
+		margin-top:40;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+	.textarea{
+		border:none;
+		outline:none;
+		resize: none;
+		placeholder-color:#989898;
+		font-size:24;
+		color:#333;
+		padding-top:10;
+		padding-bottom:10;
+		padding-left:10;
+		padding-right:10;
+		height:100;
+		font-family: "microsoft yahei";
+	}
+	.form-text{
+		flex:1;
+		justify-content: center;
+		align-items: center;
+	}
+	.idea{
+		color:#333;
+		font-size:24;
+	}
+	.form-textarea{
+		border-color:#dedddd;
+		border-width:1;
+		width:570;
+		height:120;
+	}
+	.form-text{
+		justify-content: center;
+		align-items: center;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-min-navbar.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '申请原创',
+		        rightTitle: '完成',
+		        rightImage: '',
+		        rightColor: '',
+		        centerColor: '#323333',
+		        backgroundColor: "#eadbc7"
+	      	},
+	      	addImg:'add.png',
+	      	uImg:'icon_xiangji@3x.png',
+	   },
+	   created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			});
+			this.$on('navBar.rightItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {
+					'url': 'member/my_original.js',
+     				'animated' : 'true',
+				};
+				navigator.push(params, function(e){});
+			});
+		}
+	}
+</script>

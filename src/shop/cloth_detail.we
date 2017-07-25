@@ -1,0 +1,730 @@
+<template>
+	<div class="body">
+		<scroller>
+			<div class="wrapper">
+				<div class="crowd-top">
+					<div class="corwd-min-top">
+						<image src="{{ tImg }}" style="width:750;height:300;"></image>
+					</div>
+					<div class="crowd-min-name">
+						<div class="crowd-title">
+							<div class="crowd-title-left">
+								<text style="color:#ff4f00;font-size:28;">自营：</text>
+								<text class="title">{{ title }}</text>
+							</div>
+							<div class="crowd-title-right">
+								<image src="{{ resurl+fImg }}" style="width:33;height:34;"></image>
+								<text style="color:#333;font-size:20;">分享</text>
+							</div>
+						</div>
+						<div class="cloth-price" style="margin-top:20;">
+							<div class="part-price">
+								<text style="color:#E6491A;font-size:26;">¥{{ price }}</text>
+							</div>
+							<text style="color:#387df9;font-size:22;margin-left:20;">详情</text>
+							<div class="part-this" style="flex-direction: row;justify-content: flex-end;align-items: center;flex:1;">
+								<text style="color:#e6491a;font-size:26;margin-left:317;">参与众筹</text>
+								<image src="{{ resurl+partImg }}" style="width:20;height:20;margin-left:10;"></image>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="crowd-center" onclick="toggle">
+					<div class="crowd-fail">
+						<text style="color:#333;font-size:26;">选择分类</text>
+					</div>
+					<image src="{{ resurl+allImg }}" style="width:48;height:8;"></image>
+				</div>
+				<div class='comment-list'>
+					<div style="justify-content: center;align-items: flex-start;width:694;">
+						<text style="color:#333;font-size:26;">宝贝评价({{ bnum }})</text>
+					</div>
+					<div class="list-one">
+						<div class="list-top">
+							<div class="list-left">
+								<image src="{{ resurl+hImg }}" style='width:100;height:100;'></image>
+							</div>
+							<div class="list-right">
+								<div class="list-name">
+									<text class="black">{{ listName }}</text>
+									<image src="{{ resurl+vipImg }}" style="width:20;height:16;margin-left: 10;"></image>
+									<image src="{{ resurl+loveImg }}" style="width:20;height:18;margin-left:10;"></image>
+									<div class="list-date">
+										<text class="black">{{ date }}</text>
+									</div>
+								</div>
+								<div class="list-saya">
+									<text class="black">{{ detail }}</text>
+								</div>
+							</div>
+						</div>
+						<div class="list-bottom">
+							<text class="gray">颜色分类：{{ listColor }}</text>
+							<text class="gray">尺寸：{{ listSize }}</text>
+						</div>
+					</div>
+					<div class="look-comments" onclick="goNext" url="shop/all_comments.js">
+						<text style="color:#ff9503;font-size:24;">查看全部评论</text>
+					</div>
+				</div>
+				<div class="cloth-line" onclick="goNext" url="shop/product_details.js">
+					<div class="cloth-line-top"></div>
+					<div class="cloth-like">
+						<image src="{{ resurl+downImg }}" style="width:36;height:36;margin-right:10;"></image>
+						<text style="color:#666;font-size:26;">点击查看商品详情</text>
+					</div>
+				</div>
+			</div>
+		</scroller>
+		<div class="crowd-fixed">
+			<div class="crowd-one">
+				<div class="crowd-contact">
+					<image src="{{ resurl+conImg }}" style="width:45;height:42;"></image>
+					<text class="contact">联系商家</text>
+				</div>
+				<div class="crowd-collect" onclick="collect">
+					<image src="{{ resurl }}{{!collectState?collImg:collImgActive}}" style="width:39;height:37"></image>
+					<text class="contact">收藏</text>
+				</div>
+			</div>
+			<div class="crowd-one crowd-two" onclick="toggle">
+				<text class="white">加入购物车</text>
+			</div>
+			<div class="crowd-one crowd-three" onclick="toggle">
+				<text class="white">立即购买</text>
+			</div>
+		</div>
+		
+		
+		<div class="mask" onclick="toggle" if="{{shown}}"></div>
+		<div class="suibian-wrap" if="{{shown}}">
+			<div class="section">
+				<div class="num-min-top">
+					<div class="num-img">
+						<image src="{{ clothImg }}" style="width:169;height:169;" resize="contain"></image>
+					</div>
+					<div class="num-detail">
+						<div class="detail-top">
+							<div class="num-price">
+								<text style="color:#e6491a;font-size:26;">¥{{ price }}</text>
+							</div>
+							<image src="{{ resurl+hideImg }}" style="width:50;height:50;" onclick="toggle"></image>
+						</div>
+						<text class="total">库存：{{ total }}件</text>
+						<text class="total">请选择 尺寸 颜色</text>
+					</div>
+				</div>
+				
+				<scroller class="scroller">
+					<div class="num-min-center">
+						<div class="num-size">
+							<text class="size">尺码</text>
+							<div class="size-choice">
+								<div class="min-size {{ sizeType ==item?'big-size':'' }}" repeat="item in sizeList" onclick="changeSize" state="{{ item }}">
+									<text class="min-color {{ sizeType ==item?'big-color':'' }}" >{{ item }}</text>
+								</div>
+							</div>
+						</div>
+						<div class="num-size">
+							<text class="size">颜色</text>
+							<div class="size-choice">
+								<div class="min-size {{ colorType ==item?'big-size':'' }}" repeat="item in colorList" onclick="changeColor" state="{{ item }}">
+									<text class="min-color {{ colorType ==item?'big-color':'' }}">{{ item }}</text>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="pay-say">
+						<text class="pay-black">购买数量</text>
+						<div class="pay-add">
+							<image src="{{ resurl+moveImg }}" style="width:66;height:57;" onclick="numAdd" type="1"></image>
+							<div class="pay-num">
+								<text style="color:#323333;font-size:28;">{{ num }}</text>
+							</div>
+							<image src="{{ resurl+addImg }}" style="width:66;height:57;" onclick="numAdd" type="2"></image>
+						</div>
+					</div>
+				</scroller>
+				
+				<div class="num-bottom">
+					<div class="num-pay" onclick="addShop">
+						<text class="white">加入购物车</text>
+					</div>
+					<div class="num-sell" onclick="goNext" url="shop/purchase.js">
+						<text class="white">立即购买</text>
+					</div>
+				</div>
+				
+				
+			</div>
+		</div>
+		
+	</div>
+	
+	
+</template>
+
+<style>
+	.mask{
+		position: fixed;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		top: 0;
+		background-color: rgba(0,0,0,.7);
+	}
+	.suibian-wrap{
+		width: 750;
+		height: 900;
+		position: fixed;
+		left: 0;
+		bottom: 0;
+		background-color: #fff;
+	}
+	.section{
+		width: 750;
+		height: 900;
+		position: relative;
+		padding-left: 28;
+	}
+	.scroller{
+		height: 600;
+	}
+	.body{
+		width:750;
+		background-color: #f1f1f1;
+	}
+	.wrapper{
+		width:750;
+		/*margin-bottom:200;*/
+	}
+	.white{
+		color:#fff;
+		font-size:30;
+	}
+	.total{
+		color:#666;
+		font-size:24;
+	}
+	.contact{
+		color:#999;
+		font-size:22;
+	}
+	.crowd-top{
+		width:750;
+		background-color: #fff;
+	}
+	.crowd-min-top{
+		width:750;
+		height:362;
+	}
+	.title{
+		color:#333;
+		font-size:28;
+		lines:2;
+		flex-wrap: wrap;
+		flex:1;
+	}
+	.crowd-min-name{
+		padding-left:28;
+		padding-right:28;
+		background-color: #fff;
+		padding-top:20;
+		padding-bottom:20;
+	}
+	.crowd-title{
+		flex-direction: row;
+	}
+	.crowd-title-left{
+		flex-direction: row;
+		flex:1;
+	}
+	.crowd-title-right{
+		border-left-color:#dedede;
+		border-left-width:1 ;
+		flex:0.2;
+		justify-content: center;
+		align-items: center;
+	}
+	.cloth-progress{
+		width:690;
+		height:34;
+		border-color:#ccc;
+		border-width:1;
+		background-color: #fff;
+		border-radius: 20;
+		margin-top:15;
+		margin-bottom:15;
+	}
+	.cloth-part{
+		width:284;
+		background-color: #EBAC51;
+		height:33;
+		border-top-left-radius: 20;
+		border-bottom-left-radius: 20;
+	}
+	.cloth-price{
+		flex-direction: row;
+		margin-bottom:15;
+	}
+	.cloth-people{
+		flex-direction: row;
+	}
+	.crowd-center{
+		background-color: #fff;
+		width:750;
+		height:100;
+		margin-top:18;
+		margin-bottom:18;
+		border-top-width:1;
+		border-bottom-width:1;
+		border-color:#dedede;
+		padding-left:28;
+		padding-right:28;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+	.crowd-fail{
+		flex:1;
+		justify-content: center;
+		align-items: flex-start;
+	}
+	.comment-list{
+		width:750;
+		background-color:#fff;
+		height:345;
+		justify-content: center;
+		align-items: center;
+	}
+	.list-one{
+		width:750;
+		padding-left:28;
+		padding-right:28;
+		padding-top:28;
+		padding-bottom:28;
+		justify-content: center;
+		align-items: flex-start;
+	}
+	.gray{
+		color:#999;
+		font-size:24;
+	}
+	.list-top{
+		flex-direction: row;
+		width:694;
+		margin-bottom:15;
+	}
+	.list-bottom{
+		flex-direction: row;
+	}
+	.list-left{
+		width:100;
+		height:100;
+		border-radius: 100;
+		margin-right:20;
+	}
+	.black{
+		color:#333;
+		font-size:24;
+	}
+	.list-right{
+		width:574;
+	}
+	.list-name{
+		flex-direction: row;
+		height:35;
+		justify-content: flex-start;
+		align-items: center;
+	}
+	.list-date{
+		flex:1;
+		justify-content: flex-end;
+		align-items: flex-end;
+	}
+	.one-img{
+		margin-top:20;
+		flex-direction: row;
+		justify-content: space-between;
+		width:694;
+	}
+	.img{
+		width:100;
+		height:100;
+	}
+	.look-comments{
+		width:264;
+		height:60;
+		border-width:2;
+		border-color:#ff9503;
+		justify-content: center;
+		align-items: center;
+	}
+	.cloth-line{
+		width:750;
+		height:100;
+		position:relative;
+		margin-bottom:80;
+		margin-top:40;
+		justify-content: center;
+		align-items: center;
+	}
+	.cloth-line-top{
+		width:750;
+		height:3;
+		background-color: #ccc;
+		position: absolute;
+		top:20;
+		left:0;
+	}
+	.cloth-like{
+		width:300;
+		height:80;
+		position:absolute;
+		top:-18;
+		left:233;
+		justify-content: center;
+		align-items: center;
+		background-color: #f1f1f1;
+		flex-direction: row;
+	}
+	.crowd-fixed{
+		width:750;
+		height:100;
+		background-color: #fff;
+		position: fixed;
+		bottom:0;
+		left:0;
+		flex-direction: row;
+		border-top-width:1;
+		border-top-color:#dedede;
+	}
+	.crowd-one{
+		flex:1;
+		height:100;
+		justify-content: center;
+		align-items: center;
+		flex-direction: row;
+	}
+	.crowd-two{
+		background-color: #ff9503;
+	}
+	.crowd-three{
+		background-color: #ff4f00;
+	}
+	.crowd-contact{
+		flex:1;
+		justify-content: center;
+		align-items: center;
+		border-right-width:1;
+		border-right-color:#dedede;
+	}
+	.crowd-collect{
+		flex:1;
+		justify-content: center;
+		align-items: center;
+	}
+	.num-choice{
+		width:750;
+		height:1334;
+		background-color: rgba(0,0,0,0.8);
+		position: fixed;
+		top:0;
+		left:0;
+	}
+	.min-num{
+		width:750;
+		/*height:892;*/
+		background-color: #fff;
+		position: fixed;
+		bottom:0;
+		left:0;
+	}
+	.num-top{
+		width:750;
+		padding-left:28;
+		padding-right:28;
+		margin-bottom:150;
+	}
+	.num-bottom{
+		position: absolute;
+		bottom:0;
+		left:0;
+		height:100;
+		width:750;
+		flex-direction: row;
+	}
+	.num-pay{
+		flex:1;
+		height:100;
+		background-color: #ff9503;
+		justify-content: center;
+		align-items: center;
+	}
+	.num-sell{
+		flex:1;
+		height:100;
+		background-color: #ff4f00;
+		justify-content: center;
+		align-items: center;
+	}
+	.pay-say{
+		background-color: #fff;
+		width:694;
+		height:108;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		margin-top:25;
+	}
+	.pay-black{
+		color:#323333;
+		font-size:30;
+	}
+	.pay-add{
+		flex:1;
+		flex-direction: row;
+		justify-content: flex-end;
+		align-items: flex-end;
+	}
+	.pay-num{
+		width:80;
+		height:57;
+		justify-content: center;
+		align-items: center;
+	}
+	.num-min-center{
+		width:694;
+		border-bottom-width:1;
+		border-top-width:1;
+		border-bottom-color:#ccc;
+		border-top-color:#ccc;
+		padding-top:10;
+		padding-bottom:10;
+	}
+	.num-size{
+		width:694;
+		padding-top:30;
+	}
+	.size{
+		color:#333;
+		font-size:28;
+		justify-content: center;
+		align-items: flex-start;
+		margin-bottom:30;
+	}
+	.size-choice{
+		flex-wrap: wrap;
+		width:694;
+		flex-direction: row;
+	}
+	.min-size{
+		padding-top:18;
+		padding-bottom:18;
+		padding-left:42;
+		padding-right:42;
+		border-radius: 20;
+		background-color: #f2f2f2;
+		justify-content: center;
+		align-items: center;
+		margin-bottom:20;
+		margin-right:30;
+	}
+	.big-size{
+		background-color: #ff9503;
+	}
+	.min-color{
+		color:#333;
+		font-size:24;
+	}
+	.big-color{
+		color:#fff;
+		font-size:24;
+	}
+	.num-min-top{
+		flex-direction: row;
+		width:694;
+		height:200;
+	}
+	.num-img{
+		width:184;
+		height:184;
+		justify-content: center;
+		align-items: center;
+		background-color: #fff;
+	}
+	.num-detail{
+		margin-left:10;
+		width:498;
+		padding-top:22;
+	}
+	.num-price{
+		flex:0.9;
+	}
+	.detail-top{
+		flex-direction: row;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	var api = require('../api.js');
+	var goods_id;
+	
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+			tImg:'',
+			title:'复古民族风毛衣链长款女秋冬 仿蜜蜡吊坠百搭配饰项链挂件饰品',
+			fImg:'enjoy.png',
+			price:'¥2099',
+  			allImg:'icon_suhliang@3x.png',
+  			listColor:'卡其色',
+	      	listSize:'L',
+	      	hImg:'ditu_pangzi176@3x.png',
+  			listName:'天空一声巨响',
+	      	vipImg:'icon_huangsevip@3x.png',
+	      	loveImg:'icon_huangseaixin@3x.png',
+	      	date:'2016.6.26',
+	      	detail:'宝贝很好~很适合，穿着老舒服了呢~好评、好评、好评、大家快行动起来。',
+	      	oImg:'ditu_BBBB@3x.png',
+	      	downImg:'down.png',
+	      	conImg:'icon_erji@3x.png',
+	      	collImg:'icon_xingxing1hao@3x.png',
+	      	collImgActive: 'fish_collect.png',
+	      	addImg:'icon_yuanjiaojiahao@3x.png',
+	      	moveImg:'icon_yuanjiaojiaohao@3x.png',
+	      	num:1,
+	      	sizeType:'',
+	      	colorType:'',
+	      	sizeList:[],
+	      	colorList:[],
+	      	clothImg:'banner_yifu@3x.png',
+	      	total:'963',
+	      	hideImg:'icon_heisexiaochacha@3x.png',
+	      	clothPrice:'¥2999',
+	      	partImg:'icon_huaquanxiaowenhao@3x.png',
+	      	bnum:'61',
+	      	shown:false,
+	      	collectState:false
+		},
+		methods:{
+			goNext:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			toggle:function(){
+				this.shown = !this.shown;
+			},
+			changeSize:function(e){
+				var self = this;
+				self.sizeType = e.target.attr.state;
+			},
+			changeColor:function(e){
+				var self = this;
+				self.colorType = e.target.attr.state;
+			},
+			numAdd:function(e){
+				var self = this;
+				var num = self.num;
+				if(e.target.attr.type=='1'){
+					if( num > 1 ){
+						num--;
+						self.num = num;
+					}
+				}else{
+					num++;
+					self.num = num;
+				}
+			},
+			collect:function(){
+				var self = this;
+				
+				var stream = require('@weex-module/stream');
+				var modal = require('@weex-module/modal');
+				
+				stream.fetch({
+					method:'POST',
+					url:api.apiurl.apiurl + 'api/set/member/collection',
+					type: 'json',
+					body:`mid=7&goods_id=${goods_id}`
+				},function(data){
+					if( data.data.code==2000 ){
+						self.collectState = true;
+						modal.toast({
+							message: '收藏成功',
+							duration: 2
+						})
+					}else{
+						modal.toast({
+							message: '收藏失败',
+							duration: 2
+						})
+					}
+				},function(e){
+					
+				})
+				self.collectState = !self.collectState;
+			},
+			addShop:function(){
+				var self = this;
+				var stream = require('@weex-module/stream');
+				stream.fetch({
+					method:'POST',
+					url:api.apiurl.apiurl + 'api/add/cart',
+					type:'json',
+					body:`goods_id=7&mid=7&goods_spec=7&goods_num=7`
+				},function(data){
+					console.log(data)
+				},function(e){
+					
+				})
+			}
+		},
+		created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		},
+		init:function(){
+			var self = this;
+			var stream = require('@weex-module/stream');
+			var modal = require('@weex-module/modal');
+			// 获取内容
+			stream.fetch({
+				method:'POST',
+				url:api.apiurl.apiurl + 'api/goods/info',
+				type: 'json',
+				body:`goods_id=5`
+			},function(data){
+				self.tImg = data.data.data.title_pic;
+				self.price = data.data.data.origin_price;
+				self.title = data.data.data.goods_name;
+				self.sizeList = data.data.data.goods_spec.size;
+				self.colorList = data.data.data.goods_spec.color;
+				self.clothImg = data.data.data.title_pic;
+				self.total = data.data.data.goods_stock;
+				goods_id = data.data.data.goods_id;
+				console.log(data)
+			},function(e){
+				
+			});
+			
+			// 添加足迹
+			stream.fetch({
+				method:'POST',
+				url:api.apiurl.apiurl + 'api/set/member/browse',
+				type: 'json',
+				body:`mid=7&goods_id=7`
+			},function(data){
+				console.log(data)
+			},function(e){
+				
+			})
+		}
+	}
+</script>

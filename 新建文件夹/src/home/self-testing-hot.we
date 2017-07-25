@@ -1,0 +1,237 @@
+<template>
+	<div class="body">
+		<div id="header">
+			<wxc-navpage background-color="{{ nav.bgColor }}" title="{{ nav.title }}" title-color="{{ nav.titleColor }}" left-item-src="{{ url + nav.leftImgSrc }}" right-item-title="{{ nav.rightItemTitle }}" right-item-color="{{ nav.titleColor }}"></wxc-navpage>
+		</div>
+		
+		<div class="menu">
+			<div class="menu-item" onclick="goNext" url="home/self-testing-new.js">
+				<text class="menu-text">最新上线</text>
+			</div>
+			<div class="menu-item menu-active">
+				<text class="menu-text menu-active-text">最受欢迎</text>
+			</div>
+			<div class="menu-item" onclick="goNext" url="home/self-testing-all.js">
+				<text class="menu-text">全部分类</text>
+			</div>
+		</div>
+		
+		<scroller class="scroller" onloadmore="onloadmore" loadmoreoffset="10">
+			<div class="arc-item" repeat="item in list" onclick="goNext" url="{{ jumpUrl }}">
+				<image class="arc-img" src="{{ url + item.img }}"></image>
+				<div class="arc-info">
+					<div class="arc-title">
+						<text class="arc-title-text">{{ item.title }}</text>
+					</div>
+					<div class="arc-other">
+						<text class="arc-other-text">{{ item.time }}</text>
+						<text class="arc-other-text">{{ item.num }}已测</text>
+					</div>
+				</div>
+			</div>
+		</scroller>
+	
+	</div>
+</template>
+
+<style>
+	.body{
+		background-color: #f8f8f8;
+	}
+	.menu{
+		margin-top: 88;
+		height: 88;
+		flex-direction: row;
+		background-color: #fff;
+		border-bottom-width: 1;
+		border-color: #ebebeb;
+	}
+	.menu-item{
+		height: 86;	
+		flex: 1;
+		align-items: center;
+		justify-content: center;
+	}
+	.menu-text{
+		font-size: 28;
+		color: #333;
+	}
+	.menu-active{
+		border-bottom-width: 4;
+		border-color: #58bf65;
+	}
+	.menu-active-text{
+		color: #58bf65;
+	}
+	.scroller{
+	}
+	.arc-item{
+		height: 200;
+		padding-top: 30;
+		padding-bottom: 30;
+		padding-left: 35;
+		padding-right: 35;
+		flex-direction: row;
+		border-bottom-width: 2;
+		border-color: #eee;
+		background-color: #fff;
+	}
+	.arc-img{
+		width: 214;
+		height: 140;
+	}
+	.arc-info{
+		margin-left: 35;
+		flex: 1;
+	}
+	.arc-title{
+		height: 88;
+		overflow: hidden;
+	}
+	.arc-title-text{
+		line-height: 44;
+		color: #333;
+		font-size: 30;
+		lines: 2;
+	}
+	.arc-other{
+		height: 30px;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: flex-end;
+		margin-top: 24;
+	}
+	.arc-other-text{
+		font-size: 24;
+		color: #bbb;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+	
+	
+	module.exports = {
+		data: {
+			dir: 'dist',
+			url: api.apiurl.resurl,
+			jumpUrl: 'home/testing-details.js',
+			nav: {
+				title: '健康自测',
+				bgColor: '#58bf65',
+				titleColor: '#fff',
+				leftImgSrc: '/images/back.png',
+				rightItemTitle: '关闭'
+			},
+			list:[
+				{
+					id: 1,
+					img:'/images/png_07.png',
+					title: '爱吃柚子的人注意 秋冬季吃柚子的六大好处',
+					time: '2016-10-18',
+					num: '32456'
+				},
+				{
+					id: 2,
+					img:'/images/png_07.png',
+					title: '爱吃柚子的人注意 秋冬季吃柚子的六大好处',
+					time: '2016-10-18',
+					num: '32456'
+				},
+				{
+					id: 3,
+					img:'/images/png_07.png',
+					title: '爱吃柚子的人注意 秋冬季吃柚子的六大好处',
+					time: '2016-10-18',
+					num: '32456'
+				},
+				{
+					id: 4,
+					img:'/images/png_07.png',
+					title: '爱吃柚子的人注意 秋冬季吃柚子的六大好处',
+					time: '2016-10-18',
+					num: '32456'
+				},
+				{
+					id: 5,
+					img:'/images/png_07.png',
+					title: '爱吃柚子的人注意 秋冬季吃柚子的六大好处',
+					time: '2016-10-18',
+					num: '32456'
+				},
+				{
+					id: 6,
+					img:'/images/png_07.png',
+					title: '爱吃柚子的人注意 秋冬季吃柚子的六大好处',
+					time: '2016-10-18',
+					num: '32456'
+				}
+			]
+		},
+		methods:{
+			onloadmore: function() {
+				if(!this.triggered) {
+					for(var i = 0; i <= 10; i++) {
+						this.list.push({
+							id: 6,
+							img:'/images/png_07.png',
+							title: '爱吃柚子的人注意 秋冬季吃柚子的六大好处',
+							time: '2016-10-18',
+							num: '32456'
+						});
+					}
+				}
+				this.triggered = false;
+			},
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+	      	this.$on('naviBar.rightItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator');
+				var nextUrl = this.getBase() + 'home/index.js';
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+	      	});
+    	}
+	}
+</script>

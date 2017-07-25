@@ -1,0 +1,347 @@
+<template>
+	<div class="wrapper">
+		<wxc-navpage height={{navHeight}} background-color={{bgColor}} title={{title}} title-color={{color}}  left-item-src="{{resUrl+lSrc}}"  right-item-title="{{rTitle}}" right-item-color="#fff"></wxc-navpage>
+		<scroller>
+			<div class="content">
+				<div class="content-top">
+					<div class="author" onclick="goNext" url="personal/add_friends.js">
+						<image src="{{resUrl+aImg}}" style="width:60;height:60;"></image>
+						<text style="font-size:30;color:#333;margin-right:20;margin-left:20;">{{name}}</text>
+						<div class="post">
+							<text style="font-size:26;color:#fff;">{{post}}</text>
+						</div>
+					</div>
+					<div class="head">
+						<text style="color:#333;font-size:36;">{{title2}}</text>
+						<div class="caption">
+							<text style="color:#333;font-size:30;">{{caption}}</text>
+							<image src="{{resUrl+capImg}}" style="width:690;height:300;margin-top:25;margin-bottom:25;"></image>
+						</div>
+						<div class="time">
+							<div class="time-left">
+								<text class="hour">{{time}}</text>
+							</div>
+							<div class="time-right">
+								<div class="right1">
+									<image src="{{resUrl+Dun}}" style="width:33;height:36;justify-content: center;align-items: center;"></image>
+								</div>
+								<div class="help" onclick="dot">
+									<image src="{{resUrl}}{{ state == 1 ? img : help }}" style="width:38;height:36;margin-right:9;"></image>
+									<text class="hour {{ state ==1 ? 'num-active' : '' }}">{{num}}</text>
+								</div>
+								<div class="talk">
+									<image src="{{resUrl+talk}}" style="width:38;height:36;margin-right:9;"></image>
+									<text class="hour">{{num2}}</text>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="comment">
+					<div class='comment-title'>
+						<text style="color:#333;font-size:30;margin-left:30;">评论</text>
+					</div>
+					<div class="comment-wrapper">
+						<div class="comment-content">
+							<div class="comment-img" onclick="goNext" url="personal/add_friends.js">
+								<image src="{{resUrl+fImg}}" style="width:60;height:60;"></image>
+							</div>
+							<div class="comment-right">
+								<text style="color:#333;font-size:30;">{{comName}}</text>
+								<div class="date">
+									<text class="year">{{year}}</text>
+									<text class="year">{{dTime}}</text>
+								</div>
+								<text style="color:#333;font-size:26;">{{comText}}</text>
+								<div class="comment-reply" style="flex-direction: row;justify-content: flex-end;align-items: flex-end;">
+									<image src="{{resUrl+rImg}}" style="width:39;height:36;margin-right:23;"></image>
+									<text style="font-size:26;color:#9b9b9b;">回复</text>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class='writer'>
+					<div class="writer-wrapper">
+						<div class="writer-left">
+							<input type="text" value="" maxlength="50" placeholder="发表评论...." placeholder-color="#bbb" class="inp"  />
+						</div>
+						<div class="writer-right">
+							<image src="{{resUrl+pImg}}" style="width:60;height:60;"></image>
+						</div>
+					</div>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.wrapper{
+		background-color:#f8f8f8;
+		flex-direction: column;
+	}
+	.header{
+		background-color:#58bf65;
+		height:88;
+		width:750;
+		position:fixed;
+		top:0;
+		left:0;
+		flex-direction: row;
+	}
+	.back{
+		flex:0.1;
+		height:88;
+		justify-content:center;
+		align-items:center;
+	}
+	.title{
+		flex:1;
+		justify-content: center;
+		align-items:flex-start;
+		height:88;
+	}
+	.content{
+		margin-top:88;
+		width:750;
+	}
+	.content-top{
+		padding-top:37;
+		padding-bottom:37;
+		padding-left:32;
+		padding-right:32;
+		background-color: #fff;
+	}
+	.author{
+		flex-direction: row;
+		justify-content:flex-start;
+		align-items: center;
+		background-color:#fff ;
+	}
+	.post{
+		background-color:#bbb;
+		border-radius:4;
+		width:60;
+		height:32;
+		justify-content: center;
+		align-items: center;
+	}
+	.head{
+		margin-top:23;
+	}
+	.caption{
+		margin-top:48;
+		justify-content: center;
+		align-items: center;
+	}
+	.hour{
+		color:#bbb;
+		font-size:30;
+	}
+	.time{
+		flex-direction: row;
+	}
+	.time-left{
+		flex:0.3;
+	}
+	.time-right{
+		flex:1;
+		justify-content:flex-end;
+		align-items: flex-end;
+		flex-direction: row;
+	}
+	.right1{
+		margin-right:34;
+	}
+	.help{
+		flex-direction: row;
+		margin-right:20;
+	}
+	.talk{
+		flex-direction: row;
+	}
+	.num-active {
+		color: #58bf65;
+	}
+	.comment{
+		margin-top:24;
+		background-color: #fff;
+		width:750;
+		height:366;
+		margin-bottom:100;
+	}
+	.comment-wrapper{
+		width:750;
+	}
+	.comment-title{
+		border-bottom-width:1;
+		border-bottom-color:#ebebeb;
+		justify-content: center;
+		align-items: flex-start;
+		height:66;
+	}
+	.year{
+		color:#bbb;
+		font-size:26;
+	}
+	.comment-content{
+		flex-direction: row;
+		padding-top:27;
+		padding-bottom:27;
+		padding-left:30;
+		padding-right:30;
+		border-bottom-width:1;
+		border-bottom-color:#ebebeb;
+	}
+	.comment-img{
+		width:60;
+		height:60;
+		margin-right:30;
+	}
+	.comment-right{
+		flex:1;
+	}
+	.date{
+		flex-direction: row;
+		margin-bottom:12;
+		margin-top:12;
+	}
+	.writer{
+		position:fixed;
+		bottom:0;
+		left:0;
+		width:750;
+		height:100;
+		border-top-width:2;
+		border-top-color:#D8D8D8;
+		justify-content: center;
+		align-items: center;
+		flex-direction: row;
+		background-color: #F5F5F6;
+	}
+	.writer-wrapper{
+		padding-left:30;
+		flex-direction: row;
+		padding-right:30;
+		justify-content: center;
+		align-items: center;
+	}
+	.writer-left{
+		width:640;
+		height:68;
+		border-width:1;
+		border-color:#D8D8D8;
+		border-radius: 10;
+		margin-right:20;
+		background-color: #fff;
+	}
+	.inp{
+		border:none;
+		outline:none;
+		height:70;
+		font-size:30;
+		color:#333;
+		padding-left:10;
+		padding-right:10;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+	module.exports = {
+		data: {
+			dir:'dist',
+			resUrl:api.apiurl.resurl,
+			navHeight:88,
+			bgColor:'#58bf65',
+			title:'大家都爱吃零食',
+			color:'#fff',
+			lSrc:'/images/back.png',
+			rTitle:'创建',
+			bImg:'/images/back.png',
+			aImg:'/images/o_8_60.png',
+			name:'Chelse',
+			post:'楼主',
+			title2:'大家都爱吃零食 但不要让零食喧宾夺主',
+			caption:'大家都爱吃零食，但不要让零食喧宾夺主。零食，通常是指一日三餐时间点之外的时间里所食用的食品。一般情况下，人的生活中除了一日三餐被称为正餐食物外......',
+			capImg:'/images/png_02.png',
+			time:'16-11-13',
+			Dun:'/images/jubao.png',
+			help:'/images/Fill_36.png',
+			img:'/images/Fill_30_zhun.png',
+			talk:'/images/talk_02.png',
+			num:'2322',
+			num2:'12322',
+			state:0,
+			comText:'是啊，深有体会，不能多吃！但是嘴巴管不住啊，闹心闹心T.T',
+			comName:'肥猫',
+			year:'16-11-04 ',
+			dTime:' 10:50',
+			fImg:'/images/o_002_60.png',
+			pImg:'/images/send.png',
+			rImg:'/images/talk_02.png'
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+	      	this.$on('naviBar.rightItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator');
+				var nextUrl = this.getBase() + 'talk/found_card.js';
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+	      	});
+    	},
+		methods: {
+			dot: function(e){
+				if(this.state===0){
+					this.state=1;
+					this.num++;
+				}else{
+					this.state=0;
+					this.num--;
+				}
+				
+			},
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf(dist) + "dist");
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		}
+	};
+</script>

@@ -1,0 +1,282 @@
+<template>
+	<div class="body">
+		<yd-min-navbar navbar="{{navbar}}"></yd-min-navbar>
+		<scroller>
+			<div class="cloth-container">
+				<div class="product-img">
+					<image src="{{ resurl+nImg }}" style="width:750;height:358;"></image>
+				</div>
+				<div class="cloth-wrapper">
+					<div class="cloth-line">
+						<div class="cloth-line-top"></div>
+						<div class="cloth-like">
+							<text style="color:#666;font-size:26;">猜你喜欢</text>
+						</div>
+					</div>
+					<div class="cloth-all" repeat="item in clothList" onclick="goNext" url="{{ item.url }}">
+						<div class="cloth-img">
+							<image src="{{ resurl + item.img }}" style="width:212;height:182;"></image>
+						</div>
+						<div class="cloth-detail">
+							<text style="color:#989898;font-size:24;margin-top:15;">{{ item.name }}</text>
+							<div class="cloth-price">
+								<div class="part-price">
+									<text style="color:#E6491A;font-size:26;">{{ item.price }}</text>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+.body{
+	background-color: #F1F1F1;
+}
+.cloth-container{
+	width:750;
+}
+.cloth-line{
+	width:2;
+	height:50;
+}	
+.cloth-wrapper{
+	padding-left:25;
+	padding-right:25;
+	padding-top:20px;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	margin-bottom:100;
+}
+.cloth-all{
+	border-color:#ccc;
+	border-width:1;
+	margin-bottom:15;
+	width: 213;
+}
+.cloth-img{
+	width:212;
+	height:182;
+}
+.cloth-detail{
+	width:212;
+	padding-left:15;
+	padding-right:15;
+	background-color: #fff;
+}
+.cloth-price{
+	flex-direction: row;
+	margin-bottom:15;
+}
+.cloth-people{
+	flex-direction: row;
+}
+.part-price{
+	flex:1;
+}
+.cloth-line{
+	width:694;
+	position:relative;
+	margin-bottom:40;
+}
+.cloth-line-top{
+	width:694;
+	height:3;
+	background-color: #ccc;
+	position: absolute;
+	top:20;
+	left:0;
+}
+.cloth-like{
+	width:153;
+	height:80;
+	position:absolute;
+	top:-18;
+	left:269;
+	justify-content: center;
+	align-items: center;
+	background-color: #f1f1f1;
+}
+.cloth-select{
+	width:750;
+}
+	.list-one{
+		margin-bottom:25;
+		border-color:#dedede;
+		border-bottom-width:1;
+		border-top-width:1;
+		width:750;
+		height:212;
+		padding-left:28;
+		padding-right:28;
+		padding-top:23;
+		padding-bottom:23;
+		background-color: #fff;
+		justify-content: center;
+		align-items: center;
+	}
+	.one-img{
+		width:170;
+		height:170;
+		margin-right:35;
+	}
+	.one-detail{
+		width:420;
+	}
+	.list-top{
+		flex-direction: row;
+		width:694;
+		height:170;
+		justify-content: center;
+		align-items: center;
+	}
+	.one-choice{
+		flex-direction: row;
+	}
+	.one-start{
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.one-title{
+		color:#323333;
+		font-size:24;
+		lines:2;
+	}
+	.color{
+		color:#989898;
+		font-size:24;
+	}
+	.one-color{
+		flex:1;
+	}
+	.num{
+		color:#323333;
+		font-size:24;
+	}
+	.one-choice{
+		margin-top:10;
+		margin-bottom:20;
+	}
+	.one-red{
+		color:#d9491e;
+		font-size:26;
+	}
+	.on-gray{
+		color:#989898;
+		font-size:26;
+		text-decoration:line-through;
+	}
+	.list-select{
+		width:42;
+		height:42;
+		border-width:1;
+		border-color:#dfdfdf;
+		margin-right:20;
+		border-radius: 100;
+	}
+	.list-bottom{
+		width:750;
+		height:100;
+		background-color: #fff;
+		position: fixed;
+		bottom:0;
+		left:0;
+		justify-content: center;
+		align-items: center;
+		flex-direction: row;
+	}
+	.list-count{
+		width:510;
+		height:100;
+	}
+	.list-shop{
+		width:240;
+		height:100;
+		background-color: #ff4f00;
+		justify-content: center;
+		align-items: center;
+	}
+	.product-img{
+		width:750;
+		height:358;
+		margin-bottom:40;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-min-navbar.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '产品详情',
+		        rightTitle: '',
+		        rightImage: '',
+		        rightColor: '',
+		        centerColor: '#323333',
+		        backgroundColor: "#eadbc7"
+	      	},
+	      	clothList:[
+	      		{
+	      			img:'ditu_budabuxiaoyanjge@3x.png',
+	      			name:'百搭休闲衣男',
+	      			price:'¥1699',
+	      			url:'shop/cloth_detail.js'
+	      		},
+	      		{
+	      			img:'ditu_budabuxiaoyanjge@3x.png',
+	      			name:'百搭休闲衣男',
+	      			price:'¥1699',
+	      			url:'shop/cloth_detail.js'
+	      		},
+	      		{
+	      			img:'ditu_budabuxiaoyanjge@3x.png',
+	      			name:'百搭休闲衣男',
+	      			price:'¥1699',
+	      			url:'shop/cloth_detail.js'
+	      		},
+	      		{
+	      			img:'ditu_budabuxiaoyanjge@3x.png',
+	      			name:'百搭休闲衣男',
+	      			price:'¥1699',
+	      			url:'shop/cloth_detail.js'
+	      		},
+	      		{
+	      			img:'ditu_budabuxiaoyanjge@3x.png',
+	      			name:'百搭休闲衣男',
+	      			price:'¥1699',
+	      			url:'shop/cloth_detail.js'
+	      		},
+	      		{
+	      			img:'ditu_budabuxiaoyanjge@3x.png',
+	      			name:'百搭休闲衣男',
+	      			price:'¥1699',
+	      			url:'shop/cloth_detail.js'
+	      		}
+	      	],
+	      	seleImg:'icon_shenghuashiyan@3x.png',
+	      	nImg:'ditu_BBBdatu@3x.png'
+		},
+		methods:{
+			goNext:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			}
+		},
+		created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		}
+	}
+</script>

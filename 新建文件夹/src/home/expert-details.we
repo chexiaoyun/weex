@@ -1,0 +1,274 @@
+<template>
+	<div class="body">
+		<div id="header">
+			<wxc-navpage background-color="{{ nav.bgColor }}" title="{{ nav.title }}" title-color="{{ nav.titleColor }}" left-item-src="{{ url + nav.leftImgSrc }}"></wxc-navpage>
+		</div>
+		
+		<scroller class="scroller">
+			<div class="expert-item">
+				<image class="expert-img" src="{{ url + expert.img }}"></image>
+				<div class="expert-info">
+					<div class="ex-info">
+						<text class="ex-name">{{ expert.name }}</text>
+						<text class="ex-leave">{{ expert.leave }}</text>
+					</div>
+					<div class="address">
+						<image class="ad-icon" src="{{ url + addressIcon }}"></image>
+						<text class="ad-text">{{ expert.address }}</text>
+					</div>
+					<div class="hs-name"><text class="ex-hs-name">{{ expert.hsName }}</text></div>
+					<div class="hs-type"><text class="ex-hs-type">{{ expert.type }}</text></div>
+				</div>
+			</div>
+			
+			<div class="experience">
+				<div class="exp-title">
+					<text class="exp-title-text">职业经历</text>
+				</div>
+				<text class="exp-content">{{ expert.experience }}</text>
+			</div>
+			
+			<div class="experience">
+				<div class="exp-title">
+					<text class="exp-title-text">职业经历</text>
+				</div>
+				<div class="doctor-time">
+					<div class="time-item {{ $index % 2 != 0 ? 'time-right' : '' }}" repeat="item in expert.time" onclick="goNext" url="{{ jumpUrl }}">
+						<text class="time-text {{ item.state == 1 ? 'disable' : '' }}">{{ item.text }}</text>
+					</div>
+				</div>
+			</div>
+		</scroller>
+		
+	</div>
+</template>
+
+<style>
+	.body{
+		background-color: #f8f8f8;
+	}
+	.scroller{
+		margin-top: 88;
+	}
+	.expert-item{
+		height: 198;
+		background-color:#fff;
+		padding-left: 36;
+		padding-right: 36;
+		padding-top: 30;
+		padding-bottom: 50;
+		border-width: 1;
+		border-color: #ebebeb;
+		flex-direction: row;
+	}
+	.expert-img{
+		width: 120;
+		height: 120;
+	}
+	.expert-info{
+		margin-left: 35;
+	}
+	.ex-info{
+		height: 40;
+		flex-direction: row;
+	}
+	.ex-name{
+		font-size: 30;
+		color: #333;
+		justify-content: center;
+	}
+	.ex-leave{
+		margin-left: 25;
+		width: 94;
+		height: 28;
+		border-width: 1;
+		border-color: #4a90e2;
+		color: #4a90e2;
+		font-size: 20;
+		border-radius: 2;
+		justify-content: center;
+		text-align: center;
+		line-height: 22;
+	}
+	.address{
+		height: 40;
+		flex-direction: row;
+		align-items: center;
+	}
+	.ad-icon{
+		width: 22;
+		height: 32;
+	}
+	.ad-text{
+		margin-left: 8;
+		lines: 1;
+		font-size: 24;
+		color: #bbb;
+	}
+	.hs-name{
+		height: 34;
+		justify-content: center;
+	}
+	.hs-type{
+		height: 34;
+		justify-content: center;
+	}
+	.ex-hs-name{
+		font-size: 24;
+		color: #333;
+		lines: 1;
+	}
+	.ex-hs-type{
+		font-size: 24;
+		color: #333;
+		lines: 1;
+	}
+	.experience{
+		margin-top: 24;
+		padding-left: 40;
+		padding-right: 40;
+		padding-top: 20;
+		background-color:#fff;
+		border-width: 1;
+		border-color: #ebebeb;
+	}
+	.exp-title{
+		height: 30;
+		justify-content: center;
+	}
+	.exp-title-text{
+		font-size: 28;
+		color: #333;
+	}
+	.exp-content{
+		padding-top: 40;
+		padding-bottom: 40;
+		font-size: 26;
+		color: #333;
+		text-align: justify;
+		line-height: 36;
+	}
+	.doctor-time{
+		flex-direction: row;
+		flex-wrap: wrap;
+		background-color: #fff;
+		padding-bottom: 40;
+		padding-left: 5;
+		padding-right: 5;
+	}
+	.time-item{
+		width: 300;
+		height: 88;
+		justify-content: center;
+		align-items: center;
+		background-color: #ebebeb;
+		margin-top: 40;
+	}
+	.time-text{
+		font-size: 28px;
+		color: #bbb;
+	}
+	.time-right{
+		margin-left: 50;
+	}
+	.disable{
+		color: #333;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+
+	module.exports = {
+		data: {
+			dir: 'dist',
+			url: api.apiurl.resurl,
+			addressIcon: '/images/address.png',
+			jumpUrl: 'home/doctor-info.js',
+			nav: {
+				title: '医师详情',
+				bgColor: '#58bf65',
+				titleColor: '#fff',
+				leftImgSrc: '/images/back.png'
+			},
+			expert:{
+				id: 1,
+				img: '/images/doctor.png',
+				name: '田建辉',
+				leave: '主任医师',
+				address: '上海市宛平南路725号',
+				hsName: '上海中医药大学附属龙华医院',
+				type: '肿瘤科',
+				experience: '田建辉，医学博士，主任医师，硕士研究生导师。中国中医科学院中医传承博士后，导师为全国名中医刘嘉湘教授。中国中医药学会肿瘤分会委员。国家自然科学基金项目评审专家。上海市卫生局优秀青年医学人才，英国访问学者。美国SCI收录期刊《肿瘤结合医学治疗杂志》、《中国肺癌杂志》、《上海中医药杂志》审稿人。',
+				time:[
+					{
+						text: '10-24  周一  上午',
+						state: 0,
+						value: 1,
+					},
+					{
+						text: '10-25  周二  下午',
+						state: 1,
+						value: 2,
+					},
+					{
+						text: '10-26  周三  上午',
+						state: 1,
+						value: 3,
+					},
+					{
+						text: '10-27  周四  下午',
+						state: 0,
+						value: 4,
+					}
+				]
+			}
+		},
+		methods:{
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+    	}
+	}
+</script>

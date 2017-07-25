@@ -1,0 +1,167 @@
+<template>
+	<div class="body">
+		<yd-min-navbar navbar="{{navbar}}"></yd-min-navbar>
+		<scroller>
+			<div class="address-wrapper">
+				<div class="address-list" repeat="item in list">
+					<div class="list-img">
+						<image src="{{ resurl+item.img }}" style="width:194;height:194;"></image>
+					</div>
+					<div class="list-detail">
+						<div class="list-tel">
+							<image src="{{ resurl+item.minimg }}" style="width:36;height:36;"></image>
+							<text class="list-text">{{ item.tel }}</text>
+						</div>
+						<div class="list-distance">
+							<image src="{{ resurl+item.disimg }}" style="width:37;height:37;"></image>
+							<text class="list-text">{{ item.distance }}</text>
+						</div>
+						<div class="list-add">
+							<image src="{{ resurl+item.addimg }}" style="width:31;height:43;"></image>
+							<text class="list-text">{{ item.add }}</text>
+						</div>
+					</div>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.body{
+		width:750;
+		background-color: #fff;
+	}
+	.list-text{
+		color:#666;
+		font-size:28;
+		margin-left:10;
+	}
+	.address-wrapper{
+		width:750;
+		border-top-width:1;
+		border-top-color:#ad8e6c;
+		margin-bottom:50;
+	}
+	.address-list{
+		padding-top:32;
+		padding-left:28;
+		padding-right:28;
+		flex-direction: row;
+	}
+	.list-img{
+		width:194;
+		height:194;
+		margin-right:18;
+	}
+	.list-tel,.list-distance,.list-add{
+		flex-direction: row;
+		margin-top:23;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-min-navbar.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '线下地址',
+		        rightTitle: '',
+		        rightImage: '',
+		        rightColor: '',
+		        centerColor: '#323333',
+		        backgroundColor: "#eadbc7"
+	      	},
+	      	list:[
+	      		{
+	      			id:1,
+	      			img:'icon_ikea@3x.png',
+	      			minimg:'icon_iphone@3x.png',
+	      			tel:'188-8888-8888',
+	      			disimg:'icon_rize@3x.png',
+	      			distance:'3.7km',
+	      			addimg:'icon_xianxiadizhi@3x.png',
+	      			add:'上海市宝山区淞桥东路111号',
+	      		},
+	      		{
+	      			id:2,
+	      			img:'icon_ikea@3x.png',
+	      			minimg:'icon_iphone@3x.png',
+	      			tel:'188-8888-8888',
+	      			disimg:'icon_rize@3x.png',
+	      			distance:'3.7km',
+	      			addimg:'icon_xianxiadizhi@3x.png',
+	      			add:'上海市宝山区淞桥东路111号',
+	      		},
+	      		{
+	      			id:3,
+	      			img:'icon_ikea@3x.png',
+	      			minimg:'icon_iphone@3x.png',
+	      			tel:'188-8888-8888',
+	      			disimg:'icon_rize@3x.png',
+	      			distance:'3.7km',
+	      			addimg:'icon_xianxiadizhi@3x.png',
+	      			add:'上海市宝山区淞桥东路111号',
+	      		},
+	      		{
+	      			id:4,
+	      			img:'icon_ikea@3x.png',
+	      			minimg:'icon_iphone@3x.png',
+	      			tel:'188-8888-8888',
+	      			disimg:'icon_rize@3x.png',
+	      			distance:'3.7km',
+	      			addimg:'icon_xianxiadizhi@3x.png',
+	      			add:'上海市宝山区淞桥东路111号',
+	      		},
+	      		{
+	      			id:5,
+	      			img:'icon_ikea@3x.png',
+	      			minimg:'icon_iphone@3x.png',
+	      			tel:'188-8888-8888',
+	      			disimg:'icon_rize@3x.png',
+	      			distance:'3.7km',
+	      			addimg:'icon_xianxiadizhi@3x.png',
+	      			add:'上海市宝山区淞桥东路111号',
+	      		},
+	      		{
+	      			id:6,
+	      			img:'icon_ikea@3x.png',
+	      			minimg:'icon_iphone@3x.png',
+	      			tel:'188-8888-8888',
+	      			disimg:'icon_rize@3x.png',
+	      			distance:'3.7km',
+	      			addimg:'icon_xianxiadizhi@3x.png',
+	      			add:'上海市宝山区淞桥东路111号',
+	      		}
+	      	]
+	   	},
+	   	created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		},
+		methods:{
+			
+		},
+		init:function(){
+			var self = this;
+			var stream = require('@weex-module/stream');
+			var modal = require('@weex-module/modal');
+			stream.fetch({
+				method:'POST',
+				url:api.apiurl.apiurl + 'api/get/member/follow',
+				type: 'json',
+				body:`lat=21&lng=12`
+			},function(data){
+				console.log(data)
+			},function(e){
+				
+			})
+		}
+	}
+</script>

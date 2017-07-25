@@ -1,0 +1,121 @@
+<template>
+	<div class="body">
+		<yd-min-navbar navbar="{{navbar}}"></yd-min-navbar>
+		<scroller>
+			<div class="address-wrapper">
+				<div class="new-list" repeat="item in newList">
+					<div class="new-top">
+						<div class="new-title">
+							<text class="title">{{ item.title }}</text>
+						</div>
+						<div class="new-date">
+							<text class="white">{{ item.date }}</text>
+						</div>
+					</div>
+					<text class="detail">{{ item.detail }}</text>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.body{
+		width:750;
+		background-color: #f1f1f1;
+	}
+	.address-wrapper{
+		width:750;
+		border-top-width:1;
+		border-top-color:#ad8e6c;
+		margin-bottom:50;
+	}
+	.new-list{
+		width:750;
+		height:150;
+		background-color: #fff;
+		justify-content: center;
+		align-items: center;
+		padding-left:28;
+		padding-right:28;
+		border-bottom-width:1;
+		border-bottom-color:#dfdede;
+		margin-bottom:20;
+	}
+	.white{
+		color:#666;
+		font-size:26;
+	}
+	.new-top{
+		flex-direction: row;
+		width:694;
+		margin-bottom:20;
+	}
+	.new-title{
+		flex:1;
+		justify-content: center;
+		align-items: flex-start;
+	}
+	.title{
+		color:#323333;
+		font-size:30;
+	}
+	.detail{
+		color:#666;
+		font-size:26;
+		lines:1;
+	}
+	.new-date{
+		flex:1;
+		justify-content: center;
+		align-items: flex-end;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-min-navbar.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '商家消息',
+		        rightTitle: '',
+		        rightImage: '',
+		        rightColor: '',
+		        centerColor: '#323333',
+		        backgroundColor: "#eadbc7"
+	      	},
+	      	newList: [
+	      		{
+	      			title:'男装降价啦',
+	      			date:'2017-03-22',
+	      			detail:'我们曾渴望命运的波澜我们曾渴望命运的波澜我们曾渴望命运的波澜我们曾渴望命运的波澜我们曾渴望命运的波澜'
+	      		},
+	      		{
+	      			title:'男装降价啦',
+	      			date:'2017-03-22',
+	      			detail:'我们曾渴望命运的波澜我们曾渴望命运的波澜我们曾渴望命运的波澜我们曾渴望命运的波澜我们曾渴望命运的波澜'
+	      		},
+	      		{
+	      			title:'男装降价啦',
+	      			date:'2017-03-22',
+	      			detail:'我们曾渴望命运的波澜我们曾渴望命运的波澜我们曾渴望命运的波澜我们曾渴望命运的波澜我们曾渴望命运的波澜'
+	      		},
+	      		{
+	      			title:'男装降价啦',
+	      			date:'2017-03-22',
+	      			detail:'我们曾渴望命运的波澜我们曾渴望命运的波澜我们曾渴望命运的波澜我们曾渴望命运的波澜我们曾渴望命运的波澜'
+	      		}
+	      	]
+	   },
+	   created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		}
+	}
+</script>

@@ -1,0 +1,441 @@
+<template>
+	<div class="body">
+		<div id="header">
+			<wxc-navpage background-color="{{ nav.bgColor }}" title="{{ nav.title }}" title-color="{{ nav.titleColor }}" left-item-src="{{ url + nav.leftImgSrc }}"></wxc-navpage>
+		</div>
+		
+		<div class="my-info">
+			<div class="info-item">
+				<div class="info-text">
+					<image class="icon-sex" src="{{ url + iconSexNan }}"></image>
+				</div>
+				<text class="info-key">性别</text>
+			</div>
+			<div class="info-item">
+				<div class="info-text">
+					<text class="info-value">{{ result.age }}</text>
+				</div>
+				<text class="info-key">岁</text>
+			</div>
+			<div class="info-item">
+				<div class="info-text">
+					<text class="info-value">{{ result.height }}</text>
+				</div>
+				<text class="info-key">cm</text>
+			</div>
+			<div class="info-item">
+				<div class="info-text">
+					<text class="info-value">{{ result.weight }}</text>
+				</div>
+				<text class="info-key">kg</text>
+			</div>
+			<div class="info-item">
+				<div class="info-text">
+					<text class="info-value">{{ result.blood }}</text>
+				</div>
+				<text class="info-key">型</text>
+			</div>
+			<div class="info-edit" onclick="goNext" url="home/info-edit.js">
+				<image class="icon-edit" src="{{ url + iconEdit }}"></image>
+			</div>
+		</div>
+		
+		<div class="my-parame">
+			<div class="par-item" repeat="item in result.parame" onclick="goNext" url="{{ item.url }}">
+				<div class="par-icon">
+					<image src="{{ url + item.src }}" style="width:{{ item.width }};height:{{ item.height }};"></image>
+				</div>
+				<text class="par-key">{{ item.title }}</text>
+				<text class="par-value">{{ item.value }}</text>
+				<text class="par-other">{{ item.other }}</text>
+			</div>
+		</div>
+		
+		<div class="other-info">
+			<div class="ot-item ot-column">
+				<text class="ot-value ot-red">{{ result.age }}</text>
+				<text class="ot-key">身体年龄</text>
+			</div>
+			<div class="ot-item">
+				<text class="ot-key">BMI</text>
+				<text class="ot-value">{{ result.bmi }}</text>
+			</div>
+			<div class="ot-item">
+				<text class="ot-key">基础代谢</text>
+				<text class="ot-value">{{ result.metabolize }}</text>
+			</div>
+		</div>
+		<div class="other-content">
+			
+		</div>
+		
+		<!--<image class="icon-add" src="{{ url + iconAdd }}" onclick="toggleMask"></image>-->
+		
+		<!--<div class="mask" if="{{ maskState }}" onclick="toggleMask">
+			<div class="mask-section">
+				<div class="mask-item" repeat="item in result.mask" onclick="goNext" url="{{ item.url }}">
+					<div class="mask-box"><image class="mi-img" src="{{ url + item.src }}"></image></div>
+					<div class="mask-box"><text class="mi-text">{{ item.text }}</text></div>
+				</div>
+			</div>
+		</div>-->
+		
+	</div>
+</template>
+
+<style>
+	.body{
+		background-color: #f8f8f8;
+	}
+	.my-info{
+		margin-top: 88;
+		height: 127;
+		background-color: #fff;
+		border-bottom-width: 2;
+		border-color: #ebebeb;
+		flex-direction: row;
+		padding-left: 30;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+	}
+	.info-item{
+		flex: 1;
+		text-align: center;
+	}
+	.info-text{
+		height: 40;
+		flex-direction: row;
+		align-items: flex-end;
+		justify-content: center;
+	}
+	.icon-sex{
+		width: 31;
+		height: 31;
+	}
+	.info-value{
+		font-size: 30;
+		color: #333;
+	}
+	.info-key{
+		font-size: 28;
+		color:#bbb;
+		margin-top: 10;
+		flex: 1;
+		text-align: center;
+	}
+	.info-edit{
+		width: 130;
+		height: 127;
+		background-color: #ebebeb;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+	.icon-edit{
+		width: 44;
+		height: 44;
+	}
+	.my-parame{
+		background-color: #fff;
+		margin-top: 20;
+		flex-direction: row;
+		flex-wrap: wrap;
+		border-width: 1;
+		border-color: #ebebeb;
+		padding-left: 1;
+	}
+	.par-item{
+		width: 250;
+		height: 180;
+		border-width: 1;
+		border-color: #ebebeb;
+		margin-left: -1;
+		margin-top: -1;
+		text-align: center;
+	}
+	.par-icon{
+		height: 60;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		margin-top: 10;
+		margin-bottom: 10;
+	}
+	.par-key{
+		flex: 1;
+		font-size: 24;
+		color: #bbb;
+		text-align: center;
+	}
+	.par-value{
+		flex: 1;
+		font-size: 30;
+		color: #333;
+		text-align: center;
+		margin-top: 4;
+	}
+	.par-other{
+		flex: 1;
+		text-align: right;
+		font-size: 24;
+		color: #bbb;
+		margin-left: 20;
+		margin-right: 20;
+		margin-top: -5;
+	}
+	
+	.other-info{
+		background-color: #fff;
+		margin-top: 20;
+		flex-direction: row;
+		flex-wrap: wrap;
+		border-width: 1;
+		border-color: #ebebeb;
+		padding-left: 1;
+	}
+	.ot-item{
+		flex: 1;
+		height: 100;
+		text-align: center;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+	.ot-key{
+		font-size: 24;
+		color: #bbb;
+		text-align: center;
+	}
+	.ot-value{
+		font-size: 26;
+		color: #333;
+		text-align: center;
+		margin-left: 15;
+	}
+	.ot-red{
+		color: #e71731;
+		margin-bottom: 10;
+	}
+	.ot-column{
+		flex-direction: column;
+	}
+	.other-content{
+		background-color: #fff;
+		border-bottom-width: 1;
+		border-color: #ebebeb;
+		height: 140;
+	}
+	.icon-add{
+		width: 81;
+		height: 80;
+		position: fixed;
+		right: 30;
+		bottom: 40;
+	}
+	.mask{
+		position: fixed;
+		background-color: #fff;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		align-items: center;
+		justify-content: center;
+	}
+	.mask-section{
+		width: 750;
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: center;
+	}
+	.mask-item{
+		width: 250;
+		margin-bottom: 100;
+	}
+	.mask-box{
+		flex-direction: row;
+		justify-content: center;
+	}
+	.mi-img{
+		width: 130;
+		height: 130;
+		text-align: center;
+	}
+	.mi-text{
+		font-size: 30;
+		color: #333;
+		width: 250;
+		text-align: center;
+		margin-top: 20;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+	
+	module.exports = {
+		data: {
+			dir: 'dist',
+			url: api.apiurl.resurl,
+			iconSexNan: '/images/nan.png',
+			iconSexNv: '/images/nv.png',
+			iconEdit: '/images/edit_44.png',
+			iconAdd: '/images/add_81.png',
+			maskState: false,
+			nav: {
+				title: '我的健康',
+				bgColor: '#58bf65',
+				titleColor: '#fff',
+				leftImgSrc: '/images/back.png'
+			},
+			result:{
+				sex: '1',
+				age: '25',
+				height: '175',
+				weight: '80.0',
+				blood: 'A',
+				bmi: '25.8',
+				metabolize: '',
+				parame:[
+					{
+						src: '/images/xueyang.png',
+						width: 40,
+						height: 54,
+						title: '血氧',
+						value: '90.0',
+						url: 'home/oxygen.js',
+						other: '%'
+					},
+					{
+						src: '/images/tiwen.png',
+						width: 21,
+						height: 50,
+						title: '体温',
+						value: '37.2',
+						url: 'home/temperature.js',
+						other: '°C'
+					},
+					{
+						src: '/images/xinlv.png',
+						width: 58,
+						height: 54,
+						title: '心率',
+						value: '69',
+						url:'home/my-healthy.js',
+						other: '次'
+					},
+					{
+						src: '/images/xueya.png',
+						width: 28,
+						height: 50,
+						title: '血压',
+						value: '115/73',
+						url: 'home/pressure.js',
+						other: 'mmHg'
+					},
+					{
+						src: '/images/xuetang.png',
+						width: 45,
+						height: 50,
+						title: '血糖',
+						value: '5.0',
+						url: 'home/blood-sugar.js',
+						other: 'mmol/L'
+					},
+					{
+						src: '/images/xindian.png',
+						width: 53,
+						height: 50,
+						title: '人体分析',
+						value: '---',
+						url: 'home/analysis.js',
+						other: ''
+					}
+				],
+//				mask:[
+//					{
+//						id: 1,
+//						src: '/images/o_lan.png',
+//						text: '人体分析',
+//						url: 'home/analysis.js'
+//					},
+//					{
+//						id: 2,
+//						src: '/images/o_hong.png',
+//						text: '血氧',
+//						url: 'home/oxygen.js'
+//					},
+//					{
+//						id: 3,
+//						src: '/images/o_lv.png',
+//						text: '体温',
+//						url: 'home/pressure.js'
+//					},
+//					{
+//						id: 4,
+//						src: '/images/o_cheng.png',
+//						text: '血压',
+//						url: 'home/pressure.js'
+//					},
+//					{
+//						id: 5,
+//						src: '/images/o_hulan.png',
+//						text: '血糖',
+//						url: 'home/blood-sugar.js'
+//					}
+//				]
+			}
+		},
+		methods:{
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			},
+			toggleMask:function(){
+				this.maskState = !this.maskState;
+			}
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+    	}
+	}
+</script>

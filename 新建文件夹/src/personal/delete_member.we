@@ -1,0 +1,171 @@
+<template>
+	<div class="wrapper">
+		<wxc-navpage height={{navHeight}} background-color={{bgColor}} title={{title}} title-color={{color}}  left-item-src="{{resUrl+lSrc}}"  right-item-title={{rTitle}} right-item-color="#fff"></wxc-navpage>
+		<div class="content">
+			<scroller>
+				<div class="box-wrapper" repeat="item in rows" if="show">
+					<div class="circle-box">
+						<div class="circle {{item.state ? 'active' : ''}}" onclick="changeState" index="{{$index}}"></div>
+					</div>
+					<div class="img">
+						<image src="{{resUrl+item.img}}" style="width:80;height:80;" if="show"></image>
+					</div>
+					<div class="name">
+						<text style="font-size:36;color:#333;">{{item.name}}</text>
+					</div>
+				</div>
+			</scroller>
+		</div>
+	</div>
+</template>
+
+<style>
+	.wrapper{
+		background-color:#f8f8f8;
+		flex-direction: column;
+	}
+	.header{
+		background-color:#58bf65;
+		height:88;
+		width:750;
+		position:fixed;
+		top:0;
+		left:0;
+		flex-direction: row;
+	}
+	.back{
+		flex:0.2;
+		height:88;
+		justify-content:center;
+		align-items:center;
+	}
+	.title{
+		flex:1;
+		justify-content: center;
+		align-items: center;
+		height:88;
+	}
+	.next{
+		flex:0.2;
+		justify-content: center;
+		align-items:center;
+	}
+	.content{
+		margin-top:112;
+		width:750;
+		height:auto;
+	}
+	.box-wrapper{
+		width:750;
+		height:120;
+		background-color: #fff;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		border-bottom-width:1;
+		border-bottom-color:#bbb;
+	}
+	.circle-box{
+		margin-left:29;
+		margin-right:29;
+	}
+	.circle{
+		border-width:2;
+		border-color:#d8d8d8;
+		width:42;
+		height:42;
+		border-radius:50;
+	}
+	.img{
+		width:80;
+		height:80;
+		background-color: #d8d8d8;
+	}
+	.name{
+		margin-left:30;
+		flex:1;
+	}
+	.active{
+		background-color: #e64340;
+		border-width:0;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+	module.exports = {
+		data: {
+			dir:'dist',
+			resUrl:api.apiurl.resurl,
+			bImg:'/images/back.png',
+			navHeight:88,
+			bgColor:'#58bf65',
+			title:'删除群成员',
+			color:'#fff',
+			lSrc:'/images/back.png',
+			rTitle:'删除',
+			rows:[
+				{img:'/images/r_7_80.png',name:'狗蛋儿',state:false},
+				{img:'/images/r_3_80.png',name:'冯敏',state:false},
+				{img:'/images/r_7_80.png',name:'abc',state:false},
+				{img:'/images/r_7_80.png',name:'abc',state:true}
+			],
+			show:true
+		},
+		methods: {
+			changeState: function (e) {
+				this.rows[e.target.attr.index].state = !this.rows[e.target.attr.index].state;
+			},
+			delete: function (e) {
+				if(this.rows[e.target.attr.index].state == true){
+//					this.show = !this.show;
+				}else{
+					return;
+				}
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+	      	this.$on('naviBar.rightItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator');
+				var nextUrl = this.getBase() + 'personal/member.js';
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+	      	});
+    	}
+	};
+</script>

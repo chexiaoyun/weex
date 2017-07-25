@@ -1,0 +1,258 @@
+<template>
+    <div class="tabbar">
+        <!--<div repeat={{tabItems}} src="{{src}}" style="flex: 1;"  onclick="onclickitem">
+            <div class="container" style="background-color:#fff;">
+                <image class="tab-icon" src ="{{image}}" resize="contain"></image>
+                <text class="tab-text" >{{title}}</text>
+            </div>
+        </div>-->
+        <div style="flex: 1;" class="wrapper">
+            <div class="container" style="background-color:#fff;"  onclick="onclickitem" url="home/index.js">
+                <image class="tab-icon" src = "{{ resurl+inImg }}" resize="contain"></image>
+                <text class="tab-text" >首页</text>
+            </div>
+            <div class="container" style="background-color:#fff;"  onclick="onclickitem" url="classify/classify.js">
+                <image class="tab-icon" src ="{{ resurl+classImg }}" resize="contain"></image>
+                <text class="tab-text" >分类</text>
+            </div>
+            <div class="container" style="background-color:#fff;"  onclick="show">
+                <image class="tab-icon" src ="{{ resurl+addImg }}" resize="contain" style="width:87;height:87;"></image>
+                <!--<text class="tab-text" ></text>-->
+            </div>
+            <div class="container" style="background-color:#fff;"  onclick="onclickitem" url="shop/shop.js">
+                <image class="tab-icon" src ="{{ resurl+shopImg }}" resize="contain"></image>
+                <text class="tab-text" >购物车</text>
+            </div>
+            <div class="container" style="background-color:#fff;"  onclick="onclickitem" url="member/login.js">
+                <image class="tab-icon" src ="{{ resurl+meImg }}" resize="contain"></image>
+                <text class="tab-text" >我</text>
+            </div>
+        </div>
+        
+        <div class="screen" if="{{shown}}">
+        	<div class="transit">
+        		<div class="circle circle1" onclick="onclickitem" url="home/clothing_fund.js">
+        			<text class="white">服装众筹</text>
+        		</div>
+        		<div class="circle circle2" onclick="onclickitem" url="home/love_fund.js">
+        			<text class="white">爱心众筹</text>
+        		</div>
+        		<div class="circle circle3" onclick="onclickitem" url="home/fashion_show.js">
+        			<text class="white">时装发布会</text>
+        		</div>
+        		<div class="circle circle4" onclick="onclickitem" url="home/original_designer.js">
+        			<text class="white">原创设计师</text>
+        		</div>
+        	</div>
+        </div>
+    </div>
+</template>
+
+<style>
+	.wrapper{
+		width:750;
+		flex-direction: row;
+		position: relative;
+	}
+    .container {
+        flex: 1;
+        flex-direction: column;
+        align-items:center;
+        justify-content:center;
+        height: 100;
+    }
+    .top-line {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2;
+    }
+    .tab-icon {
+        margin-bottom:10;
+        width: 55;
+        height: 44;
+    }
+    .tab-text {
+        text-align: center;
+        font-size: 22;
+        color:#848385;
+    }
+    .tabbar{
+        flex-direction: row;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100;
+        background-color: #fafafa;
+        border-width:1;
+        border-color:#bbb;
+    }
+    .text{
+    	text-align: center;
+        font-size: 22;
+        color:#58bf65;
+    }
+    .screen{
+    	width:750;
+    	height:1185;
+    	position: fixed;
+    	top:0;
+    	left:0;
+    	background-color: rgba(0,0,0,0.6);
+    }
+    .transit{
+    	position:absolute;
+    	bottom:0;
+    	left:0;
+    	width:750;
+    	height:255;
+    }
+    .circle{
+    	width:90;
+    	height:90;
+    	border-radius: 100;
+    	background-color: #ebac51;
+    	justify-content: center;
+    	align-items: center;
+    	position: absolute;
+    }
+    .white{
+    	color:#fff;
+    	font-size:24;
+    	text-align: center;
+    }
+    .circle1{
+    	bottom:0;
+    	left:178;
+    }
+    .circle2{
+    	bottom:69;
+    	left:274;
+    }
+    .circle3{
+    	left:390;
+    	bottom:69;
+    }
+    .circle4{
+    	left:482;
+    	bottom:0;
+    }
+</style>
+
+<script>
+	var api = require('../api.js');
+    module.exports = {
+        data:{
+            dir: 'dist',
+            baseURL: '',
+            shown:false,
+            resurl:api.apiurl.resurl,
+            inImg:'icon_shouye@3x.png',
+            classImg:'icon_huansgefangkuai@3x.png',
+            addImg:'icon_jiafuhao@3x.png',
+            shopImg:'shop.png',
+            meImg:'member.png',
+            tabItems: [
+              {
+                index: 0,
+                title: '首页',
+                icon: '',
+                image: api.apiurl.resurl+'icon_shouye@3x.png', 
+				selectedImage:  api.apiurl.resurl+'',
+                src: 'home/index.js'
+              },
+              {
+                index: 1,
+                title: '分类',
+                icon: '',
+                image: api.apiurl.resurl+'icon_huansgefangkuai@3x.png',
+				selectedImage: api.apiurl.resurl+'icon_fenlei@3x.png',
+                src: 'classify/classify.js'
+              },
+              {
+                index: 2,
+                title: '众筹',
+                icon: '',
+                image: api.apiurl.resurl+'icon_jiafuhao@3x.png',
+				selectedImage: '',
+                src: ''
+              },
+              {
+                index: 3,
+                title: '购物车',
+                icon: '',
+                image: api.apiurl.resurl+'shop.png',
+				selectedImage: api.apiurl.resurl+'icon_gouwuche@3x.png',
+                src: 'shop/shop.js'
+              },
+              {
+                index: 4,
+                title: '我',
+                icon: '',
+                image:api.apiurl.resurl+'member.png' ,
+				selectedImage: api.apiurl.resurl+'icon_wo@3x.png',
+                src: 'member/login.js'
+              },
+            ]
+        },
+
+//      created: function(){
+//          var bundleUrl = this.$getConfig().bundleUrl;
+//          bundleUrl = new String(bundleUrl);
+//
+//          var nativeBase;
+//          var dir = 'dist/';
+//          var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+//
+//          var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+//          if (isAndroidAssets) {
+//            nativeBase = 'file://assets/' + this.dir + '/';
+//          }
+//          else if (isiOSAssets) {
+//            nativeBase =  bundleUrl.substring(0, bundleUrl.lastIndexOf('dist/')) + "dist/";
+//          }
+//          else {
+//           //http://127.0.0.1:12580/examples/build/reading.js
+//            var host = 'localhost:12580';
+//            var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+//            if (matches && matches.length >= 2) {
+//              host = matches[1];
+//            }
+//            //nativeBase = 'http://' + host + '/weex_tmp/h5_render/';
+//            nativeBase = 'http://' + host + '/' + this.dir + '/';
+//          }
+//          var h5Base = './index.html?page=./' + this.dir + '/';
+//          //Native端
+//          var base = nativeBase;
+//          //H5端
+//          if (typeof window === 'object') {
+//            base = h5Base;
+//          }
+//          this.baseURL = base;
+//      },
+        methods: {
+//          onclickitem: function(e){
+//              var vm = this;
+//              var obj =  e.target.attr;
+//              var url = this.baseURL + obj.src;
+//              var navigator = require('@weex-module/navigator');
+//              var params = {
+//                  url: url,
+//                  animated : 'true',
+//              }
+//              navigator.push(params, function(e) {});
+//          },
+			onclickitem:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+            show:function(){
+            	this.shown = !this.shown;
+            }
+        }
+    }
+</script>

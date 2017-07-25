@@ -1,0 +1,241 @@
+<template>
+	<div class="body">
+		<div id="header">
+			<wxc-navpage background-color="{{ nav.bgColor }}" title="{{ nav.title }}" title-color="{{ nav.titleColor }}" left-item-src="{{ url + nav.leftImgSrc }}"></wxc-navpage>
+		</div>
+		
+		<scroller class="scroller" onloadmore="onloadmore" loadmoreoffset="10">
+			<div class="expert-item" repeat="item in list" onclick="goNext" url="{{ jumpUrl }}">
+				<image class="expert-img" src="{{ url + item.img }}"></image>
+				<div class="expert-info">
+					<div class="ex-info">
+						<text class="ex-name">{{ item.exName }}</text>
+						<text class="ex-leave">{{ item.exLeave }}</text>
+					</div>
+					<div class="ex-intro">
+						<text class="ex-title">擅长：</text>
+						<text class="ex-text">{{ item.intro }}</text>
+					</div>
+				</div>
+			</div>
+		</scroller>
+		
+	</div>
+</template>
+
+<style>
+	.body{
+		background-color: #f8f8f8;
+	}
+	.scroller{
+		margin-top: 88;
+	}
+	.expert-item{
+		height: 178;
+		background-color:#fff;
+		padding-left: 36;
+		padding-right: 36;
+		padding-top: 30;
+		padding-bottom: 30;
+		border-width: 1;
+		border-color: #ebebeb;
+		flex-direction: row;
+	}
+	.expert-img{
+		width: 120;
+		height: 120;
+	}
+	.expert-info{
+		margin-left: 35;
+	}
+	.ex-info{
+		height: 44;
+		flex-direction: row;
+	}
+	.ex-name{
+		font-size: 30;
+		color: #333;
+		justify-content: center;
+	}
+	.ex-leave{
+		margin-left: 25;
+		width: 94;
+		height: 28;
+		border-width: 1;
+		border-color: #4a90e2;
+		color: #4a90e2;
+		font-size: 20;
+		border-radius: 2;
+		justify-content: center;
+		text-align: center;
+		line-height: 22;
+	}
+	.ex-intro{
+		flex-direction: row;
+	}
+	.ex-title{
+		font-size: 28;
+		color: #333;
+		line-height: 36;
+	}
+	.ex-text{
+		font-size: 28;
+		color: #bbb;
+		width: 450;
+		line-height: 36;
+		lines: 2;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+
+	module.exports = {
+		data: {
+			dir: 'dist',
+			url: api.apiurl.resurl,
+			state: 0,
+			selectId: 1 ,
+			selectIndex: 0,
+			jumpUrl: 'home/expert-details.js',
+			nav: {
+				title: '肿瘤科',
+				bgColor: '#58bf65',
+				titleColor: '#fff',
+				leftImgSrc: '/images/back.png'
+			},
+			list: [
+				{
+					id: 1,
+					img: '/images/doctor.png',
+					exName: '田建辉',
+					exLeave: '主任医师',
+					intro: '肺癌/妇科肿瘤/恶性淋巴瘤/肠癌等恶性肿瘤。'
+				},
+				{
+					id: 2,
+					img: '/images/doctor.png',
+					exName: '田建辉',
+					exLeave: '主任医师',
+					intro: '肺癌/妇科肿瘤/恶性淋巴瘤/肠癌等恶性肿瘤。'
+				},
+				{
+					id: 3,
+					img: '/images/doctor.png',
+					exName: '田建辉',
+					exLeave: '主任医师',
+					intro: '肺癌/妇科肿瘤/恶性淋巴瘤/肠癌等恶性肿瘤。'
+				},
+				{
+					id: 4,
+					img: '/images/doctor.png',
+					exName: '田建辉',
+					exLeave: '主任医师',
+					intro: '肺癌/妇科肿瘤/恶性淋巴瘤/肠癌等恶性肿瘤。'
+				},
+				{
+					id: 5,
+					img: '/images/doctor.png',
+					exName: '田建辉',
+					exLeave: '主任医师',
+					intro: '肺癌/妇科肿瘤/恶性淋巴瘤/肠癌等恶性肿瘤。'
+				},
+				{
+					id: 6,
+					img: '/images/doctor.png',
+					exName: '田建辉',
+					exLeave: '主任医师',
+					intro: '肺癌/妇科肿瘤/恶性淋巴瘤/肠癌等恶性肿瘤。'
+				},
+				{
+					id: 7,
+					img: '/images/doctor.png',
+					exName: '田建辉',
+					exLeave: '主任医师',
+					intro: '肺癌/妇科肿瘤/恶性淋巴瘤/肠癌等恶性肿瘤。'
+				},
+				{
+					id: 8,
+					img: '/images/doctor.png',
+					exName: '田建辉',
+					exLeave: '主任医师',
+					intro: '肺癌/妇科肿瘤/恶性淋巴瘤/肠癌等恶性肿瘤。'
+				},
+				{
+					id: 9,
+					img: '/images/doctor.png',
+					exName: '田建辉',
+					exLeave: '主任医师',
+					intro: '肺癌/妇科肿瘤/恶性淋巴瘤/肠癌等恶性肿瘤。'
+				},
+				{
+					id: 10,
+					img: '/images/doctor.png',
+					exName: '田建辉',
+					exLeave: '主任医师',
+					intro: '肺癌/妇科肿瘤/恶性淋巴瘤/肠癌等恶性肿瘤。'
+				}
+			]
+		},
+		methods:{
+			onloadmore: function() {
+				if(!this.triggered) {
+					for(var i = 0; i <= 10; i++) {
+						this.list.push({
+							id: i,
+							img: '/images/doctor.png',
+							exName: '田建辉',
+							exLeave: '主任医师',
+							intro: '肺癌/妇科肿瘤/恶性淋巴瘤/肠癌等恶性肿瘤。'
+						});
+					}
+				}
+				this.triggered = false;
+			},
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+    	}
+	}
+</script>

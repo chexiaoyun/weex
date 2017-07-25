@@ -1,0 +1,98 @@
+<template>
+	<div class='wrapper'>
+		<wxc-navpage height={{navHeight}} background-color={{bgColor}} title={{title}} title-color={{color}} right-item-title={{rTitle}} right-item-color="#fff"></wxc-navpage>
+		<div class="content">
+			<div class="min-wrapper">
+				<image src="{{resUrl+eImg}}" style="width:70;height:70;margin-right:30;"></image>
+				<text style="color:#58bf65;font-size:36;">密码修改成功</text>
+			</div>
+		</div>
+	</div>
+</template>
+
+<style>
+	.wrapper{
+		background-color:#f8f8f8;
+	}
+	.header{
+		background-color:#58bf65;
+		height:88;
+		width:750;
+		position:fixed;
+		top:0;
+		left:0;
+		justify-content: center;
+		align-items:center;
+	}
+	.content{
+		margin-top:88;
+		padding-top:30;
+		padding-left:41;
+		padding-right:41;
+	}
+	.min-wrapper{
+		background:#fff;
+		border-width:1;
+		border-color:#ebebeb;
+		border-radius:4;
+		width:666;
+		height:138;
+		justify-content: center;
+		align-items:center;
+		flex-direction: row;
+		background-color: #fff;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+	module.exports = {
+		data: {
+			dir:'dist',
+			resUrl:api.apiurl.resurl,
+			navHeight:88,
+			bgColor:'#58bf65',
+			title:'修改成功',
+			color:'#fff',
+			lSrc:'/images/back.png',
+			rTitle:'关闭',
+			eImg:'/images/dui.png'
+		},
+		methods: {
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		},
+		created: function() {
+	      	this.$on('naviBar.rightItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator');
+				var nextUrl = this.getBase() + 'personal/login.js';
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+	      	});
+    	}
+	}
+</script>

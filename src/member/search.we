@@ -1,0 +1,60 @@
+<template>
+	<div style="body">
+		<div class="search-top">
+			<div class="search-input">
+				<image src="{{ resurl+sImg }}" style="width:40;height:40;justify-content: center;align-items: center;"></image>
+				<input class="input" type="text" value="" />
+			</div>
+		</div>
+	</div>
+</template>
+
+<style>
+	.body{
+		width:750;
+		background-color:#fff;
+	}
+	.search-top{
+		width:750;
+		height:88;
+		background-color: #ebac51;
+		justify-content: center;
+		align-items: center;
+	}
+	.search-input{
+		width:560;
+		height:68;
+		border-width:1;
+		border-color:#ccc;
+		border-radius: 20;
+		background-color: #eee;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+	.input{
+		background-color: #eee;
+		outline:none;
+		border-left-color:#b5b5b5;
+		border-left-width:2;
+		flex:0.9;
+		height:40;
+		padding-left:10;
+		padding-right:10;
+		margin-left:10;
+		font-size:28;
+		color:#333;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-navbar.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+			sImg:'icon_sousuoqi@3x.png',
+		}
+	}
+</script>

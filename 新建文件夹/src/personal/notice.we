@@ -1,0 +1,136 @@
+<template>
+	<div class="wrapper">
+		<wxc-navpage height={{navHeight}} background-color={{bgColor}} title={{title}} title-color={{color}} title-font-family={{family}} left-item-src="{{resUrl+lSrc}}"  right-item-title={{rTitle}} right-item-color="#fff"></wxc-navpage>
+		<div class="area">
+			<textarea class="textarea" value="进群请及时修改群名片，谢谢配合！" type="text" maxlength="50" row="250" ></textarea>
+			<text style="position: absolute;bottom:29;right:40;color:#9b9b9b;font-size:26;">限50字以内</text>
+		</div>
+	</div>
+</template>
+
+<style>
+	.wrapper{
+		background-color:#f8f8f8;
+		flex-direction: column;
+	}
+	.header{
+		background-color:#58bf65;
+		height:88;
+		width:750;
+		position:fixed;
+		top:0;
+		left:0;
+		flex-direction: row;
+	}
+	.back{
+		flex:0.2;
+		height:88;
+		justify-content:center;
+		align-items:center;
+	}
+	.title{
+		flex:1;
+		justify-content: center;
+		align-items: center;
+		height:88;
+	}
+	.next{
+		flex:0.2;
+		justify-content: center;
+		align-items:center;
+	}
+	.area{
+		margin-top:112;
+		width:750;
+		height:264;
+		background-color: #fff;
+		position: relative;
+		justify-content: flex-start;
+		align-items: flex-start;
+		border-width:1;
+		border-color:#ebebeb;
+	}
+	.textarea{
+		background-color: #fff;
+		height:262;
+		width:750;
+		padding-left:40;
+		padding-right:40;
+		padding-top:22;
+		padding-bottom:22;
+		resize:none;
+		outline:none;
+		border:none;
+		color:#4a4a4a;
+		font-size:32;
+		justify-content: flex-start;
+		align-items: flex-start;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+	module.exports = {
+		data: {
+			dir:'dist',
+			resUrl:api.apiurl.resurl,
+			navHeight:88,
+			bgColor:'#58bf65',
+			title:'社群公告',
+			color:'#fff',
+			lSrc:'/images/back.png',
+			rTitle:'完成'			
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+	      	this.$on('naviBar.rightItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator');
+				var nextUrl = this.getBase() + 'personal/group.js';
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+	      	});
+    	},
+		methods:{
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		}
+	};
+</script>

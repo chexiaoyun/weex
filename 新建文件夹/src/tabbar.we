@@ -1,0 +1,145 @@
+<template>
+    <div class="tabbar">
+        <div repeat={{tabItems}} src="{{src}}" style="flex: 1;"  onclick="onclickitem">
+            <div class="container" style="background-color:#fafafa;">
+                <image class="tab-icon" src ="{{image}}" resize="contain"></image>
+                <text class="tab-text" >{{title}}</text>
+            </div>
+        </div>
+    </div>
+</template>
+
+<style>
+    .container {
+        flex: 1;
+        flex-direction: column;
+        align-items:center;
+        justify-content:center;
+        height: 100;
+    }
+    .top-line {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2;
+    }
+    .tab-icon {
+        margin-top:13;
+        width: 55;
+        height: 44;
+    }
+    .tab-text {
+        text-align: center;
+        font-size: 22;
+        color:#848385;
+    }
+    .tabbar{
+        flex-direction: row;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100;
+        background-color: #fafafa;
+        border-width:1;
+        border-color:#bbb;
+    }
+    .text{
+    	text-align: center;
+        font-size: 22;
+        color:#58bf65;
+    }
+</style>
+
+<script>
+	var api = require('./lib/api.js');
+    module.exports = {
+        data:{
+            dir: 'dist',
+            baseURL: '',
+            tabItems: [
+              {
+                index: 0,
+                title: '首页',
+                icon: '',
+                image: api.apiurl.resurl + '/images/tab_01_green.png', 
+				selectedImage:  api.apiurl.resurl + '/images/tab_01.png',
+                src: 'home/index.js'
+              },
+              {
+                index: 1,
+                title: '聊天',
+                icon: '',
+                image: api.apiurl.resurl + '/images/chat.png',
+				selectedImage: api.apiurl.resurl + '/images/tab_02_green.png',
+                src: 'talk/talk.js'
+              },
+              {
+                index: 2,
+                title: '社区',
+                icon: '',
+                image: api.apiurl.resurl + '/images/tab_03.png',
+				selectedImage: api.apiurl.resurl + '/images/tab_03_green.png',
+                src: 'personal/community.js'
+              },
+              {
+                index: 3,
+                title: '个人中心',
+                icon: '',
+                image: api.apiurl.resurl + '/images/tab_04.png',
+				selectedImage: api.apiurl.resurl + '/images/tab_04_green.png',
+                src: 'personal/login.js'
+              },
+            ]
+        },
+
+        created: function(){
+            var bundleUrl = this.$getConfig().bundleUrl;
+            bundleUrl = new String(bundleUrl);
+
+            var nativeBase;
+            var dir = 'dist/';
+            var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+
+            var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+            if (isAndroidAssets) {
+              nativeBase = 'file://assets/' + this.dir + '/';
+            }
+            else if (isiOSAssets) {
+              nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+            }
+            else {
+             //http://127.0.0.1:12580/examples/build/reading.js
+              var host = 'localhost:12580';
+              var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+              if (matches && matches.length >= 2) {
+                host = matches[1];
+              }
+              //nativeBase = 'http://' + host + '/weex_tmp/h5_render/';
+              nativeBase = 'http://' + host + '/' + this.dir + '/';
+            }
+            var h5Base = './index.html?page=./' + this.dir + '/';
+            //Native端
+            var base = nativeBase;
+            //H5端
+            if (typeof window === 'object') {
+              base = h5Base;
+            }
+            this.baseURL = base;
+        },
+        methods: {
+            onclickitem: function(e){
+                var vm = this;
+                var obj =  e.target.attr;
+                var url = this.baseURL + obj.src;
+                var navigator = require('@weex-module/navigator');
+                var params = {
+                    url: url,
+                    animated : 'true',
+                }
+                navigator.push(params, function(e) {});
+            }
+        }
+    }
+</script>

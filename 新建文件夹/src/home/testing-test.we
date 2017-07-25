@@ -1,0 +1,293 @@
+<template>
+	<div class="body">
+		<div id="header">
+			<wxc-navpage background-color="{{ nav.bgColor }}" title="{{ nav.title }}" title-color="{{ nav.titleColor }}" left-item-src="{{ url + nav.leftImgSrc }}" right-item-title="{{ nav.rightItemTitle }}" right-item-color="{{ nav.titleColor }}"></wxc-navpage>
+		</div>
+		
+		<div class="test">
+			<div class="test-box" id="test-box">
+				
+				<div class="item" repeat="item in list">
+					<div class="number">
+						<text class="current-num">{{ item.index + 1 }}</text>
+						<text class="slash">/</text>
+						<text class="total-num">{{ total }}</text>
+					</div>
+					<text class="content">{{ item.content }}</text>
+					<div class="option">
+						<div class="op-item {{ item.state == sitem.value ? 'active' : '' }}" repeat="sitem in item.option" index="{{ item.index }}" value='{{ sitem.value }}' onclick="changeOp">
+							<text class="op-num {{ item.state == sitem.value ? 'active-color' : '' }}">{{ $index + 1 }}</text>
+							<text class="op-text {{ item.state == sitem.value ? 'active-color' : '' }}">{{ sitem.text }}</text>
+						</div>
+					</div>
+					
+					<div class="submit" if=" $index + 1 >= total ">
+						<div class="submit-text" onclick="goNext" url="home/testing-result.js">
+							<text class="sb-text">提交</text>
+						</div>
+					</div>
+			
+				</div>
+				
+			</div>
+		</div>
+		
+	</div>
+</template>
+
+<style>
+	.body{
+		background-color: #f8f8f8;
+	}
+	.test{
+		flex-direction: row;
+		margin-top: 88;
+		width: 750;
+		overflow: hidden;
+	}
+	.test-box{
+		padding-top: 15;
+		flex-direction: row;
+		flex-wrap: nowrap;
+	}
+	.item{
+		width: 750;
+		padding-left: 35;
+		padding-right: 35;
+	}
+	.number{
+		height: 74;
+		flex-direction: row;
+		align-items: flex-end;
+	}
+	.current-num{
+		font-size: 72;
+		color: #333;
+	}
+	.slash{
+		font-size: 36;
+		color: #999;
+		margin-left: 5;
+		margin-right: 5;
+		margin-bottom: 13;
+	}
+	.total-num{
+		font-size: 36;
+		color: #999;
+		margin-bottom: 10;
+	}
+	.content{
+		margin-top: 90;
+		font-size: 36;
+		color: #333;
+		line-height: 52;
+	}
+	.option{
+		margin-top: 30;
+		margin-bottom: 50;
+	}
+	.op-item{
+		flex: 1;
+		margin-top: 20;
+		height: 106;
+		background-color: #fff;
+		border-radius: 4;
+		flex-direction: row;
+		align-items: center;
+		padding-left: 40;
+		padding-right: 40;
+	}
+	.op-num{
+		font-size: 36;
+		color: #bbb;
+	}
+	.op-text{
+		margin-left: 50;
+		font-size: 36;
+		color: #333;
+	}
+	.active{
+		background-color: #58bf65;
+	}
+	.active-color{
+		color: #fff;
+	}
+	.submit{
+		height: 88;
+		margin-top: 30;
+		margin-bottom: 50;
+		flex-direction: row;
+		justify-content: center;
+	}
+	.submit-text{
+		height: 88;
+		width: 620;
+		background-color: #58bf65;
+		border-radius: 4;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+	.sb-text{
+		color: #fff;
+		font-size: 36;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+	var animation = require('@weex-module/animation');
+	
+	module.exports = {
+		data: {
+			dir: 'dist',
+			url: api.apiurl.resurl,
+			total: '',
+			selectChange:[],
+			nav: {
+				title: '酸性体质自测',
+				bgColor: '#58bf65',
+				titleColor: '#fff',
+				leftImgSrc: '/images/back.png',
+				rightItemTitle: '关闭'
+			},
+			list:[
+				{
+					id:1,
+					content: '喜欢喝（碳酸）饮料？',
+					state: '',
+					option: [
+						{
+							value: 1,
+							text: '是'
+						},
+						{
+							value: 2,
+							text: '不是'
+						}
+					]
+				},
+				{
+					id:2,
+					content: '喜欢喝（碳酸）饮料？',
+					state: '',
+					option: [
+						{
+							value: 1,
+							text: '是'
+						},
+						{
+							value: 2,
+							text: '不是'
+						}
+					]
+				},
+				{
+					id:3,
+					content: '喜欢喝（碳酸）饮料？',
+					state: '',
+					option: [
+						{
+							value: 1,
+							text: '是'
+						},
+						{
+							value: 2,
+							text: '不是'
+						}
+					]
+				},
+				{
+					id:4,
+					content: '喜欢喝（碳酸）饮料？',
+					state: '',
+					option: [
+						{
+							value: 1,
+							text: '是'
+						},
+						{
+							value: 2,
+							text: '不是'
+						}
+					]
+				}
+			]
+		},
+		methods:{
+			changeOp: function(e){
+				this.list[e.target.attr.index].state = e.target.attr.value;
+				var index = e.target.attr.index + 1;
+				if( index < this.total ){
+					var testEl = this.$el('test-box');
+			        animation.transition(testEl, {
+			          	styles: {
+			            	transform: 'translate(-' + index * 750 + 'px, 0)'
+			          	},
+			          	duration: 500,
+			          	timingFunction: 'ease-in-out',
+			          	'transform-origin': 'center center',
+			          	delay: 0 
+			        },function(){
+			        	
+			        });
+				}
+	        	
+			},
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		},
+		created:function(){
+			this.total = this.list.length;
+			for( var i = 0 ; i < this.list.length ; i++ ){
+				this.list[i].index = i;
+			}
+			
+			this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+	      	this.$on('naviBar.rightItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator');
+				var nextUrl = this.getBase() + 'home/index.js';
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+	      	});
+		}
+	}
+</script>

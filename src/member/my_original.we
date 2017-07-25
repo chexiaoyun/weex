@@ -1,0 +1,363 @@
+<template>
+	<div class="body">
+		<yd-min-navbar navbar="{{navbar}}"></yd-min-navbar>
+		<scroller>
+			<div class="address-wrapper">
+				<div class="hot-wrapper">
+					<div class="hot-list">
+						<div class="hot-img">
+							<image src="{{ resurl+mimg }}" style="width:240;height:240;"></image>
+						</div>
+						<div class="hot-detail">
+							<div class="hot-title">
+								<text style="font-size:28;color:#333;flex:1;">{{ position }}</text>
+								<text style="color:#ebac51;font-size:26;align-items: flex-end;">{{ welcome }}人气</text>
+							</div>
+							<text style="font-size:28;color:#333;flex:1;margin-top:10;">设计风格</text>
+							<div class="hot-box">
+								<div class="hot-style">
+									<text class="hot-common">{{ style }}</text>
+								</div>
+								<div class="hot-style">
+									<text class="hot-common">{{ minstyle }}</text>
+								</div>
+							</div>
+							<text class="hot-common" style="lines:2;">{{ detail }}</text>
+						</div>
+					</div>
+				</div>
+				<div class="my-achieve">
+					<div class="my-title">
+						<text class="my-black">业绩</text>
+					</div>
+					<div class="my-cum">
+						<div class="cum-sell">
+							<text class="my-minblack">累计出售（件）</text>
+							<text class="my-num">{{ sellNum }}</text>
+						</div>
+						<div class="cum-sell" style="border:none;">
+							<text class="my-minblack">累计收益（元）</text>
+							<text class="my-num">{{ inNum }}</text>
+						</div>
+					</div>
+				</div>
+				<div class="my-product">
+					<div class="my-title my-title2">
+						<div class="my-left">
+							<text class="my-black">我的商品</text>
+						</div>
+						<div class="my-right">
+							<text class="my-minblack">更多</text>
+						</div>
+					</div>
+					<div class="product-wrapper">
+						<div class="product-list" repeat="item in productList">
+							<div class="product-img">
+								<image src="{{ resurl+item.img }}" style="width:218;height:186;"></image>
+							</div>
+							<div class="product-detail">
+								<text class="gray">{{ item.title }}</text>
+								<text class="price">{{ item.price }}</text>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="my-order">
+					<div class="my-title my-title2">
+						<div class="my-left">
+							<text class="my-black">订单记录</text>
+						</div>
+						<div class="my-right">
+							<text class="my-minblack">更多</text>
+						</div>
+					</div>
+					<div vlass="order-wrapper">
+						<div class="order-list" repeat="item in orderList">
+							<div class="order-left">
+								<text class="ord-color">{{ item.detail }}</text>
+							</div>
+							<div class="order-right">
+								<text class="ord-color">{{ item.date }}</text>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.body{
+		width:750;
+		background-color: #f1f1f1;
+	}
+	.list-text{
+		color:#999;
+		font-size:24;
+		margin-bottom:8;
+	}
+	.address-wrapper{
+		width:750;
+		border-top-width:1;
+		border-top-color:#ad8e6c;
+		margin-bottom:50;
+	}
+	.hot-wrapper{
+		width:750;
+		justify-content: center;
+		align-items: center;
+		background-color: #fff;
+		border-bottom-color:#dfdfdf;
+		border-bottom-width:1;
+	}
+	.hot-list{
+		width:694;
+		height:295;
+		background-color: #fff;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+	.hot-img{
+		margin-right:23;
+		height:240;
+		width:240;
+	}
+	.hot-common{
+		color:#989898;
+		font-size:28;
+	}
+	.hot-title{
+		flex-direction: row;
+	}
+	.hot-detail{
+		width:431;
+	}
+	.hot-style{
+		margin-top:10;
+		margin-bottom:10;
+		width:125;
+		height:50;
+		background-color: #f2f2f1;
+		border-radius: 20;
+		justify-content: center;
+		align-items: center;
+		margin-right:30;
+	}
+	.hot-box{
+		flex-direction: row;
+	}
+	.my-achieve{
+		width:750;
+		height:274;
+		border-width:1;
+		border-color:#dfdede;
+		background-color: #fff;
+		margin-top:28;
+	}
+	.my-title{
+		width:750;
+		height:80;
+		border-bottom-width:1;
+		border-bottom-color:#dfdede;
+		justify-content: center;
+		align-items: flex-start;
+		padding-left:28;
+		padding-right:28;
+	}
+	.my-black{
+		color:#323333;
+		font-size:28;
+	}
+	.my-minblack{
+		color:#323333;
+		font-size:24;
+	}
+	.my-num{
+		color:#e3a752;
+		font-size:48;
+		margin-top:30;
+	}
+	.my-cum{
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		height:194;
+	}
+	.cum-sell{
+		flex:1;
+		height:134;
+		justify-content: center;
+		align-items: center;
+		border-right-color: #dfdede;
+		border-right-width:1;	
+	}
+	.my-product{
+		height:430;
+		background-color: #fff;
+		border-width:1;
+		border-color:#dfdede;
+		background-color: #fff;
+		margin-top:28;
+	}
+	.my-title2{
+		flex-direction: row;
+	}
+	.my-left{
+		flex:1;
+		height:80;
+		justify-content: center;
+		align-items: flex-start;
+	}
+	.my-right{
+		height:80;
+		justify-content: center;
+		align-items: center;
+	}
+	.product-wrapper{
+		height:350;
+		width:750;
+		padding-left:28;
+		padding-right:28;
+		justify-content: center;
+		align-items: center;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.price{
+		color:#d9491d;
+		font-size:24;
+		margin-top:10;
+		padding-left:10;
+	}
+	.gray{
+		color:#989798;
+		font-size:24;
+		padding-left:10;
+	}
+	.product-list{
+		width:218;
+		height:286;
+		border-color:#dfdede;
+		border-width:1;
+	}
+	.product-img{
+		width:218;
+		height:186;
+	}
+	.product-detail{
+		height:100;
+		width:218;
+		justify-content: center;
+		align-items: flex-start;
+	}
+	.my-order{
+		width:750;
+		margin-top:28;
+		background-color: #fff;
+	}
+	.ord-color{
+		color:#656666;
+		font-size:24;
+	}
+	.order-wrapper{
+		width:750;
+	}
+	.order-list{
+		width:694;
+		height:78;
+		border-bottom-width:1;
+		border-bottom-color:#dfdede;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		margin-left:28;
+		margin-right:28;
+	}
+	.order-left{
+		flex:1;
+		height:78;
+		justify-content: center;
+		align-items: flex-start;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-min-navbar.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '我的原创',
+		        rightTitle: '编辑',
+		        rightImage: '',
+		        rightColor: '',
+		        centerColor: '#323333',
+		        backgroundColor: "#eadbc7"
+	      	},
+	      	addImg:'add.png',
+	      	uImg:'icon_xiangji@3x.png',
+	      	mimg:'banner_kider@3x.png',
+			position:'我是设计师',
+			welcome:'12345',
+			style:'嘻哈风',
+			minstyle:'小清新',
+			detail:'专注服装设计十余载，包您满意！内容最多能到这里过啊拉拉、、、',
+			sellNum:'369',
+			inNum:'36900',
+			productList:[
+				{
+					img:'ditu_zhonghaomojinge@3x.png',
+					title:'百搭休闲衣男',
+					price:'¥1296'
+				},
+				{
+					img:'ditu_zhonghaomojinge@3x.png',
+					title:'百搭休闲衣男',
+					price:'¥1296'
+				},
+				{
+					img:'ditu_zhonghaomojinge@3x.png',
+					title:'百搭休闲衣男',
+					price:'¥1296'
+				}
+			],
+			orderList:[
+				{
+					detail:'谁谁谁购买了一件连衣长裙',
+					date:'2016.6.1'
+				},
+				{
+					detail:'谁谁谁购买了一件连衣长裙',
+					date:'2016.6.1'
+				},
+				{
+					detail:'谁谁谁购买了一件连衣长裙',
+					date:'2016.6.1'
+				},
+				{
+					detail:'谁谁谁购买了一件连衣长裙',
+					date:'2016.6.1'
+				}
+			]
+	   },
+	   methods:{
+			goNext:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			}
+		},
+		created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		}
+	}
+</script>

@@ -1,0 +1,171 @@
+<template>
+	<div class="body">
+		<yd-navbar navbar="{{navbar}}"></yd-navbar>
+		<scroller onloadmore="onloadmore" loadmoreoffset="10">
+			<div class="des-wrapper">
+				<div class="hot-wrapper">
+					<video class="video" onstart="onstart" onpause="onpause" onfinish="onfinish" onfail="onfail"
+      auto-play="false" play-status="pause" src="{{src}}" style="width:750;height:300;"></video>
+					<div class="hot-list" repeat="item in hotList" onclick="goNext" url="{{ item.url }}">
+						<div class="hot-img">
+							<image src="{{ resurl+item.img }}" style="width:246;height:220;"></image>
+						</div>
+						<div class="hot-detail">
+							<div class="hot-title">
+								<text style="font-size:28;color:#333;flex:1;lines:1;text-overflow: ellipsis;">{{ item.title }}</text>
+							</div>
+							<text style="color:#f23232;font-size:26;align-items: flex-end;margin-top:10;">{{ item.price }}</text>
+							<div class="crowd-fail">
+								<image src="{{ resurl+allImg }}" style="width:34;height:38;margin-right:10;"></image>
+								<text class="red">5天8时20分30秒</text>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</scroller>	
+	</div>
+
+</template>
+
+<style>
+	.body{
+		width:750;
+		background-color: #f1f1f1;
+	}
+	.hot-wrapper{
+		width:750;
+		padding-bottom:25;
+	}
+	.hot-list{
+		width:750;
+		height:220;
+		border-color:#dfdfdf;
+		border-width:1;
+		background-color: #fff;
+		flex-direction: row;
+		margin-bottom:25;
+	}
+	.hot-img{
+		height:220;
+		width:246;
+	}
+	.hot-common{
+		color:#989898;
+		font-size:28;
+	}
+	.hot-title{
+		flex-direction: row;
+	}
+	.hot-detail{
+		width:500;
+		padding-left:25;
+		padding-right:25;
+		padding-top:18;
+		padding-bottom:18;
+	}
+	.hot-style{
+		margin-top:10;
+		margin-bottom:10;
+	}
+	.crowd-fail{
+		flex:1;
+		justify-content: flex-start;
+		align-items: flex-start;
+		flex-direction: row;
+		margin-top:40;
+	}
+	.red{
+		color:#f23232;
+		font-size: 36;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-navbar.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '时装发布会',
+		        rightTitle: '',
+		        rightImage: '',
+		        rightColor: '#a2a9b2',
+		        centerColor: '#fff',
+		        backgroundColor: "#ebac51"
+	      	},
+	      	allImg:'icon_sand-clock@3x.png',
+			hotList:[
+				{
+					img:'banner_Skirt@3x.png',
+					title:'时装秀时装秀时装秀时装秀时装秀时秀时装秀时装秀',
+					price:'¥1999',
+					url:'home/fashion_detail.js'
+				},
+				{
+					img:'banner_Skirt@3x.png',
+					title:'时装秀时装秀时装秀时装秀时装秀时秀时装秀时装秀',
+					price:'¥1999',
+					url:'home/fashion_detail.js'
+				},
+				{
+					img:'banner_Skirt@3x.png',
+					title:'时装秀时装秀时装秀时装秀时装秀时秀时装秀时装秀',
+					price:'¥1999',
+					url:'home/fashion_detail.js'
+				},
+				{
+					img:'banner_Skirt@3x.png',
+					title:'时装秀时装秀时装秀时装秀时装秀时秀时装秀时装秀',
+					price:'¥1999',
+					url:'home/fashion_detail.js'
+				}
+				
+			],
+			msg: '',
+      		src:'http://flv2.bn.netease.com/videolib3/1611/01/XGqSL5981/SD/XGqSL5981-mobile.mp4'
+		},
+		methods:{
+	      	onstart:function(e){
+	        	this.msg = 'onstart'
+	      	},
+	      	onpause:function(e){
+	        	this.msg = 'onpause'
+	      	},
+	      	onfinish:function(e){
+	        	this.msg = 'onfinish'
+	      	},
+	      	onfail:function(e){
+	        	this.msg = 'onfinish'
+	      	},
+	      	goNext:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			onloadmore:function(){
+				if(!this.triggered){
+					for( var i = 0 ; i <= 10 ;i++ ){
+						this.hotList.push({
+							img:'banner_Skirt@3x.png',
+							title:'时装秀时装秀时装秀时装秀时装秀时秀时装秀时装秀'+i,
+							price:'¥1999',
+							url:'home/fashion_detail.js'
+						})
+					}
+				}
+				this.triggered = false;
+			}
+	   },
+	   created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		}
+	}
+</script>

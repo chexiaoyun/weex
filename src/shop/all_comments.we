@@ -1,0 +1,233 @@
+<template>
+	<div class="body">
+		<yd-min-navbar navbar="{{navbar}}"></yd-min-navbar>
+		<scroller>
+			<div class="cloth-container">
+				<div class="all-choice">
+					<div class="all-word {{ type == 1? 'all-bgwhite' : '' }}">
+						<text class="all-gray {{ type == 1? 'all-white' : '' }}">全部</text>
+					</div>
+					<div class="all-word">
+						<text class="all-gray">好评({{num1}})</text>
+					</div>
+					<div class="all-word">
+						<text class="all-gray">中评({{num2}})</text>
+					</div>
+					<div class="all-word">
+						<text class="all-gray">差评({{num3}})</text>
+					</div>
+					<div class="all-word">
+						<text class="all-gray">晒图({{num4}})</text>
+					</div>
+				</div>
+				<div class='comment-list'>
+					<div class="list-one">
+						<div class="list-top">
+							<div class="list-left">
+								<image src="{{ resurl+hImg }}" style='width:100;height:100;'></image>
+							</div>
+							<div class="list-right">
+								<div class="list-name">
+									<text class="black">{{ listName }}</text>
+									<image src="{{ resurl+vipImg }}" style="width:20;height:16;margin-left: 10;"></image>
+									<image src="{{ resurl+loveImg }}" style="width:20;height:18;margin-left:10;"></image>
+									<div class="list-date">
+										<text class="black">{{ date }}</text>
+									</div>
+								</div>
+								<div class="list-saya">
+									<text class="black">{{ detail }}</text>
+								</div>
+							</div>
+						</div>
+						<div class="list-bottom">
+							<text class="gray">颜色分类：{{ listColor }}</text>
+							<text class="gray">尺寸：{{ listSize }}</text>
+						</div>
+					</div>
+					<div class="list-one">
+						<div class="list-top">
+							<div class="list-left">
+								<image src="{{ resurl+hImg }}" style='width:100;height:100;'></image>
+							</div>
+							<div class="list-right">
+								<div class="list-name">
+									<text class="black">{{ listName }}</text>
+									<image src="{{ resurl+vipImg }}" style="width:20;height:16;margin-left: 10;"></image>
+									<image src="{{ resurl+loveImg }}" style="width:20;height:18;margin-left:10;"></image>
+									<div class="list-date">
+										<text class="black">{{ date }}</text>
+									</div>
+								</div>
+								<div class="list-saya">
+									<text class="black">{{ detail }}</text>
+								</div>
+							</div>
+						</div>
+						<div class="list-bottom">
+							<text class="gray">颜色分类：{{ listColor }}</text>
+							<text class="gray">尺寸：{{ listSize }}</text>
+						</div>
+						<div class="one-img">
+							<image src="{{ resurl+oImg }}" class="img"></image>
+							<image src="{{ resurl+oImg }}" class="img"></image>
+							<image src="{{ resurl+oImg }}" class="img"></image>
+							<image src="{{ resurl+oImg }}" class="img"></image>
+							<image src="{{ resurl+oImg }}" class="img"></image>
+						</div>
+					</div>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.body{
+		background-color: #F1F1F1;
+	}
+	.cloth-container{
+		width:750;
+	}
+	.all-choice{
+		width:750;
+		height:210;
+		background-color: #fff;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		padding-left:28;
+		padding-right:28;
+		flex-wrap:wrap;
+		border-bottom-width:1;
+		border-bottom-color:#dedede;
+	}
+	.all-word{
+		width:144;
+		height:60;
+		justify-content: center;
+		align-items: center;
+		background-color: #ffedd7;
+		border-radius: 15;
+		margin-top: 30;
+	}
+	.all-gray{
+		color:#666;
+		font-size:26;
+	}
+	.all-bgwhite{
+		background-color: #ebac51;
+	}
+	.all-white{
+		color: #fff;
+	}
+	.comment-list{
+		width:750;
+		background-color:#fff;
+	}
+	.list-one{
+		border-bottom-width:1;
+		border-bottom-color:#dedede;
+		width:750;
+		padding-left:28;
+		padding-right:28;
+		padding-top:28;
+		padding-bottom:28;
+		justify-content: center;
+		align-items: flex-start;
+	}
+	.gray{
+		color:#999;
+		font-size:24;
+	}
+	.list-top{
+		flex-direction: row;
+		width:694;
+		margin-bottom:15;
+	}
+	.list-bottom{
+		flex-direction: row;
+	}
+	.list-left{
+		width:100;
+		height:100;
+		border-radius: 100;
+		margin-right:20;
+	}
+	.black{
+		color:#333;
+		font-size:24;
+	}
+	.list-right{
+		width:574;
+	}
+	.list-name{
+		flex-direction: row;
+		height:35;
+		justify-content: flex-start;
+		align-items: center;
+	}
+	.list-date{
+		flex:1;
+		justify-content: flex-end;
+		align-items: flex-end;
+	}
+	.one-img{
+		margin-top:20;
+		flex-direction: row;
+		justify-content: space-between;
+		width:694;
+	}
+	.img{
+		width:100;
+		height:100;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-min-navbar.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '全部评论',
+		        rightTitle: '',
+		        rightImage: '',
+		        rightColor: '',
+		        centerColor: '#323333',
+		        backgroundColor: "#eadbc7"
+	      	},
+	      	num1:'100',
+	      	num2:'3',
+	      	num3:'0',
+	      	num4:'10',
+	      	type:1,
+	      	listColor:'卡其色',
+	      	listSize:'L',
+	      	hImg:'ditu_pangzi176@3x.png',
+	      	listName:'天空一声巨响',
+	      	vipImg:'icon_huangsevip@3x.png',
+	      	loveImg:'icon_huangseaixin@3x.png',
+	      	date:'2016.6.26',
+	      	detail:'宝贝很好~很适合，穿着老舒服了呢~好评、好评、好评、大家快行动起来。',
+	      	oImg:'ditu_BBBB@3x.png'
+		},
+		methods:{
+			goNext:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			}
+		},
+		created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		}
+	}
+</script>

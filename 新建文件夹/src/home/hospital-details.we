@@ -1,0 +1,518 @@
+<template>
+	<div class="body">
+		<div id="header">
+			<wxc-navpage background-color="{{ nav.bgColor }}" title="{{ nav.title }}" title-color="{{ nav.titleColor }}" left-item-src="{{ url + nav.leftImgSrc }}"></wxc-navpage>
+		</div>
+		
+		<div class="item">
+			<image src="{{ url + hospital.img }}" style="width:190;height: 118;"></image>
+			<div class="arc-info">
+				<div class="title">
+					<text class="arc-title">{{ hospital.title }}</text>
+				</div>
+				<div class="address">
+					<text class="arc-address">{{ hospital.address }}</text>
+				</div>
+				<div class="label">
+					<text class="label-text" repeat="item in hospital.children">{{ item.text }}</text>
+				</div>
+			</div>
+		</div>
+		
+		<div class="tab">
+			<div class="tab-item {{ state == 0 ? 'tab-active' : '' }}" onclick="tabSwitch" index="0"><text class="tab-text {{ state == 0 ? 'tab-active' : '' }}">预约挂号</text></div>
+			<div class="tab-item {{ state == 1 ? 'tab-active' : '' }}" onclick="tabSwitch" index="1"><text class="tab-text {{ state == 1 ? 'tab-active' : '' }}">医院简介</text></div>
+			<div class="tab-item {{ state == 2 ? 'tab-active' : '' }}" onclick="tabSwitch" index="2"><text class="tab-text {{ state == 2 ? 'tab-active' : '' }}">预约规则</text></div>
+		</div>
+		
+		<div style="flex-direction: row;height: 955;" if="{{ this.state == 0 }}">
+			<scroller class="first">
+				<div class="app-item {{ item.id == selectId?'app-item-active': '' }}" repeat="item in hospital.department" index="{{ $index }}" tid="{{ item.id }}" onclick="changeTid">
+					<div class="app-item-c {{ item.id == selectId ? 'app-item-c-active' : '' }}">
+						<text class="app-item-text  {{ item.id == selectId ? 'active' : '' }}">{{ item.title }}</text>
+					</div>
+				</div>
+			</scroller>
+		
+			<scroller class="second">
+				<div class="s-app-item" repeat="item in hospital.department[selectIndex].item" onclick="goNext" url="{{ jumpUrl }}">
+					<div class="s-app-item-c">
+						<text class="s-app-item-text  {{ item.id == 1 ? 's-active' : '' }}">{{ item.title }}</text>
+					</div>
+				</div>
+			</scroller>
+		</div>
+		
+		
+		<scroller class="intro" if="{{ this.state == 1 }}">
+			<text class="intro-text">{{ hospital.intro }}</text>
+		</scroller>
+		
+		<scroller class="intro" if="{{ this.state == 2 }}">
+			<text class="intro-text">{{ hospital.rule }}</text>
+		</scroller>
+		
+	</div>
+</template>
+
+<style>
+	.first{
+		background-color: #ededee;
+		flex: 0.6;
+	}
+	.app-item{
+		height: 110;
+		justify-content: center;
+		align-items: flex-start;
+	}
+	.app-item-c{
+		height: 70;
+		justify-content: center;
+	}
+	.app-item-text{
+		font-size: 30;
+		color: #9b9b9b;
+		padding-left: 26;
+		text-align: left;
+	}
+	.app-item-active{
+		background-color: #f8f8f8;
+	}
+	.app-item-c-active{
+		border-left-width: 10;
+		border-style: solid;
+		border-color: #58bf65;
+	}
+	.active{
+		color: #58bf65;
+	}
+	
+	.second{
+		background-color: #fff;
+		flex: 1;
+	}
+	.s-app-item{
+		height: 110;
+		justify-content: center;
+		align-items: flex-start;
+	}
+	.s-app-item-c{
+		height: 70;
+		justify-content: center;
+	}
+	.s-app-item-text{
+		font-size: 30;
+		color: #9b9b9b;
+		padding-left: 26;
+	}
+	.s-active{
+		color: #58bf65;
+	}
+	.body{
+		background-color: #f8f8f8;
+	}
+	.item {
+		padding: 20;
+		border-bottom-color: #eeeeee;
+		border-bottom-width: 2;
+		border-bottom-style: solid;
+		flex-direction: row;
+		background: #fff;
+		margin-top: 88;
+	}
+	
+	.arc-info {
+		width: 470px;
+		margin-left: 30;
+	}
+	
+	.title {
+		height: 40;
+		line-height: 40;
+	}
+	
+	.arc-title {
+		text-align: left;
+		font-size: 30;
+		color: #333;
+	}
+	
+	.address {
+		height: 40;
+		line-height: 40;
+	}
+	
+	.arc-address {
+		text-align: left;
+		font-size: 26;
+		color: #bbb;
+	}
+	
+	.label {
+		flex-direction: row;
+		margin-top: 8;
+	}
+	
+	.label-text {
+		text-align: left;
+		font-size: 20;
+		color: #bbb;
+		height: 28;
+		padding-left: 5;
+		padding-right: 5;
+		line-height: 23;
+		color: #4a90e2;
+		border-width: 1;
+		border-style: solid;
+		border-color: #4a90e2;
+		border-radius: 2;
+		margin-right: 20;
+		text-align: center;
+	}
+	.tab{
+		height: 78;
+		flex-direction: row;
+		margin-top: 24;
+		border-width: 1;
+		border-style: solid;
+		border-color: #ebebeb;
+		background-color: #fbfbfb;
+	}
+	.tab-item{
+		flex: 1;
+		height: 78;
+		border-width: 1;
+		border-style: solid;
+		border-color: #ebebeb;
+		align-items: center;
+		justify-content: center;
+	}
+	.tab-text{
+		font-size: 30;
+		color: #333;
+	}
+	.tab-active{
+		background-color: #fff;
+		color: #58bf65;
+	}
+	.intro{
+		background-color: #fff;
+	}
+	.intro-text{
+		padding: 40;
+		color: #333;
+		line-height: 50;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+
+	module.exports = {
+		data: {
+			dir: 'dist',
+			url: api.apiurl.resurl,
+			state: 0,
+			selectId: 1 ,
+			selectIndex: 0,
+			jumpUrl: 'home/expert-list.js',
+			nav: {
+				title: '医院信息',
+				bgColor: '#58bf65',
+				titleColor: '#fff',
+				leftImgSrc: '/images/back.png'
+			},
+			hospital:{
+				id: 1,
+				title: '上海中医药大学附属龙华医院',
+				address: '上海市宛平南路725号',
+				img: '/images/png_06.png',
+				children: [
+					{
+						text: "三甲",
+					}, {
+						text: "医保",
+					}
+				],
+				intro: '龙华医院总院占地面积53亩，建筑总面积7.6万平方米，开放床位650张；龙华医院浦东分院占地面积14.6亩，总建筑面积9296平方米，开放床位152张。医院在编职工人数1349人，医院有一级临床科室20个，二级临床科室18个，以及心导管室、ICU、CCU、血液净化中心等，并按需分类开设有普通门诊、专家门诊和特需门诊。',
+				rule: '1、预约流程：登录挂号网，注册并登录→选择医院、科室、专家→选择就诊日期、时间→ 填写患者信息→获取短信验证码→确认预约→系统下发预约成功短信。2、实名制预约：首次预约注册，必须提供真实姓名、有效证件信息和联系方式；社保卡或医联卡等相关就诊卡号信息。3、实名制就诊：预约成功后，就诊当天请在指定时间内到指定地点，凭就诊人的有效身份证件原件和相关就诊卡，实名制挂号就诊。4、预约规则、就医要求、专家停诊等信息详见网站帮助中心。',
+				department:[
+					{
+						id: 1,
+						title: '内科',
+						item:[
+							{
+								id: 14,
+								title: '内科1'
+							},
+							{
+								id: 15,
+								title: '内科2'
+							},
+							{
+								id: 16,
+								title: '内科3'
+							}
+						]
+					},
+					{
+						id: 2,
+						title: '外科',
+						item:[
+							{
+								id: 17,
+								title: '外科1'
+							},
+							{
+								id: 18,
+								title: '外科2'
+							},
+							{
+								id: 19,
+								title: '外科3'
+							}
+						]
+					},
+					{
+						id: 3,
+						title: '妇产科',
+						item:[
+							{
+								id: 20,
+								title: '妇产1'
+							},
+							{
+								id: 21,
+								title: '妇产2'
+							},
+							{
+								id: 22,
+								title: '妇产3'
+							}
+						]
+					},
+					{
+						id: 4,
+						title: '骨科',
+						item:[
+							{
+								id: 23,
+								title: '骨科1'
+							},
+							{
+								id: 24,
+								title: '骨科2'
+							},
+							{
+								id: 25,
+								title: '骨科3'
+							}
+						]
+					},
+					{
+						id: 5,
+						title: '儿科',
+						item:[
+							{
+								id: 26,
+								title: '儿科1'
+							},
+							{
+								id: 27,
+								title: '儿科2'
+							},
+							{
+								id: 28,
+								title: '儿科3'
+							}
+						]
+					},
+					{
+						id: 6,
+						title: '口腔科',
+						item:[
+							{
+								id: 29,
+								title: '口腔科1'
+							},
+							{
+								id: 30,
+								title: '口腔科2'
+							},
+							{
+								id: 31,
+								title: '口腔科3'
+							}
+						]
+					},
+					{
+						id: 7,
+						title: '眼科',
+						item:[
+							{
+								id: 32,
+								title: '眼科1'
+							},
+							{
+								id: 33,
+								title: '眼科2'
+							},
+							{
+								id: 34,
+								title: '眼科3'
+							}
+						]
+					},
+					{
+						id: 8,
+						title: '中医科',
+						item:[
+							{
+								id: 35,
+								title: '中医科1'
+							},
+							{
+								id: 36,
+								title: '中医科2'
+							},
+							{
+								id: 37,
+								title: '中医科3'
+							}
+						]
+					},
+					{
+						id: 9,
+						title: '儿科',
+						item:[
+							{
+								id: 38,
+								title: '儿科1'
+							},
+							{
+								id: 39,
+								title: '儿科2'
+							},
+							{
+								id: 40,
+								title: '儿科3'
+							}
+						]
+					},
+					{
+						id: 10,
+						title: '口腔科',
+						item:[
+							{
+								id: 41,
+								title: '口腔科1'
+							},
+							{
+								id: 42,
+								title: '口腔科2'
+							},
+							{
+								id: 43,
+								title: '口腔科3'
+							}
+						]
+					},
+					{
+						id: 11,
+						title: '眼科',
+						item:[
+							{
+								id: 44,
+								title: '眼科1'
+							},
+							{
+								id: 45,
+								title: '眼科2'
+							},
+							{
+								id: 46,
+								title: '眼科3'
+							}
+						]
+					},
+					{
+						id: 12,
+						title: '中医科',
+						item:[
+							{
+								id: 47,
+								title: '中医科1'
+							},
+							{
+								id: 48,
+								title: '中医科2'
+							},
+							{
+								id: 49,
+								title: '中医科3'
+							}
+						]
+					}
+				]
+			}
+		},
+		created : function(){
+			for( var i = 0 ; i < this.hospital.department.length ; i++ ) {
+				var row = this.hospital.department[i];
+				row.isSelected = row.id == this.fSelect ? true : false;
+			}
+			
+			this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+		},
+		methods: {
+			tabSwitch: function(e){
+				this.state = e.target.attr.index ;
+			},
+			changeTid: function(e){
+				this.selectId = e.target.attr.tid;
+				this.selectIndex = e.target.attr.index;
+			},
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		}
+	}
+</script>

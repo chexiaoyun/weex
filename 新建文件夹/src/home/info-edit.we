@@ -1,0 +1,225 @@
+<template>
+	<div class="body">
+		<div id="header">
+			<wxc-navpage background-color="{{ nav.bgColor }}" title="{{ nav.title }}" title-color="{{ nav.titleColor }}" left-item-src="{{ url + nav.leftImgSrc }}" right-item-title="{{ nav.rightItemTitle }}" right-item-color="{{ nav.titleColor }}"></wxc-navpage>
+		</div>
+		
+		<scroller class="scroller">
+			<div class="box">
+				<div class="item" onclick="picker" type="sex">
+					<text class="key">性别</text>
+					<text class="value">{{ result.sex == 0 ? '男' : '女' }}</text>
+				</div>
+				<div class="item" onclick="birthday">
+					<text class="key">出生年月</text>
+					<text class="value">{{ result.birthday }}</text>
+				</div>
+				<div class="item" onclick="picker" type="height">
+					<text class="key">身高(cm)</text>
+					<text class="value">{{ result.height }}</text>
+				</div>
+				<div class="item" onclick="picker" type="weight">
+					<text class="key">体重(kg)</text>
+					<text class="value">{{ result.weight }}</text>
+				</div>
+				<div class="item" onclick="picker" type="blood">
+					<text class="key">血型</text>
+					<text class="value">{{ result.blood }}</text>
+				</div>
+			</div>
+		</scroller>
+		
+	</div>
+</template>
+
+<style>
+	.body{
+		background-color: #f8f8f8;
+	}
+	.scroller{
+		margin-top: 88;
+	}
+	.box{
+		margin-top: 25;
+	}
+	.item{
+		height: 78;
+		background-color: #fff;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		padding-left: 25;
+		padding-right: 55;
+		border-top-width: 1;
+		border-bottom-width: 1;
+		border-color: #ebebeb;
+		margin-top: -1;
+	}
+	.key{
+		font-size: 30;
+		color: #9b9b9b;
+	}
+	.value{
+		font-size: 30;
+		color: #9b9b9b;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+
+	module.exports = {
+		data: {
+			dir: 'dist',
+			url: api.apiurl.resurl,
+			nav: {
+				title: '个人信息',
+				bgColor: '#58bf65',
+				titleColor: '#fff',
+				leftImgSrc: '/images/back.png',
+				rightItemTitle: '保存'
+			},
+			result:{
+				sex: '0',
+				birthday: '1990-12-23',
+				height: '176',
+				weight: '80',
+				blood: 'A'
+			},
+			option:{
+				sex:['男','女'],
+				height: [],
+				weight:[],
+				blood:['A','B','O']
+			}
+		},
+		methods:{
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			},
+			picker:function(e){
+				var self = this;
+				var type = e.target.attr.type;
+				var picker = require('@weex-module/picker');
+                var items ;
+                switch ( type ){
+                	case 'sex':
+                		items = self.option.sex;
+                		break;
+                	case 'height':
+                		items = self.option.height;
+                		break;
+                	case 'weight':
+                		items = self.option.weight;
+                		break;
+                	case 'blood':
+                		items = self.option.blood;
+                		break;
+                	default:
+                		break;
+                }
+                picker.pick({
+                    'items':items,
+                    'index':self.index
+                },function (ret) {
+                    var result = ret.result;
+                    if(result == 'success')
+                    {
+                        switch ( type ){
+		                	case 'sex':
+		                		if( items[ret.data] == '男' ){
+		                        	self.result.sex = '1';
+		                        }else{
+		                        	self.result.sex = '2';
+		                        }
+		                		break;
+		                	case 'height':
+		                		self.result.height = items[ret.data];
+		                		break;
+		                	case 'weight':
+		                		self.result.weight = items[ret.data];
+		                		break;
+		                	case 'blood':
+		                		self.result.blood = items[ret.data];
+		                		break;
+		                	default:
+		                		break;
+		                }
+                    }
+				});
+			},
+			birthday:function(){
+				var picker = require('@weex-module/picker');
+                var self = this;
+                var myDate = new Date();
+                var myDateSp = myDate.toLocaleDateString().split("/");
+                var currentDate = myDateSp[0] + '-' + myDateSp[1] + '-' + myDateSp[2];
+                picker.pickDate({
+                    'value':self.result.birthday,
+                    'max': currentDate,
+                    'min':'1900-01-01'
+                },function (ret) {
+                    var result = ret.result;
+                    if(result == 'success')
+                    {
+                        self.result.birthday = ret.data;
+                    }
+				});
+			}
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+	      	this.$on('naviBar.rightItem.click',function(e){
+	      		var self = this;
+	        	var navigator = require('@weex-module/navigator');
+				var nextUrl = self.getBase() + 'home/my-healthy.js';
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+	      	});
+	      	
+	      	for( var i = 20 ; i <= 150 ; i++ ){
+	      		this.option.weight.push(i);
+	      	}
+	      	for( var i = 140 ; i <= 200 ; i++ ){
+	      		this.option.height.push(i);
+	      	}
+    	}
+	}
+</script>

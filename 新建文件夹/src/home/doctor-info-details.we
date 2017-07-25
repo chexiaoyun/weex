@@ -1,0 +1,372 @@
+<template>
+	<div class="body">
+		<div id="header">
+			<wxc-navpage background-color="{{ nav.bgColor }}" title="{{ nav.title }}" title-color="{{ nav.titleColor }}" left-item-src="{{ url + nav.leftImgSrc }}"></wxc-navpage>
+		</div>
+		
+		<scroller class="scroller">
+			<div class="dct-info">
+				<div class="dct-info-d">
+					<text class="dct-key">医院：</text>
+					<text class="dct-value">{{ doctorInfo.hospital }}</text>
+				</div>
+				<div class="dct-info-d">
+					<text class="dct-key">科室：</text>
+					<text class="dct-value">{{ doctorInfo.department }}</text>
+				</div>
+				<div class="dct-info-d">
+					<text class="dct-key">专家：</text>
+					<text class="dct-value">{{ doctorInfo.expert }}</text>
+				</div>
+				<div class="dct-info-d">
+					<text class="dct-key">门诊时间：</text>
+					<text class="dct-value">{{ doctorInfo.time }}</text>
+				</div>
+			</div>
+			
+			<div class="dct-p" onclick="goNext" url="{{ jumpUrl }}">
+				<text class="dct-p-text">就诊人</text>
+				<image class="dct-p-icon" src="{{ url + moreIcon }}"></image>
+			</div>
+			
+			<div class="relation-info">
+				<div class="info-item">
+					<div class="info-text">
+						<text class="info-text-t">姓名：</text>
+					</div>
+					<div class="info-val">
+						<text class="info-val-v">{{ relation.name }}</text>
+					</div>
+				</div>
+				<div class="info-item">
+					<div class="info-text">
+						<text class="info-text-t">性别：</text>
+					</div>
+					<div class="info-val">
+						<text class="info-val-v">{{ relation.sex == 0 ? '男' : '女' }}</text>
+					</div>
+				</div>
+				<div class="info-item">
+					<div class="info-text">
+						<text class="info-text-t">身份证：</text>
+					</div>
+					<div class="info-val">
+						<text class="info-val-v">{{ relation.idNumber }}</text>
+					</div>
+				</div>
+				<div class="info-change">
+					<div class="info-text">
+						<text class="info-text-t">初复诊：</text>
+					</div>
+					<div class="info-input-change">
+						<div class="change-item" onclick="changeType" type="0" val="0">
+							<div class="change-select {{ relation.diagnosisType == 0 ? 'change-active' : '' }}"></div>
+							<text class="change-text">初诊</text>
+						</div>
+						<div class="change-item" onclick="changeType" type="0" val="1">
+							<div class="change-select {{ relation.diagnosisType == 1 ? 'change-active' : '' }}"></div>
+							<text class="change-text">复诊</text>
+						</div>
+					</div>
+				</div>
+				
+				<div class="info-input">
+					<text if="{{ relation.diagnosisType == 0 }}" class="input-text">就诊卡号（条形码号）：</text>
+					<input if="{{ relation.diagnosisType == 1 }}" class="input"  type="text" value="" placeholder="就诊卡号（条形码号）：" />
+				</div>
+				
+				<text class="prompt-text">{{ promptFirst }}</text>
+				
+				<div class="info-change">
+					<div class="info-text">
+						<text class="info-text-t">付款方式：</text>
+					</div>
+					<div class="info-input-change">
+						<div class="change-item" onclick="changeType" type="1" val="0">
+							<div class="change-select {{ relation.paymentType == 0 ? 'change-active' : '' }}"></div>
+							<text class="change-text">现金</text>
+						</div>
+						<div class="change-item" onclick="changeType" type="1" val="1">
+							<div class="change-select {{ relation.paymentType == 1 ? 'change-active' : '' }}"></div>
+							<text class="change-text">医保卡</text>
+						</div>
+					</div>
+				</div>
+				
+				<div class="info-input">
+					<text if="{{ relation.paymentType == 0 }}" class="input-text">医保卡号：</text>
+					<input if="{{ relation.paymentType == 1 }}" class="input"  type="text" value="" placeholder="医保卡号：" />
+				</div>
+				
+				<div class="info-input">
+					<text if="{{ relation.paymentType == 0 }}" class="input-text">监护人：</text>
+					<input if="{{ relation.paymentType == 1 }}" class="input"  type="text" value="" placeholder="监护人：" />
+				</div>
+				
+				<div class="info-input">
+					<text if="{{ relation.paymentType == 0 }}" class="input-text">备注：</text>
+					<input if="{{ relation.paymentType == 1 }}" class="input"  type="text" value="" placeholder="备注：" />
+				</div>
+				
+				<text class="prompt-text">{{ promptSecond }}</text>
+				
+				<div class="submit" onclick="goNext" url="{{ jumpUrl1 }}">
+					<text class="sb-text">提交订单</text>
+				</div>
+			
+			</div>
+		
+		</scroller>
+	
+	</div>
+			
+</template>
+
+<style>
+	.body{
+		background-color: #f8f8f8;
+	}
+	.scroller{
+		margin-top: 88;
+	}
+	.dct-info{
+		border-width: 1;
+		border-color: #ebebeb;
+		border-style: solid;
+		background: #fff;
+		padding-left:42;
+		padding-right: 42;
+		padding-top: 36;
+		padding-bottom: 36;
+		background-color: #fff;
+	}
+	.dct-info-d{
+		height: 52;
+		line-height: 52;
+		flex-direction: row;
+		align-items: center;
+	}
+	.dct-key{
+		font-size: 30;
+		color: #333;
+		lines: 1;
+	}
+	.dct-value{
+		font-size: 30;
+		color: #333;
+		lines: 1;
+	}
+	.dct-p{
+		height: 88;
+		background-color: #fff;
+		margin-top: 24;
+		border-width: 1;
+		border-color: #ebebeb;
+		padding-left: 40;
+		padding-right: 40;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.dct-p-text{
+		font-size: 30;
+		color: #333;
+	}
+	.dct-p-icon{
+		width: 13;
+		height: 21;
+	}
+	.relation-info{
+		margin-top: 28;
+		border-width: 1;
+		border-color: #ebebeb;
+		background-color: #fff;
+		padding-left: 40;
+		padding-right: 40;
+	}
+	.info-item{
+		height: 80;
+		flex-direction: row;
+		align-items: center;
+	}
+	.info-text{
+		flex: 0.3;
+	}
+	.info-text-t{
+		font-size: 30;
+		color: #333;
+	}
+	.info-val{
+		flex: 1;
+	}
+	.info-val-v{
+		font-size: 30;
+		color: #bbb;
+	}
+	.info-change{
+		height: 80;
+		flex-direction: row;
+		align-items: center;
+	}
+	.info-input-change{
+		flex-direction: row;
+		flex: 1;
+	}
+	.change-item{
+		flex-direction: row;
+		align-items: center;
+		height: 60;
+		width: 140;
+	}
+	.change-select{
+		width: 30;
+		height: 30;
+		background-color: #fff;
+		border-width: 2;
+		border-color: #ebebeb;
+		border-radius: 4;
+	}
+	.change-active{
+		border-width: 0;
+		background-color: #58bf65;
+	}
+	.change-text{
+		font-size: 30;
+		color: #333;
+		margin-left: 15;
+	}
+	.info-input{
+		height: 84;
+		border-width: 2;
+		border-color: #ebebeb;
+		background-color: #f8f8f8;
+		flex-direction: row;
+		align-items: center;
+		margin-top: 20;
+	}
+	.input{
+		height: 80;
+		font-size: 30;
+		color: #333;
+		placeholder-color: #cfcfcf;
+		flex: 1;
+		padding-left: 20;
+		padding-right: 20;
+		background-color: #fff;
+	}
+	.input-text{
+		font-size: 30;
+		color: #cfcfcf;
+		padding-left: 20;
+		padding-right: 20;
+		flex: 1;
+	}
+	.prompt-text{
+		font-size: 30;
+		color: #cfcfcf;
+		line-height: 44;
+		margin-top: 10;
+	}
+	.submit{
+		margin-top: 30;
+		margin-bottom: 30;
+		height: 88;
+		background-color: #58bf65;
+		justify-content: center;
+		align-items: center;
+		border-radius: 4;
+	}
+	.sb-text{
+		font-size: 36;
+		color: #fff;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+
+	module.exports = {
+		data: {
+			dir: 'dist',
+			url: api.apiurl.resurl,
+			moreIcon: '/images/youjiantou.png',
+			promptFirst: '复诊病人请输入就诊卡号或病历本上的条形码号',
+			promptSecond: '温馨提示：为确保您的预约挂号有效，请正确填写您的信息，就诊时凭身份证取号',
+			jumpUrl: 'home/relation.js',
+			jumpUrl1: 'home/order-submit.js',
+			nav: {
+				title: '就诊信息',
+				bgColor: '#58bf65',
+				titleColor: '#fff',
+				leftImgSrc: '/images/back.png'
+			},
+			doctorInfo:{
+				hospital: '上海中医药大学附属龙华医院',
+				department: '肿瘤科',
+				expert: '田建辉 主任医师',
+				time: '10-25 周二 下午'
+			},
+			relation: {
+				name: '吴建华',
+				sex: 0,
+				idNumber: '320681199012234450',
+				diagnosisType: 0,
+				paymentType: 0
+			}
+		},
+		methods: {
+			changeType:function(e){
+				var type = e.target.attr.type;
+				if( type == 0 ){
+					this.relation.diagnosisType = e.target.attr.val;
+				}else{
+					this.relation.paymentType = e.target.attr.val;
+				}
+			},
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+    	}
+	}
+</script>

@@ -1,0 +1,283 @@
+<template>
+	<div class="wrapper">
+		<wxc-navpage height={{navHeight}} background-color={{bgColor}} title={{title}} title-color={{color}}  left-item-src="{{resUrl+lSrc}}"  ></wxc-navpage>
+		<scroller>
+			<div class="me-container" if="{{ list.length > 0 }}" id="scroller">
+				<div class="me-wrapper" repeat="item in list" id="item-{{ $index }}">
+					<div class="me-list" >
+						<div class="delete" onclick="delItem" index="{{ $index }}">
+							<text class="del-text">删除</text>
+						</div>
+						<div class="me-minList" id="content-{{ $index }}" onpanstart="itemStart" onpanmove="itemMove" onpanend="itemEnd" id="test-box" >
+							<text style="font-size:36px;color:#333;lines:1;margin-bottom:18;" onclick="goNext" url="{{ item.url }}">{{ item.title }}</text>
+							<text style="font-size:30px;color:#9b9b9b;lines:2;">{{ item.text }}</text>
+						</div>
+					</div>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.wrapper{
+		background-color:#f8f8f8;
+		flex-direction: column;
+	}
+	.me-container{
+		margin-top:88;
+		background-color:#fff;
+	}
+	.me-list{
+		width:750;
+		height:209;
+		border-bottom-width:1;
+		border-bottom-color:#ebebeb;
+		flex-direction: row;
+		position:relative;
+		background-color: #fff;
+	}
+	.me-minList{
+		width:750;
+		height:209;
+		position:absolute;
+		top:0;
+		left:0;
+		padding-left:30;
+		padding-right:30;
+		padding-top:27;
+		padding-bottom:24;
+		background-color: #fff;
+		border-bottom-width:1;
+		border-bottom-color:#ebebeb;
+	}
+	.me-img{
+		flex-direction: row;
+		justify-content: flex-end;
+		align-content: flex-end;
+	}
+	.delete{
+		width: 120;
+		height: 207;
+		background-color: #e64340;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		position:absolute;
+		top:0;
+		right:0;
+	}
+	.del-text{
+		color: #fff;
+		font-size: 30;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var animation = require('@weex-module/animation');
+	var api = require('../lib/api.js');
+	var dom = require('@weex-module/dom');
+	module.exports = {
+		data: {
+			dir: 'dist',
+			resUrl:api.apiurl.resurl,
+			navHeight:88,
+			bgColor:'#58bf65',
+			title:'我的发帖',
+			color:'#fff',
+			lSrc:'/images/back.png',
+			initPageX: 0,
+			endPageX: 0,
+			moveLeft: 0,
+			initPageY: 0,
+			list:[
+				{
+					id:1,
+					title:'怎样才能带好团队',
+					text:'我以前带十几个人跳舞，觉得很轻松，现在也就二十来个人，总觉得意见不…',
+					url:'personal/card_detail.js'
+				},
+				{
+					id:2,
+					title:'怎样才能带好团队',
+					text:'我以前带十几个人跳舞，觉得很轻松，现在也就二十来个人，总觉得意见不…',
+					url:'personal/card_detail.js'
+				},
+				{
+					id:3,
+					title:'大家都爱吃零食 但不要让零食宣兵夺主',
+					text:'零食，通常是指一日三餐时间点之外的时间里所食用的食品。一般情况下…',
+					url:'personal/card_detail.js'
+				},
+				{
+					id:4,
+					title:'大家都爱吃零食 但不要让零食宣兵夺主',
+					text:'零食，通常是指一日三餐时间点之外的时间里所食用的食品。一般情况下…',
+					url:'personal/card_detail.js'
+				},
+				{
+					id:5,
+					title:'大家都爱吃零食 但不要让零食宣兵夺主',
+					text:'零食，通常是指一日三餐时间点之外的时间里所食用的食品。一般情况下…',
+					url:'personal/card_detail.js'
+				},
+				{
+					id:6,
+					title:'大家都爱吃零食 但不要让零食宣兵夺主',
+					text:'零食，通常是指一日三餐时间点之外的时间里所食用的食品。一般情况下…',
+					url:'personal/card_detail.js'
+				}
+			]
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+	      	this.$on('naviBar.rightItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator');
+				var nextUrl = this.getBase() + 'personal/news.js';
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+	      	});
+    	},
+		methods: {
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			goBack:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				navigator.pop({'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';	
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			},
+			itemStart:function(eventProperties){
+				var self = this;
+				this.initPageX = 0;
+				this.initPageX = eventProperties.changedTouches[0].pageX;
+				for( var i = 0 ; i < self.list.length ; i++ ){
+					var el = this.$el('content-' + i );
+					animation.transition(el, {
+			          	styles: {
+			            	transform: 'translate(0px, 0)'
+			          	},
+			          	duration: 100,
+			          	timingFunction: 'ease-in-out',
+			          	'transform-origin': 'center center',
+			          	delay: 0 
+			        },function(){
+			        	
+			        });
+				}
+			},
+			itemMove:function(eventProperties){
+				var self = this;
+				var obj = eventProperties.target;
+				var left = eventProperties.changedTouches[0].pageX - self.initPageX;
+				self.moveLeft = left;
+				if( left < 0 ){
+					if( -left >= 120 ){
+						left = -120;
+					}
+					animation.transition(obj, {
+			          	styles: {
+			            	transform: 'translate(' + left + 'px, 0)'
+			          	},
+			          	duration: 1,
+			          	timingFunction: 'ease-in-out',
+			          	'transform-origin': 'center center',
+			          	delay: 0 
+			        },function(){
+			        	
+			        });
+				}else if( left > 0 ){
+					if( left >= 0 ){
+						left = 0;
+					}
+					animation.transition(obj, {
+			          	styles: {
+			            	transform: 'translate(' + left + 'px, 0)'
+			          	},
+			          	duration: 1,
+			          	timingFunction: 'ease-in-out',
+			          	'transform-origin': 'center center',
+			          	delay: 0 
+			        },function(){
+			        	
+			        });
+				}
+			},
+			itemEnd:function(eventProperties){
+				var self = this;
+				var obj = eventProperties.target;
+				var left = eventProperties.changedTouches[0].pageX - self.initPageX;
+				if( self.moveLeft > - 99 ){
+					animation.transition(obj, {
+			          	styles: {
+			            	transform: 'translate(0px, 0)'
+			          	},
+			          	duration: 100,
+			          	timingFunction: 'ease-in-out',
+			          	'transform-origin': 'center center',
+			          	delay: 0 
+			        },function(){
+			        	
+			        });
+				}
+			},
+			//删除当前这条数据
+			delItem:function(e){
+				var self = this ;
+				var obj = self.$el('item-' + e.target.attr.index );
+				self.list.splice( e.target.attr.index , 1 );
+				for( var i = 0 ; i < self.list.length ; i++ ){
+					var el = self.$el('content-' + i );
+					animation.transition(el, {
+			          	styles: {
+			            	transform: 'translate(0px, 0)'
+			          	},
+			          	duration: 100,
+			          	timingFunction: 'ease-in-out',
+			          	'transform-origin': 'center center',
+			          	delay: 0 
+			        },function(){
+			        	
+			        });
+				}
+			},
+		}
+	};
+</script>

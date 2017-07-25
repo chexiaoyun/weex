@@ -1,0 +1,510 @@
+<template>
+	<div class="body">
+		<yd-navbar navbar="{{navbar}}"></yd-navbar>
+		<scroller>
+			<div class="wrapper">
+				<div class="cloth-choice">
+					<div class="cloth-left">
+						<div class="To-participate" onclick="toggle">
+							<text class="font-size">参与人数：</text>
+							<text class="font-size">随机</text>
+							<image src="{{ resurl+triangle }}" style="width: 15;height: 15;margin-left: 10;"></image>
+							
+						</div>
+						<div class="people-choice" if="{{isShowDialog}}">
+							<div class="people-num"  repeat="item in peopleNum">
+								<text class="font-size">{{ item.num }}人</text>
+							</div>
+						</div>
+						<div class="To-price">
+							<text class="font-size">价格：</text>
+							<text class="font-size">由高到低</text>
+							<image src="{{ resurl+triangle }}" style="width: 15;height: 15;margin-left: 10;"></image>
+							<div class="people-choice" if="{{isShowDialog}}">
+								<div class="people-num">
+									<text class="font-size">由低到高</text>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="cloth-right" onclick="openUpbox">
+						<text class="font-size">筛选</text>
+						<image src="{{ resurl+seleImg }}" style="width: 40;height: 40;margin-left: 15;"></image>
+					</div>
+				</div>
+				<div class="classify-img">
+					<image src="{{ bImg }}" style="width: 750;height: 220;"></image>
+				</div>
+				<div class="classify-list">
+					<div class="list-left">
+						<div class="list-type" repeat="item in classList" onclick="getList" val="{{ item.cat_id }}">
+							<text style="color:#333;font-size:26;">{{ item.cat_name }}</text>
+						</div>
+					</div>
+					<scroller>
+						<div class="list-right">
+							<div class="list-cloth" repeat="item in clothList" onclick="goShow" val="{{ item.goods_id }}">
+								<div class="list-img" >
+									<image src="{{ resurl+item.img }}" style="width:256;height:210;"></image>
+								</div>
+								<div class="list-name">
+									<text class="list-minname">{{ item.name }}</text>
+									<text style="color:#e6491a;font-size:26;margin-bottom:20;">{{ item.price }}</text>
+								</div>
+							</div>
+						</div>
+					</scroller>
+				</div>
+			</div>
+			<div class="Up-Box" if="{{isShowDialog}}"></div>
+			<div class="right-text" if="{{isShowDialog}}">
+				<div class="right-section">
+					<div class="text-title" >
+						<text style="color: #333;font-size: 36;">筛选</text>
+					</div>
+					<div class="menu-content">
+						<!--版式-->
+						<div class="menu-conTop">
+							<div class="menu-contop-left">
+								<text style="font-size: 30;">版式</text>
+							</div>
+							<div class="menu-contop-right">
+								<text style="font-size: 30;color: #999;">更多</text>
+								<image src="{{ resurl+arrow }}" style="width: 25;height: 14;margin-left: 10;"></image>
+							</div>
+						</div>
+						<div class="menu-conBot">
+							<div class="menu-name" repeat="item in menuFormat">
+								<text style="font-size: 26;">{{ item.name }}</text>
+							</div>
+						</div>
+						
+						<!--风格-->
+						<div class="menu-conTop">
+							<div class="menu-contop-left">
+								<text style="font-size: 30;">风格</text>
+							</div>
+							<div class="menu-contop-right">
+								<text style="font-size: 30;color: #999;">更多</text>
+								<image src="{{ resurl+arrow }}" style="width: 25;height: 14;margin-left: 10;"></image>
+							</div>
+						</div>
+						<div class="menu-conBot">
+							<div class="menu-name" repeat="item in menuStyle">
+								<text style="font-size: 26;">{{ item.name }}</text>
+							</div>
+						</div>
+						
+						<!--人群-->
+						<div class="menu-conTop">
+							<div class="menu-contop-left">
+								<text style="font-size: 30;">人群</text>
+							</div>
+							<div class="menu-contop-right">
+								<text style="font-size: 30;color: #999;">更多</text>
+								<image src="{{ resurl+arrow }}" style="width: 25;height: 14;margin-left: 10;"></image>
+							</div>
+						</div>
+						<div class="menu-conBot">
+							<div class="menu-name" repeat="item in menuPeople">
+								<text style="font-size: 26;">{{ item.name }}</text>
+							</div>
+						</div>
+						
+					</div>
+					
+					<div class="screening-menu">
+						<div class="screen-leftmenu" onclick="closeUpbox" if="{{isShowDialog}}">
+							<text style="color: #333;font-size:36;">重置</text>
+						</div>
+						<div class="screen-rightmenu" onclick="closeUpbox" if="{{isShowDialog}}">
+							<text style="color: #fff;font-size:36;">确认</text>
+						</div>
+					</div>
+				</div>
+			</div>
+		</scroller>
+		<yd-footer></yd-footer>
+	</div>
+</template>
+
+<style>
+.body{
+	background-color: #F1F1F1;
+	width:750;
+}
+.wrapper{
+	width:750;
+	margin-bottom: 100;
+}
+.classify-img{
+	width:750;
+	height:220;
+	margin-top:80;
+}
+.cloth-choice{
+	width:750;
+	height:80;
+	background-color: #fff;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+	position:fixed;
+	top:88;
+	left:0;
+}
+.cloth-left{
+	flex: 1;
+	justify-content: center;
+	flex-direction: row;
+	border-right-width: 2;
+	border-right-color: #999;
+}
+.To-participate{
+	flex: 1;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+	position: relative;
+}
+.font-size{
+	font-size: 24;
+	color: #333;
+}
+.To-price{
+	flex: 1;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+}
+.cloth-right{
+	flex: 0.4;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+.classify-list{
+	flex-direction: row;
+}
+.list-left{
+	width:174;
+	/*height: 800;*/
+	border-right-color:#dfdfdf;
+	border-right-width:2;
+	background-color: #fff;
+}
+.list-type{
+	border-bottom-color:#c4c4c4;
+	border-bottom-width:1;
+	width:174;
+	height:100;
+	justify-content: center;
+	align-items: center;
+	text-align: justify;
+}
+.list-right{
+	padding-left:20;
+	padding-right:20;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 576;
+	flex-wrap: wrap;
+	margin-bottom:20;
+}
+.list-cloth{
+	width:258;
+	height:336;
+	border-color:#dfdfdf;
+	border-width:1;	
+	margin-top:20;
+	background-color: #fff;
+}
+.list-img{
+	width:258;
+	height:210;
+}
+.list-name{
+	width:258;
+	padding-left:15;
+	padding-right:15;
+}
+.list-minname{
+	color:#333;
+	font-size:24;
+	margin-top:25;
+	margin-bottom:20;
+	text-overflow:ellipsis;
+}
+.Up-Box{
+	width: 750;
+	height: 1334;
+	background-color: rgba(0,0,0,0.8);
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+.left-textbac{
+	width: 120;
+	height: 1334;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+.right-text{
+	width: 630;
+	height: 1334;
+	background-color: #fff;
+	position: fixed;
+	right: 0;
+	top: 0;
+}
+.right-section{
+	width: 630;
+	height: 1170;
+	background-color: #fff;
+	position: relative;
+	right: 0;
+	top: 0;
+}
+.text-title{
+	width: 630;
+	height: 90;
+	align-items: center;
+	justify-content: center;
+	margin-top: 10;
+}
+.menu-content{
+	width:630;
+	/*height: 900;*/
+	position: relative;
+}
+.menu-conTop{
+	height: 40;
+	width: 630;
+	flex-direction: row;
+}
+.menu-contop-left{
+	height: 40;
+	flex: 0.7;
+	justify-content: center;
+	align-items: flex-start;
+	margin-left: 30;
+}
+.menu-contop-right{
+	height: 40;
+	flex: 0.3;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+}
+.menu-conBot{
+	flex-direction: row;
+	flex-wrap: wrap;
+	width: 630;
+	padding-left: 30;
+	padding-right: -30;
+	margin-top: 20;
+	margin-bottom: 20;
+}
+.menu-name{
+	border-radius: 8;
+	border-width: 1;
+	border-color: #dedede;
+	width: 164;
+	height: 60;
+	background-color: #EFF3F6;
+	justify-content: center;
+	align-items: center;
+	margin-right: 30;
+	margin-bottom: 20;
+}
+.screening-menu{
+	height: 100;
+	width: 630;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	flex-direction: row;
+}
+.screen-leftmenu{
+	flex: 1;
+	height: 100;
+	align-items: center;
+	background-color: #f1f1f1;
+	justify-content: center;
+}
+.screen-rightmenu{
+	height: 100;
+	flex: 1;
+	align-items: center;
+	background-color: #FF4F00;
+	justify-content: center;
+	color: #fff;
+}
+.people-choice{
+	position:absolute;
+	top:56;
+	left:0;
+	background-color: #fff;
+	/*height:300;*/
+	width:250;
+	justify-content: center;
+	align-items: center;
+}
+.people-num{
+	width:250;
+	height:50;
+	justify-content: center;
+	align-items: center;
+	border-bottom-width:1;
+	border-bottom-color:#dfdfdf;
+}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-navbar.we');
+	require('../components/yd-footer.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '分类',
+		        rightTitle: '',
+		        rightImage: 'icon_jixingwanyi@3x.png' ,
+		        rightColor: '#a2a9b2',
+		        centerColor: '#fff',
+		        backgroundColor: "#ebac51"
+	      	},
+	      	seleImg:'icon_shenghuashiyan@3x.png',
+	      	bImg:'',
+	      	triangle:'icon_henxiaojiantou@3x.png',
+	      	arrow:'icon_xialahuise@3x.png',
+	      	isShowDialog:false,
+	      	classList:[],
+	      	clothList:[
+	      		{
+	      			img:'ditu_budabuxiaoyanjge@3x.png',
+	      			name:'百搭休闲衣男',
+	      			price:'¥2099',
+      				url:'shop/cloth_detail.js'
+	      		},
+	      		{
+	      			img:'ditu_budabuxiaoyanjge@3x.png',
+	      			name:'百搭休闲衣男',
+	      			price:'¥2099',
+      				url:'shop/cloth_detail.js'
+	      		},
+	      		{
+	      			img:'ditu_budabuxiaoyanjge@3x.png',
+	      			name:'百搭休闲衣男',
+	      			price:'¥2099',
+      				url:'shop/cloth_detail.js'
+	      		},
+	      		{
+	      			img:'ditu_budabuxiaoyanjge@3x.png',
+	      			name:'百搭休闲衣男',
+	      			price:'¥2099',
+      				url:'shop/cloth_detail.js'
+	      		},
+	      		{
+	      			img:'ditu_budabuxiaoyanjge@3x.png',
+	      			name:'百搭休闲衣男',
+	      			price:'¥2099',
+      				url:'shop/cloth_detail.js'
+	      		},
+	      		{
+	      			img:'ditu_budabuxiaoyanjge@3x.png',
+	      			name:'百搭休闲衣男',
+	      			price:'¥2099',
+      				url:'shop/cloth_detail.js'
+	      		}
+	      	],
+	      	menuFormat:[
+	      		{name:'全部'},{name:'标准型'},{name:'宽松型'}
+	      	],
+	      	menuStyle:[
+	      		{name:'全部'},{name:'文艺范'},{name:'高雅'}
+	      	],
+	      	menuPeople:[
+	      		{name:'全部'},{name:'青少年'},{name:'中老年'}
+	      	],
+			peopleNum:[
+				{num:'0-10'},
+				{num:'10-100'},
+				{num:'100-200'}
+			],
+		},
+		methods:{
+	    	goNext:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			openUpbox: function(e){
+				this.isShowDialog = true;
+			},
+			closeUpbox: function(e){
+				this.isShowDialog = false;
+			},
+			getList: function(e){
+				var self = this;
+				var catId = e.target.attr.val;
+				var stream = require('@weex-module/stream');
+				stream.fetch({
+					method:'POST',
+					url:api.apiurl.apiurl + 'api/select',
+					type: 'json',
+					body: `cat_id=${catId}&plate_id=${catId}&style_id=${catId}&suit_id=${catId}`,
+				},function(data){
+					console.log(data.data.data);
+				},function(e){
+					
+				});
+			},
+			goShow: function(e){
+				var self = this;
+				var goodsId = e.target.attr.val;
+				var stream = require('@weex-module/stream');
+				stream.fetch({
+					method:'POST',
+					url:api.apiurl.apiurl + 'api/goods/info',
+					type: 'json',
+					body: `goods_id=3`,
+				},function(data){
+					console.log(data.data.data);
+				},function(e){
+					
+				});
+			},
+			toggle:function(e){
+				var self = this;
+				
+			}
+	   	},
+	   	created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		},
+		init:function(){
+			var self = this;
+			var stream = require('@weex-module/stream');
+			var modal = require('@weex-module/modal');
+			stream.fetch({
+				method:'POST',
+				url:api.apiurl.apiurl + 'api/category',
+				type: 'json'
+			},function(data){
+				self.bImg = data.data.data.bImg;
+				self.classList = data.data.data.classList;
+			},function(e){
+				
+			});
+		}
+	}
+</script>

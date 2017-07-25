@@ -1,0 +1,196 @@
+<template>
+	<div class="body">
+		<yd-min-navbar navbar="{{navbar}}"></yd-min-navbar>
+		<scroller>
+			<div class="vip-wrapper">
+				<div class="vip-top">
+					<div class="vip-top-img">
+						<image src="{{ resurl+vipImg }}" style="width:177;height:177;"></image>
+					</div>
+					<text style="color:#ebac51;font-size:28;margin-top:20;">{{ vipName }}</text>
+				</div>
+				<div class="vip-bottom">
+					<div class="vip-grow">
+						<text style="color:#333;font-size:28;margin-left:25;">我的成长</text>
+					</div>
+					<div class="vip-detail">
+						<div class="vip-all">
+							<image src="{{ resurl+aImg }}" style="width:70;height:70;"></image>
+							<div class="vip-money">
+								<div class="money-all">
+									<text class="vip-coffee">{{ money }}</text>
+									<text class="vip-yuan">元</text>
+								</div>
+								<text class="vip-yuan vip-num">挥金总额</text>
+							</div>
+						</div>
+						<div class="vip-all">
+							<image src="{{ resurl+nImg }}" style="width:49;height:48;"></image>
+							<div class="vip-money">
+								<div class="money-all">
+									<text class="vip-coffee">{{ number }}</text>
+									<text class="vip-yuan">次</text>
+								</div>
+								<text class="vip-yuan vip-num">挥金次数</text>
+							</div>
+						</div>
+						<div class="vip-all">
+							<image src="{{ resurl+dImg }}" style="width:70;height:70;"></image>
+							<div class="vip-money">
+								<div class="money-all">
+									<text class="vip-coffee">{{ date }}</text>
+									<text class="vip-yuan">天</text>
+								</div>
+								<text class="vip-yuan vip-num">我的淘领</text>
+							</div>
+						</div>
+						<div class="vip-all">
+							<div class="vip-money">
+								<text class="vip-yuan vip-num" style="font-size:36;">敬请期待</text>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</scroller>	
+	</div>
+
+</template>
+
+<style>
+	.body{
+		width:750;
+		background-color: #fff;
+	}
+	.vip-wrapper{
+		width:750;
+	}
+	.vip-top{
+		width:750;
+		height:416;
+		background-color: #790e7f;
+		justify-content: center;
+		align-items: center;
+	}
+	.vip-bottom{
+		width:750;
+	}
+	.vip-grow{
+		width:750;
+		height:80;
+		border-bottom-color:#ccc;
+		border-bottom-width:1;
+		justify-content: center;
+		align-items: flex-start;
+	}
+	.vip-detail{
+		flex-direction: row;
+		flex-wrap: wrap;
+		flex:1;
+		/*height:380;*/
+	}
+	.vip-all{
+		width: 375;
+		height:195;
+		border-right-width:1;
+		border-color:#ccc;
+		border-bottom-width:1;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+	.money-all{
+		flex-direction: row;
+	}
+	.vip-money{
+		margin-left:20;
+	}
+	.vip-coffee{
+		color:#9a6b35;
+		font-size:40;
+	}
+	.vip-yuan{
+		color:#666;
+		font-size:28;
+		justify-content: center;
+		align-items: center;
+	}
+	.vip-num{
+		align-items: flex-start;
+	}
+	.vip-top-img{
+		width:750;
+		height:177;
+		margin-top:52;
+		justify-content: center;
+		align-items: center;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-min-navbar.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '会员中心',
+		        rightTitle: '爱心会员',
+		        rightImage: '',
+		        rightColor: '#323333',
+		        centerColor: '#323333',
+		        backgroundColor: "#eadbc7"
+	      	},
+	      	money:'2,999,66.30',
+	      	number:'1002',
+	      	date:'123',
+	      	aImg:'icon_huijinzonge@3x.png',
+	      	nImg:'icon_youxiangtupian@3x.png',
+	      	dImg:'icon_wo-d-taol@3x.png',
+	      	vipImg:'ditu_pangzi176@3x.png',
+	      	vipName:'成长的开始'
+	   },
+	   methods:{
+			goNext:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			}
+		},
+		created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			});
+			this.$on('navBar.rightItem.click',function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + 'member/love_center.js';
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			});
+		},
+		//进来页面获取存储数据
+//		init:function(){
+//			var self = this;
+//			var stream = require("@weex-module/stream");
+//			var storage = require('@weex-module/storage');
+//			storage.getItem("member_id",event=>{
+//				stream.fetch({
+//					method:'POST',
+//					url:api.apiurl.apiurl + 'api/more/center',
+//					type: 'json',
+//					body: `mid=${event.data}`
+//				},function(data){
+//					
+//				},function(e){
+//					
+//				})
+//			});
+//		}
+//		var aa = 1;
+//		var aa = `aaa=${aa}`;
+	}
+</script>

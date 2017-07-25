@@ -1,0 +1,350 @@
+<template>
+	<div class="body">
+		<scroller>
+			<div class="head-top">
+				<image src="{{ resurl+bgImg }}" style="width:750;height:220;"></image>
+				<div class="head-left">
+					<div class="head-img">
+						<image src="{{ hImg }}" style="width:136;height:136;border-radius: 100;"></image>
+					</div>
+					<div class="head-name">
+						<text class="head-white">{{ name }}</text>
+						<div class="head-grade">
+							<image src="{{ resurl+vImg }}" style="width:30;height:23;margin-right:20;"></image>
+							<image src="{{ resurl+xImg }}"  style="width:33;height:25;"></image>
+						</div>
+					</div>
+				</div>
+				<div class="head-right" onclick="goNext" url="member/install.js">
+					<image src="{{ resurl+ship }}" style="width:38;height:38;"></image>
+				</div>
+			</div>
+			<div class="head-container">
+				<div class="head-order">
+					<div class="order-top" onclick="goNext" url="member/my_order.js">
+						<div class="order-title">
+							<text class="big-black">我的订单</text>
+						</div>
+						<div class="order-click">
+							<text style="color:#999;font-size:24;">查看全部订单 ></text>
+						</div>
+					</div>
+					<div class="order-list">
+						<div class="order-pay" onclick="goNext" url="member/my_order.js">
+							<image src="{{ resurl+payImg }}" style="width:46;height:40;margin-bottom: 25;"></image>
+							<text class="pay-color">待付款</text>
+						</div>
+						<div class="order-pay" onclick="goNext" url="member/deliver_goods.js">
+							<image src="{{ resurl+fayImg }}" style="width:46;height:40;margin-bottom: 25;"></image>
+							<text class="pay-color">待发货</text>
+						</div>
+						<div class="order-pay" onclick="goNext" url="member/goods_receipt.js">
+							<image src="{{ resurl+playImg }}" style="width:46;height:40;margin-bottom: 25;"></image>
+							<text class="pay-color">待收货</text>
+						</div>
+						<div class="order-pay" onclick="goNext" url="member/evaluate.js">
+							<image src="{{ resurl+wayImg }}" style="width:46;height:40;margin-bottom: 25;"></image>
+							<text class="pay-color">待评论</text>
+						</div>
+						<div class="order-pay">
+							<image src="{{ resurl+sayImg }}" style="width:46;height:40;margin-bottom: 25;"></image>
+							<text class="pay-color">售后</text>
+						</div>
+					</div>
+				</div>
+				<div class="head-choice">
+					<div class="choice-one" onclick="goNext" url="member/attention_pictures.js">
+						<image src="{{ resurl+myImg }}" style="width:100;height:100;margin-bottom:20;"></image>
+						<text class="pay-color">我的收藏</text>
+					</div>
+					<div class="choice-one" onclick="goNext" url="member/attention_designer.js">
+						<image src="{{ resurl+loveImg }}" style="width:100;height:100;margin-bottom:20;"></image>
+						<text class="pay-color">关注设计师</text>
+					</div>
+					<div class="choice-one" onclick="goNext" url="member/browse_footprint.js">
+						<image src="{{ resurl+lookImg }}" style="width:100;height:100;margin-bottom:20;"></image>
+						<text class="pay-color">浏览足迹</text>
+					</div>
+					<div class="choice-one" onclick="goNext" url="member/feedback.js">
+						<image src="{{ resurl+disImg }}" style="width:100;height:100;margin-bottom:20;"></image>
+						<text class="pay-color">反馈</text>
+					</div>
+				</div>
+				<div class="head-lst">
+					<div class="min-list"  onclick="goNext" url="member/member_center.js">
+						<div class="min-img">
+							<image src="{{ resurl+vipImg }}" style="width:39;height:32;margin-right:20;"></image>	
+						</div>
+						<div class="min-title">
+							<text class="pay-color">会员中心</text>								
+						</div>
+					</div>
+					<div class="min-list" onclick="goNext" url="member/system_message.js">
+						<div class="min-img">
+							<image src="{{ resurl+newImg }}" style="width:36;height:32;margin-right:20;"></image>	
+						</div>
+						<div class="min-title">
+							<text class="pay-color">消息中心</text>								
+						</div>
+						<div class="min-num">
+							<text class="min-white">{{ num }}</text>
+						</div>
+					</div>
+					<div class="min-list" onclick="goNext" url="member/original_apply.js">
+						<div class="min-img">
+							<image src="{{ resurl+yuanImg }}" style="width:39;height:39;margin-right:20;"></image>	
+						</div>
+						<div class="min-title">
+							<text class="pay-color">我的原创</text>								
+						</div>
+						<div class="min-num">
+							<text class="min-white">{{ num }}</text>
+						</div>
+					</div>
+					<div class="min-list" onclick="goNext" url="member/offline_address.js">
+						<div class="min-img">
+							<image src="{{ resurl+lineImg }}" style="width:32;height:44;margin-right:20;"></image>	
+						</div>
+						<div class="min-title">
+							<text class="pay-color">线下地址</text>								
+						</div>
+					</div>
+					<div class="min-list" onclick="goNext" url="member/about_us.js">
+						<div class="min-img">
+							<image src="{{ resurl+aboutImg }}" style="width:39;height:39;margin-right:20;"></image>	
+						</div>
+						<div class="min-title">
+							<text class="pay-color">关于我们</text>								
+						</div>
+					</div>
+					<div class="min-list" style="border:0;"  onclick="goNext" url="member/help.js">
+						<div class="min-img">
+							<image src="{{ resurl+helpImg }}" style="width:39;height:39;margin-right:20;"></image>	
+						</div>
+						<div class="min-title">
+							<text class="pay-color">帮助</text>								
+						</div>
+					</div>
+				</div>
+			</div>
+		</scroller>
+		<yd-footer></yd-footer>
+	</div>	
+</template>
+
+<style>
+	.body{
+		width:750;
+		background-color: #f1f1f1;
+	}
+	.head-top{
+		width:750;
+		height:220;
+		position:relative;
+	}
+	.head-left{
+		height:220;
+		position:absolute;
+		top:0;
+		left:28;
+		justify-content: center;
+		align-items: center;
+		flex:1;
+		flex-direction: row;
+	}
+	.head-img{
+		width:136;
+		height:136;
+		margin-right:15;
+		border-radius: 100;
+	}
+	.head-grade{
+		flex-direction: row;
+	}
+	.head-white{
+		color:#fff;
+		font-size:26;
+		margin-bottom:10;
+	}
+	.head-right{
+		position: absolute;
+		top:50;
+		right:28;
+	}
+	.big-black{
+		color:#333;
+		font-size:34;
+	}
+	.head-container{
+		width:750;
+		margin-bottom:100;
+	}
+	.head-order{
+		width:750;
+		height:230;
+		background-color: #fff;
+		border-color:#dfdede;
+		border-bottom-width:1;
+	}
+	.order-top{
+		width:750;
+		height:90;
+		padding-left:28;
+		padding-right:28;
+		justify-content: center;
+		align-items: center;
+		flex-direction: row;
+		border-bottom-color:#dfdede;
+		border-bottom-width:1;
+	}
+	.order-title{
+		justify-content: center;
+		align-items: flex-start;
+		flex:1;
+	}
+	.pay-color{
+		color:#333;
+		font-size:24;
+	}
+	.order-list{
+		width:750;
+		height:140;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		padding-left:28;
+		padding-right:28;
+	}
+	.order-pay{
+		justify-content: center;
+		align-items: center;
+	}
+	.head-choice{
+		margin-top:20;
+		border-color:#dfdede;
+		border-top-width:1;
+		border-bottom-width:1;
+		width:750;
+		height:204;
+		background-color: #fff;
+		padding-left:28;
+		padding-right:28;
+		justify-content: space-between;
+		align-items: center;
+		flex-direction: row;
+	}
+	.choice-one{
+		justify-content: center;
+		align-items: center;
+	}
+	.head-lst{
+		margin-top:20;
+		background-color: #fff;
+		border-color:#dfdede;
+		border-top-width:1;
+		border-bottom-width:1;
+		width:750;
+		height:530;
+	}
+	.min-list{
+		width:694;
+		height:86;
+		border-bottom-color:#dfdede;
+		border-bottom-width:1;
+		justify-content: center;
+		align-items:center;
+		margin-left:28;
+		margin-right:28;
+		flex-direction: row;
+	}
+	.min-title{
+		height:86;
+		flex:1;
+		justify-content: center;
+		align-items: flex-start;
+	}
+	.min-img{
+		justify-content: center;
+		align-items: flex-start;
+		height:86;
+	}
+	.min-white{
+		color:#fff;
+		font-size:20;
+	}
+	.min-num{
+		width:31;
+		height:31;
+		background-color: #ff8080;
+		border-radius: 100;
+		justify-content: center;
+		align-items: center;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	var api = require('../api.js');
+	require('../components/yd-footer.we');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+			bgImg:'banner_xingkong@3x.png',
+			vImg:'grade_2.png',
+			xImg:'grade_1.png',
+			hImg:'head_pangzi@3x.png',
+			name:'天空一声响',
+			ship:'icon_chilun@3x.png',
+			payImg:'icon_daifukuang@3x.png',
+			fayImg:'icon_daifahuo@3x.png',
+			playImg:'icon_daishouhuo@3x.png',
+			wayImg:'icon_daipinglun@3x.png',
+			sayImg:'icon_shouhou@3x.png',
+			myImg:'icon_wodshoucang@3x.png',
+			loveImg:'icon_guanzhushejishi@3x.png',
+			lookImg:'icon_jiaoyazi@3x.png',
+			disImg:'icon_fankui@3x.png',
+			vipImg:'icon_huangsevip@3x.png',
+			newImg:'icon_xiaoxizhongxin@3x.png',
+			yuanImg:'icon_wodyuanchuang@3x.png',
+			lineImg:'icon_xianxiadizhi@3x.png',
+			aboutImg:'icon_guanyuwomen@3x.png',
+			helpImg:'icon_bangzhu@3x.png',
+			num:1,
+		},
+		methods:{
+			goNext:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+		},
+		created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		},
+		init:function(){
+			var self = this;
+			var stream = require('@weex-module/stream');
+			var storage = require('@weex-module/storage');
+			storage.getItem('mid',event=>{
+				console.log(event.data);
+			});
+			stream.fetch({
+				method:'POST',
+				url:api.apiurl.apiurl + 'api/get/member/info',
+				type: 'json',
+				body:`mid=7`
+			},function(data){
+				self.hImg=data.data.data.member_headimg;
+				self.name=data.data.data.member_name;
+			},function(e){
+				
+			})
+		}
+	}
+</script>

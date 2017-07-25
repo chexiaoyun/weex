@@ -1,0 +1,334 @@
+<template>
+	<div class="wrapper">
+		<wxc-navpage height={{navHeight}} background-color={{bgColor}} title={{title}} title-color={{color}} title-font-family={{family}} left-item-src="{{resUrl+lSrc}}"></wxc-navpage>
+		<scroller>
+			<div class="content">
+				<div class="group-top">
+					<div class="group-img">
+						<image src="{{resUrl+gImg}}" style="width:100;height:100;"></image>
+					</div>
+					<div class="group-left">
+						<text class="name">{{name}}</text>
+						<div class="name-wrapper">
+							<text class="min-name">{{minName}}</text>
+						</div>
+					</div>
+					<div class="group-right" onclick="goNext" url="talk/group_talk.js">
+						<image src="{{resUrl+rImg}}" style="width:45;height:44;"></image>
+					</div>
+				</div>
+				<div class="people">
+					<div class="people-wrapper">
+						<div class="author" repeat="item in list" onclick="goNext" url="{{item.url}}">
+							<image src="{{resUrl+item.img}}" style="width:90;height:90;"></image>
+							<text style="font-size:24;color:#333;margin-top:13;height:27;overflow: hidden;">{{item.name}}</text>
+						</div>
+					</div>
+				</div>
+				<div class="group-list">
+					<div class="line" onclick="goNext" url="personal/community_name.js">
+						<div class="line-wrapper">
+							<div class="group-name">
+								<text style="color:#333;font-size:30;">社群名称</text>
+							</div>
+							<div class="group-update">
+								<text style="font-size:30;color:#9b9b9b;flex:1;text-align: right;">{{groupName}}</text>
+								<image src="{{resUrl+nextImg}}" style="width:13;height:24;margin-left:18;margin-top:8;"></image>
+							</div>
+						</div>
+					</div>
+					<div class="line" onclick="goNext" url="personal/nickname_revise.js">
+						<div class="line-wrapper">
+							<div class="group-name">
+								<text style="color:#333;font-size:30;">我在本群的昵称</text>
+							</div>
+							<div class="group-update">
+								<text style="font-size:30;color:#9b9b9b;flex:1;text-align: right;">{{groupNick}}</text>
+								<image src="{{resUrl+nextImg}}" style="width:13;height:24;margin-left:18;margin-top:8;"></image>
+							</div>
+						</div>
+					</div>
+					<div class="line line2" onclick="goNext" url="personal/notice.js">
+						<div class="line-wrapper"  style="height:140;">
+							<div class="group-name" style="flex:1">
+								<text style="color:#333;font-size:30;text-align: left;flex:1;">社群公告</text>
+								<text style="font-size:30;color:#9b9b9b;flex:1;text-align: right;margin-top:24;text-align: left;">进群请及时修改群名片，谢谢配合！</text>
+							</div>
+							<div class="group-update" style="flex:0.3;justify-content: flex-end;">
+								<image src="{{resUrl+nextImg}}" style="width:13;height:24;margin-top:5;"></image>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="quit" onclick="goNext" url="personal/me_group.js">
+					<text style="font-size:36;color:#fff;">删除并退出</text>
+				</div>
+			</div>
+		</scroller>
+		<div class="keep" if="shown">
+			<div class="keep-wrapper">
+				<div class="keep-clear" onclick="clear">
+					<text style="color:#e64340;font-size:30;">清除聊天记录</text>
+				</div>
+				<div class="keep-out" onclick="cancel">
+					<text style="color:#333;font-size:30;">取消</text>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
+
+<style>
+	.wrapper{
+		background-color:#f8f8f8;
+		flex-direction: column;
+	}
+	.header{
+		background-color:#58bf65;
+		height:88;
+		width:750;
+		position:fixed;
+		top:0;
+		left:0;
+		flex-direction: row;
+	}
+	.back{
+		flex:0.1;
+		height:88;
+		justify-content:center;
+		align-items:center;
+	}
+	.title{
+		flex:1;
+		justify-content: center;
+		align-items:flex-start;
+		height:88;
+	}
+	.content{
+		margin-top:88;
+	}
+	.group-top{
+		width:750;
+		height:160;
+		background-color:#fff;
+		border-width:1;
+		border-color:#ebebeb;
+		flex-direction: row;
+		padding:30;
+	}
+	.group-img{
+		width:98;
+		height:98;
+		background-color:#ebebeb ;
+		border-width:1;
+		border-color:#ebebeb;
+		margin-right:29;
+	}
+	.group-left{
+		flex:1;
+	}
+	.name{
+		font-size:36;
+		color:#333;
+		margin-bottom:15;
+	}
+	.min-name{
+		font-size:26;
+		color:#9b9b9b;
+	}
+	.name-wrapper{
+		width:145;
+		height:36;
+		border-radius: 36;
+		justify-content: center;
+		align-items: center;
+		background-color:#ebebeb ;
+	}
+	.group-right{
+		margin-top:30;
+	}
+	.people{
+		width:750;
+		height:340;
+		margin-top:24;
+		background-color: #fff;
+	}
+	.people-wrapper{
+		width:750;
+		height: 340;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+	.author{
+		width:90;
+		height:155;
+		border-radius: 8;
+		margin-left:50;
+		margin-top:10;
+		align-items: center;
+		justify-content: center;
+	}
+	.box{
+		flex-direction: column;
+	}
+	.group-list{
+		margin-top:24;
+		background-color: #fff;
+		width:750;
+		height:auto;
+		flex-direction: column;
+	}
+	.line{
+		width:750;
+		height:86;
+		background-color: #fff;
+		border-bottom-width:1;
+		border-color:#ebebeb;
+	}
+	.line2{
+		height:140;
+	}
+	.line3{
+		margin-top:24;
+		justify-content: flex-start;
+	}
+	.line-wrapper{
+		padding:30;
+		height:88;
+		justify-content: center;
+		align-items: center;
+		flex-direction: row;
+	}
+	.group-name{
+		flex:0.5;
+	}
+	.group-update{
+		flex:1;
+		flex-direction: row;
+	}
+	.quit{
+		margin-top:36;
+		margin-left:42;
+		margin-right:42;
+		background-color:#e64340;
+		border-radius:2;
+		width:666;
+		height:80;
+		justify-content: center;
+		align-items: center;
+		margin-bottom:50;
+	}
+	.keep{
+		background-color:rgba(51,51,51,0.2);
+		width:750;
+		height:1334;
+		position:fixed;
+		top:0;
+		left:0;
+	}
+	.keep-wrapper{
+		position:fixed;
+		bottom:0;
+		left:0;
+	}
+	.keep-clear,.keep-out{
+		width:750;
+		height:88;
+		background-color: #fff;
+		align-items: center;
+		justify-content: center;
+	}
+	.keep-out{
+		margin-top:12;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+	module.exports = {
+		data: {
+			dir:'dist',
+			resUrl:api.apiurl.resurl,
+			navHeight:88,
+			bgColor:'#58bf65',
+			title:'社群名称',
+			color:'#fff',
+			lSrc:'/images/back.png',
+			gImg:'/images/r_10_100.png',
+			rImg:'/images/talk_01.png',
+			name:'舞曲新天地',
+			minName:'武林高手',
+			nextImg:'/images/jump.png',
+			groupName:'舞动新天地',
+			groupNick:'喝醉的大侠',
+			list:[
+				{name:'狗蛋儿',img:'/images/o_7_90.png',url:'personal/friends.js'},
+				{name:'Chelse',img:'/images/o_8_90.png',url:'personal/friends.js'},
+				{name:'冯敏',img:'/images/o_3_90.png',url:'personal/friends.js'},
+				{name:'Ella…',img:'/images/o_5.png',url:'personal/friends.js'},
+				{name:'喵小猫',img:'/images/o_9_90.png',url:'personal/friends.js'},
+				{name:'圣诞老...',img:'/images/o_2.png',url:'personal/friends.js'},
+				{name:'肥猫',img:'/images/o_1.png',url:'personal/friends.js'},
+				{name:'何老师',img:'/images/o_4_90.png',url:'personal/friends.js'},
+				{name:'驴小龙',img:'/images/o_6_90.png',url:'personal/friends.js'},
+				{name:'',img:'/images/more.png',url:'personal/member.js'}
+			],
+			shown:false
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+    	},
+		methods: {
+			showFn: function () {
+				this.shown = !this.shown;
+			},
+			clear:function () {
+				this.shown = !this.shown;
+			},
+			cancel: function () {
+				this.shown = !this.shown;
+			},
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		}
+	};
+</script>

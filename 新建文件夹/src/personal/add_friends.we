@@ -1,0 +1,311 @@
+<template>
+	<div class="wrapper">
+		<wxc-navpage height={{navHeight}} background-color={{bgColor}} title={{title}} title-color={{color}}  left-item-src="{{resUrl+lSrc}}"  ></wxc-navpage>
+		<scroller>
+			<div class="content">
+				<div class="information">
+					<div class="inform-left">
+						<image style="width:100;height:100" src="{{resUrl+aImg}}"></image>
+					</div>   
+					<div class="inform-name">
+						<text class="name">{{name}}</text>
+					</div>
+				</div>
+				<div class="association" onclick="goNext" url="personal/me_post.js">
+					<div class="association-left">
+						<text style="color:#333;font-size:30;">他的发帖</text>
+					</div>
+					<div class="association-right">
+						<div class="friends-left">
+							<image src="{{resUrl+fImg}}" class="img"></image>
+							<image src="{{resUrl+fImg}}" class="img"></image>
+							<image src="{{resUrl+fImg}}" class="img"></image>
+							<image src="{{resUrl+fImg}}" class="img"></image>
+						</div>
+						<div class="next-img">
+							<image src="{{resUrl+nImg}}" class="nimg" style="margin-top:35;"></image>
+						</div>
+					</div>
+				</div>
+				<div class="remarks-wrapper">
+					<div class="remark" onclick="goNext" url="personal/remarks.js">
+						<div class="remark-left">
+							<text class="title2">备注</text>
+						</div>
+						<div class="remark-right">
+							<div class="remark-name">
+								<text style="color:#9b9b9b;font-size:30;">{{remark}}</text>
+							</div>
+							<div class="next-img">
+								<image src="{{resUrl+nImg}}" class="nimg"></image>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="remove" onclick="goNext" url="talk/say.js" style="background-color: #58bf65;">
+					<text style="color:#fff;font-size:36;">添加好友</text>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.wrapper{
+		background-color:#f8f8f8;
+		flex-direction: column;
+	}
+	.header{
+		background-color:#58bf65;
+		height:88;
+		width:750;
+		position:fixed;
+		top:0;
+		left:0;
+		flex-direction: row;
+	}
+	.back{
+		flex:0.2;
+		height:88;
+		justify-content:center;
+		align-items:center;
+	}
+	.title{
+		flex:1;
+		justify-content: center;
+		align-items: flex-start;
+		height:88;
+	}
+	.content{
+		margin-top:88;
+		width:750;
+	}
+	.information{
+		width:750;
+		height:160;
+		background-color: #fff;
+		justify-content: center;
+		align-items: center;
+		flex-direction: row;
+	}
+	.inform-left{
+		width:102;
+		height:102;
+		border-width:1;
+		border-color:#d8d8d8;
+		margin-left:34;
+		margin-right:34;
+	}
+	.inform-name{
+		flex:1;
+	}
+	.img{
+		width:100;
+		height:100;
+		margin-right:23;
+	}
+	.association{
+		flex-direction: row;
+		width:750;
+		height:180;
+		background-color: #fff;
+		margin-top:24;
+		justify-content: center;
+		align-items: center;
+		border-width:1;
+		border-color:#ebebeb;
+	}
+	.association-left{
+		flex:0.3;
+		padding-left:30;
+	}
+	.association-right{
+		flex:1;
+		flex-direction: row;
+	}
+	.friends-left{
+		flex:1;
+		flex-direction: row;
+	}
+	.next-img{
+		width:13;
+		margin-right:30;
+		justify-content: center;
+		align-items: center;
+	}
+	.nimg{
+		width:13;
+		height:24;
+	}
+	.remarks-wrapper{
+		flex-direction: column;
+		width:750;
+		background-color: #fff;
+		margin-top:24;
+	}
+	.remark{
+		width:750;
+		height:86;
+		border-bottom-width:1;
+		border-bottom-color:#ebebeb;
+		justify-content:center;
+		align-items:center;
+		flex-direction: row;
+	}
+	.remark-left{
+		flex:0.2;
+		margin-left:24;
+		height:88;
+		justify-content: center;
+	}
+	.title2{
+		font-size:30;
+		color:#333;
+	}
+	.remark-right{
+		flex:1;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+	.remark-name{
+		flex:1;
+		justify-content: flex-end;
+		align-items: flex-end;
+		margin-right:18;
+	}
+	.next-img2{
+		justify-content: flex-end;
+		align-items: flex-end;
+	}
+	.clear{
+		margin-top:24;
+		background-color: #fff;
+	}
+	.clear-wrapper{
+		justify-content: flex-start;
+		align-items: flex-start;
+	}
+	.clear-left{
+		flex:1;
+	}
+	.remove{
+		margin-top:36;
+		margin-left:42;
+		margin-right:42;
+		width:666;
+		height:80;
+		background-color: #e64340;
+		border-radius: 2;
+		justify-content: center;
+		align-items: center;
+	}
+	.keep{
+		background-color:rgba(51,51,51,0.2);
+		width:750;
+		height:1334;
+		position:fixed;
+		top:0;
+		left:0;
+	}
+	.keep-wrapper{
+		position:fixed;
+		bottom:0;
+		left:0;
+	}
+	.keep-clear,.keep-out{
+		width:750;
+		height:88;
+		background-color: #fff;
+		align-items: center;
+		justify-content: center;
+	}
+	.keep-out{
+		margin-top:12;
+	}
+	.name{
+		font-size:36;
+		color:#333;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+	module.exports = {
+		data: {
+			dir:'dist',
+			resUrl:api.apiurl.resurl,
+			navHeight:88,
+			bgColor:'#58bf65',
+			title:'详细资料',
+			color:'#fff',
+			lSrc:'/images/back.png',
+			bImg:'/images/back.png',
+			name:'Ella',
+			aImg:'/images/r_7_100.png',
+			fImg:'/images/r_10_100.png',
+			nImg:'/images/jump.png',
+			remark:'小Ella'
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+    	},
+		methods:{
+			showFn: function () {
+				this.shown = !this.shown;
+			},
+			clear:function () {
+				this.shown = !this.shown;
+			},
+			cancel: function () {
+				this.shown = !this.shown;
+			},
+			goBack:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				navigator.pop({'animated':'true'},null);
+			},
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf(dist) + "dist");
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		}
+	}
+</script>

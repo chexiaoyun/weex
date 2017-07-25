@@ -1,0 +1,197 @@
+<template>
+	<div class="body">
+		<wxc-navpage background-color="{{ nav.bgColor }}" title="{{ nav.title }}" title-color="{{ nav.titleColor }}" left-item-src="{{ url + nav.leftImgSrc }}" right-item-title="{{ nav.rightItemTitle }}" right-item-color="{{ nav.titleColor }}"></wxc-navpage>
+
+		<div class="relaiton-info">
+			<div class="info-item">
+				<div class="info-text">
+					<text class="info-text-k">姓名：</text>
+				</div>
+				<div class="info-input">
+					<input class="input" type="text" value="" placeholder="就诊人姓名" />
+				</div>
+			</div>	
+			<div class="info-sex">
+				<div class="info-text">
+					<text class="info-text-k">性别：</text>
+				</div>
+				<div class="info-input-sex">
+					<div class="sex-item" onclick="changeSex" sex="0">
+						<div class="sex-select {{ sex == 0 ? 'sex-active' : '' }}"></div>
+						<text class="sex-text">男</text>
+					</div>
+					<div class="sex-item" onclick="changeSex" sex="1">
+						<div class="sex-select {{ sex == 1 ? 'sex-active' : '' }}"></div>
+						<text class="sex-text">女</text>
+					</div>
+				</div>
+			</div>
+			<div class="info-item">
+				<div class="info-text">
+					<text class="info-text-k">身份证：</text>
+				</div>
+				<div class="info-input">
+					<input class="input" type="number" value="" placeholder="就诊人身份证号码" />
+				</div>
+			</div>
+			<div class="info-item">
+				<div class="info-text">
+					<text class="info-text-k">地址：</text>
+				</div>
+				<input class="input" type="text" value="" placeholder="就诊人地址" />
+			</div>
+			
+			<text class="prompt-text">{{ prompt }}</text>
+			
+		</div>
+		
+	</div>
+</template>
+
+<style>
+	.body {
+		background-color: #f8f8f8;
+	}
+	.relaiton-info{
+		padding-left: 41;
+		padding-right: 41;
+		margin-top: 88;
+	}
+	.info-item{
+		height: 104;
+		flex-direction: row;
+		align-items: center;
+		background-color: #fff;
+		margin-top: 30;
+		border-width: 1;
+		border-color: #ebebeb;
+		border-radius:4;
+	}
+	.info-sex{
+		height: 80;
+		flex-direction: row;
+		align-items: center;
+		margin-top: 30;
+	}
+	.info-input-sex{
+		margin-left: 15;
+		flex-direction: row;
+		align-items: center;
+	}
+	.sex-item{
+		flex-direction: row;
+		align-items: center;
+		margin-right: 40;
+		height: 60;
+		width: 80;
+	}
+	.sex-select{
+		width: 30;
+		height: 30;
+		background-color: #fff;
+		border-width: 2;
+		border-color: #ebebeb;
+		border-radius: 4;
+	}
+	.sex-active{
+		border-width: 0;
+		background-color: #58bf65;
+	}
+	.sex-text{
+		font-size: 30;
+		color: #333;
+		margin-left: 15;
+	}
+	.info-text{
+		margin-left: 27;
+	}
+	.info-text-k{
+		font-size: 30;
+		color: #9b9b9b;
+	}
+	.info-input{
+		margin-left: 15;
+		flex: 1;
+	}
+	.input{
+		height: 40;
+		font-size: 30;
+		color: #333;
+		flex: 1;
+	}
+	.prompt-text{
+		font-size: 30;
+		color: #cfcfcf;
+		line-height: 44;
+		margin-top: 30;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+
+	module.exports = {
+		data: {
+			dir: 'dist',
+			url: api.apiurl.resurl,
+			jumpUrl: 'home/doctor-info-details.js',
+			nav: {
+				title: '就诊人信息',
+				bgColor: '#58bf65',
+				titleColor: '#fff',
+				leftImgSrc: '/images/back.png',
+				rightItemTitle: '保存'
+			},
+			sex: 0,
+			prompt: '温馨提示：为确保您的预约挂号有效，请正确填写您的信息，就诊时凭身份证取号'
+		},
+		methods:{
+			changeSex: function(e){
+				this.sex = e.target.attr.sex;
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+	      	this.$on('naviBar.rightItem.click',function(){
+	      		var navigator = require('@weex-module/navigator');
+				var nextUrl = this.getBase() + this.jumpUrl;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+	      	});
+    	}
+	}
+</script>

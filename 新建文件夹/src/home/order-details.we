@@ -1,0 +1,216 @@
+<template>
+	<div class="body">
+		<div id="header">
+			<wxc-navpage background-color="{{ nav.bgColor }}" title="{{ nav.title }}" title-color="{{ nav.titleColor }}" right-item-src="{{ url + nav.rightImgSrc }}" left-item-src="{{ url + nav.leftImgSrc }}"></wxc-navpage>
+		</div>
+	
+		<scroller>
+			<div class="od-info">
+				<div class="od-info-d">
+					<text class="od-key">医院：</text>
+					<text class="od-value">{{ orderInfo.hospital }}</text>
+				</div>
+				<div class="od-info-d">
+					<text class="od-key">科室：</text>
+					<text class="od-value">{{ orderInfo.department }}</text>
+				</div>
+				<div class="od-info-d">
+					<text class="od-key">专家：</text>
+					<text class="od-value">{{ orderInfo.expert }}</text>
+				</div>
+				<div class="od-info-d">
+					<text class="od-key">就诊时间：</text>
+					<text class="od-value">{{ orderInfo.time }}</text>
+				</div>
+				<div class="od-info-d">
+					<text class="od-key">当前状态：</text>
+					<text class="od-value od-state">{{ orderInfo.state }}</text>
+				</div>
+			</div>
+			
+			<div class="od-info">
+				<div class="od-info-d">
+					<text class="od-key">您的姓名：</text>
+					<text class="od-value">{{ userInfo.name }}</text>
+				</div>
+				<div class="od-info-d">
+					<text class="od-key">身份证号：</text>
+					<text class="od-value">{{ userInfo.idNumber }}</text>
+				</div>
+				<div class="od-info-d">
+					<text class="od-key">您的电话：</text>
+					<text class="od-value od-phone">{{ userInfo.phone }}</text>
+				</div>
+			</div>
+			
+			<div class="prompt">
+				<nobr>
+					<text class="pr-text">{{ prompt.text }}</text>
+					<text class="pr-tel">{{ prompt.tel }}</text>
+				</nobr>
+			</div>
+			
+			<div class="submit">
+				<text class="sb-text">取消预约</text>
+			</div>
+			
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.body{
+		background-color: #f8f8f8;
+	}
+	.scroller{
+		margin-top: 88;
+	}
+	.od-info{
+		width: 666;
+		border-width: 1;
+		border-color: #ebebeb;
+		border-style: solid;
+		background: #fff;
+		margin-left: 41;
+		margin-right: 41;
+		margin-top: 30;
+		padding-left:42;
+		padding-right: 42;
+		padding-top: 19;
+		padding-bottom: 19;
+		background-color: #fff;
+	}
+	.od-info-d{
+		width: 582px;
+		height: 52;
+		line-height: 52;
+		flex-direction: row;
+		align-items: center;
+	}
+	.od-key{
+		font-size: 30;
+		color: #333;
+	}
+	.od-value{
+		font-size: 30;
+		color: #333;
+	}
+	.od-state{
+		color: #f93;
+	}
+	.od-phone{
+		color: #39c;
+	}
+	.prompt{
+		margin-left: 41;
+		margin-right: 41;
+		margin-top: 30;
+		line-height: 44;
+	}
+	.pr-text{
+		font-size: 30;
+		color: #cfcfcf;
+		line-height: 44;
+	}
+	.pr-tel{
+		font-size: 30;
+		color: #39c;
+		line-height: 44;
+		margin-top: -44;
+		margin-left: 140;
+	}
+	.submit{
+		width: 666;
+		margin-left: 41;
+		margin-right: 41;
+		margin-top: 30;
+		height: 88;
+		background-color: #58bf65;
+		justify-content: center;
+		align-items: center;
+		border-radius: 4;
+	}
+	.sb-text{
+		font-size: 36;
+		color: #fff;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+
+	module.exports = {
+		data: {
+			dir: 'dist',
+			url: api.apiurl.resurl,
+			nav: {
+				title: '订单详情',
+				bgColor: '#58bf65',
+				titleColor: '#fff',
+				leftImgSrc: '/images/back.png'
+			},
+			orderInfo:{
+				hospital: '上海中医药大学附属龙华医院',
+				department: '肿瘤科',
+				expert: '田建辉 主任医师',
+				time: '10-25 周二 下午',
+				state: '处理中'
+			},
+			userInfo: {
+				name: '吴某某',
+				idNumber: '320068199012234450',
+				phone: '15021615598'
+			},
+			prompt: {
+				text:'温馨提示：请保持手机通畅，必要时我们的客服人员会与您联系。如有问题请致电敬老社区全国客服热线：',
+				tel: '400-000-0000'
+			}
+		},
+		methods:{
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			}
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+    	}
+	}
+</script>

@@ -1,0 +1,167 @@
+<template>
+	<div class="body">
+		<yd-min-navbar navbar="{{navbar}}"></yd-min-navbar>
+		<scroller>
+			<div class="address-wrapper">
+				<div class="member-information">
+					<text class="member-black">个人信息</text>
+				</div>
+				<div class="member-specific">
+					<div class="member-name">
+						<div class="name">
+							<text class="min-black">姓名：</text>
+						</div>
+						<div class="member-input">
+							<input type="text" value="" class="input" />
+						</div>
+					</div>
+					<div class="member-name">
+						<div class="name">
+							<text class="min-black">身份证号：</text>
+						</div>
+						<div class="member-input">
+							<input type="text" value="" class="input" maxlength="18" />
+						</div>
+					</div>
+					<div class="member-name">
+						<div class="name">
+							<text class="min-black">手机号码：</text>
+						</div>
+						<div class="member-input">
+							<input type="text" value="" class="input" maxlength="11" />
+						</div>
+					</div>
+					<div class="member-rules">
+						<div class="rules-choice {{ type == 1? 'rules-red' : 'rules-gray' }}" onclick="toggle"></div>
+						<text class="text">我已阅读并同意</text>
+						<text class="rule">《爱心会员规则》</text>
+					</div>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.body{
+		width:750;
+		background-color: #f1f1f1;
+	}
+	.list-text{
+		color:#999;
+		font-size:24;
+		margin-bottom:8;
+	}
+	.address-wrapper{
+		width:750;
+		border-top-width:1;
+		border-top-color:#ad8e6c;
+		margin-bottom:50;
+	}
+	.member-information{
+		width:750;
+		height:82;
+		border-bottom-color:#cbcccc;
+		border-bottom-width:1;
+		justify-content: center;
+		align-items: flex-start;
+		padding-left:28;
+		background-color: #fff;
+	}
+	.member-black{
+		color:#323333;
+		font-size:30;
+	}
+	.member-specific{
+		width:750;
+		padding-left:28;
+		padding-right:28;
+		background-color: #fff;
+		padding-top:30;
+		padding-bottom:46;
+	}
+	.member-name{
+		flex-direction: row;
+		margin-bottom:30;
+	}
+	.min-black{
+		color:#323333;
+		font-size:26;
+	}
+	.name{
+		flex:1;
+		justify-content: center;
+		align-items: center;
+	}
+	.member-input{
+		width:558;
+		height:60;
+		border-width:1;
+		border-color:#dedddd;
+		justify-content: center;
+	}
+	.input{
+		border:none;
+		outline:none;
+		color:#323333;
+		font-size:26;
+		padding-left:10;
+		padding-right:10;
+	}
+	.member-rules{
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: flex-start;
+	}
+	.rules-choice{
+		width:22;
+		height:22;
+		margin-right:25;
+		margin-top:5;
+	}
+	.rules-gray{
+		border-color:#aaaaa9;
+		border-width:1;
+		background-color: #ccc;
+	}
+	.rules-red{
+		background-color: #ebac51;
+	}
+	.text{
+		font-size:24;
+		color:#323333;
+	}
+	.rule{
+		color:#3383c6;
+		font-size:24;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-min-navbar.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '申请爱心会员',
+		        rightTitle: '完成',
+		        rightImage: '',
+		        rightColor: '',
+		        centerColor: '#323333',
+		        backgroundColor: "#eadbc7"
+	      	},
+	      	type:0,
+	   },
+	   method:{
+	   		toggle:function(e){
+//	   			if( this.type == 1 ){
+//	   				this.type = 0 ;
+//	   			}else if( this.type == 0 ){
+//	   				this.type = 1;
+//	   			}
+	   		}
+	   }
+	}
+</script>

@@ -1,0 +1,263 @@
+<template>
+	<div class="body">
+		<yd-min-navbar navbar="{{navbar}}"></yd-min-navbar>
+		<scroller>
+			<div class="address-wrapper">
+				<div class="detail-top">
+					<div class="detail-img">
+						<image src="{{ resurl+dImg }}" style="width:153;height:153;"></image>
+					</div>
+					<div class="detail-information">
+						<div class="detail-statue">
+							<text class="statue">物流状态</text>
+							<text class="hand">{{ hand }}</text>
+						</div>
+						<text class="list-text">快递公司：{{ company }}</text>
+						<text class="list-text">订单编号：{{ number }}</text>
+					</div>
+				</div>
+				<div class="detail-bottom">
+					<div class="logist-track">
+						<text style="color:#333;font-size:28;">物流跟踪</text>
+					</div>
+					<div class="logist-list">
+						<div class="logist-item" repeat="item in result.logistics">
+							<div class="mask-line" if="{{$index==0}}"></div>
+							<div class="logist-icon {{$index==0?'first-icon':''}}"></div>
+							<div class="logist-wrap {{$index==0?'border-none':''}}">
+								<text class="logist-text {{$index==0?'first-color':''}}">{{item.text}}</text>
+								<text class="logist-time {{$index==0?'first-color':''}}">{{item.time}}</text>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</scroller>
+	</div>
+</template>
+
+<style>
+	.body{
+		width:750;
+		background-color: #f1f1f1;
+	}
+	.list-text{
+		color:#999;
+		font-size:24;
+		margin-bottom:8;
+	}
+	.address-wrapper{
+		width:750;
+		border-top-width:1;
+		border-top-color:#ad8e6c;
+	}
+	.detail-top{
+		background-color: #fff;
+		width:750;
+		height:302;
+		border-bottom-width:1;
+		border-bottom-color:#dedede;
+		padding-left:28;
+		padding-right:28;
+		padding-top:43;
+		flex-direction: row;
+	}
+	.hand{
+		color:#2e9928;
+		font-size:28;
+	}
+	.statue{
+		color:#333;
+		font-size:28;
+		margin-right:10;
+	}
+	.detail-img{
+		width:153;
+		height:153;
+		margin-right:20;
+	}
+	.detail-statue{
+		flex-direction: row;
+		margin-bottom:10;
+	}
+	.detail-bottom{
+		border-top-width:1;
+		border-top-color: #dedede;
+		width:750;
+		background-color: #fff;
+		padding-left:28;
+		padding-right:28;
+	}
+	.logist-track{
+		height:90;
+		border-bottom-width:1;
+		border-bottom-color:#ccc;
+		justify-content: center;
+		align-items: flex-start;
+	}
+	.logist-list{
+		position:relative;
+	}
+	.cell{
+		position: relative;
+		border-left-color:#ccc;
+		border-left-width:2;
+		padding-left:25;
+		padding-top:9;
+	}
+	.cell-add{
+		color:#1caf57;
+		font-size:28;
+	}
+	.cell-img{
+		position: absolute;
+		top:0;
+		left:-20;
+	}
+	.logist-item{
+		height: 140;
+		flex-direction: row;
+		border-left-width: 1;
+		border-color: #ccc;
+		align-items: center;
+		margin-left: 50;
+	}
+	.logist-icon{
+		width: 18;
+		height: 18;
+		border-radius: 9;
+		background-color: #ccc;
+		margin-left: -10;
+	}
+	.mask-line{
+		height: 70;
+		width: 1;
+		background-color: #fff;
+		position: absolute;
+		left: -1;
+		top: 0;
+	}
+	.logist-wrap{
+		margin-left: 50;
+		height: 140;
+		flex-direction: column;
+		justify-content: center;
+		border-top-width: 1;
+		border-color: #ccc;
+		flex: 1; 
+		text-align: left;
+ 	}
+	.logist-text{
+		font-size: 28;
+		color: #999;
+	}
+	.logist-time{
+		margin-top: 10;
+		font-size: 24;
+		color: #999;
+		line-height: 26;
+		position: relative;
+	}
+	.border-none{
+		border-top-width:0;
+	}
+	.first-icon{
+		width: 34;
+		height: 34;
+		border-radius: 17;
+		border-width: 4;
+		border-color: #9c9;
+		background-color: #393;
+		margin-left: -18;
+	}
+	.first-color{
+		color: #393;
+	}
+</style>
+
+<script>
+	require('weex-components'); 
+	require('../components/yd-min-navbar.we');
+	var api = require('../api.js');
+	module.exports = {
+		data:{
+			resurl: api.apiurl.resurl,
+	      	navbar:{
+		        centerTitle: '物流详情',
+		        rightTitle: '',
+		        rightImage: '',
+		        rightColor: '',
+		        centerColor: '#323333',
+		        backgroundColor: "#eadbc7"
+	      	},
+	      	dImg:'ditu_xiaohaoyifu@3x.png',
+	      	hand:'进行中',
+	      	company:'顺分快递',
+	      	number:'321685435211354',
+	      	cImg:'icon_xiaolvdian@3x.png',
+			result:{
+				logistics:[
+					{
+						text:'[上海市] 上海已发出',
+						time: '2016-6-6 12:12:12'
+					},
+					{
+						text:'[上海市] 上海已发出',
+						time: '2016-6-6 12:12:12'
+					},
+					{
+						text:'[上海市] 上海已发出',
+						time: '2016-6-6 12:12:12'
+					},
+					{
+						text:'[上海市] 上海已发出',
+						time: '2016-6-6 12:12:12'
+					},
+					{
+						text:'[上海市] 上海已发出',
+						time: '2016-6-6 12:12:12'
+					},
+					{
+						text:'[上海市] 上海已发出',
+						time: '2016-6-6 12:12:12'
+					},
+					{
+						text:'[上海市] 上海已发出',
+						time: '2016-6-6 12:12:12'
+					},
+					{
+						text:'[上海市] 上海已发出',
+						time: '2016-6-6 12:12:12'
+					},
+					{
+						text:'[上海市] 上海已发出',
+						time: '2016-6-6 12:12:12'
+					},
+					{
+						text:'[上海市] 上海已发出',
+						time: '2016-6-6 12:12:12'
+					},
+					{
+						text:'[上海市] 上海已发出',
+						time: '2016-6-6 12:12:12'
+					}
+				]
+			}
+	   	},
+	   	methods:{
+			goNext:function(e){
+				var self = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = api.getBaseUrl(self) + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			}
+		},
+		created: function(){
+			this.$on('navBar.leftItem.click',function(e){
+				var navigator = require('@weex-module/navigator');
+				var params = {animated:'true'};
+				navigator.pop(params, function(){});
+			})
+		}
+	}
+</script>

@@ -1,0 +1,382 @@
+<template>
+	<div class="body">
+		<div id="header">
+			<wxc-navpage background-color="{{ nav.bgColor }}" title="{{ nav.title }}" title-color="{{ nav.titleColor }}" left-item-src="{{ url + nav.leftImgSrc }}" right-item-src="{{ url + nav.rightItemSrc }}"></wxc-navpage>
+		</div>
+		
+		<div class="no-remind" if="{{ list.length < 1 }}">
+			<div class="no-remind-icon">
+				<image class="no-remind-img" src="{{ url + iconClock }}"></image>
+			</div>
+			<div class="add-remind">
+				<div class="add-remind-t">
+					<text class="add-remind-text">+添加提醒</text>
+				</div>
+			</div>
+		</div>
+		
+		<div class="top" if="{{ list.length > 0 }}">
+			<text class="top-text">今天</text>
+			<text class="top-text">12-25 周五</text>
+		</div>
+		<div class="scroller" if="{{ list.length > 0 }}" id="scroller">
+			<div class="item" repeat="item in list" id="item-{{ $index }}">
+				<div class="delete" onclick="delItem" index="{{ $index }}">
+					<text class="del-text">删除</text>
+				</div>
+				<div id="content-{{ $index }}" class="content" onpanstart="itemStart" onpanmove="itemMove" onpanend="itemEnd" id="test-box">
+					<div class="left">
+						<div class="time">
+							<text class="time-text">{{ item.time }}</text>
+						</div>
+						<div class="intro">
+							<text class="intro-text">{{ item.title }}，{{ item.date }}</text>
+						</div>
+					</div>
+					<div class="right">
+						<image class="switch" src="{{ url }}{{ item.state == 0 ? iconSwitchOff : iconSwitchOn }}" onclick="switchBtn" index="{{ $index }}"></image>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+</template>
+
+<style>
+	.body{
+		background-color: #f8f8f8;
+	}
+	.no-remind-icon{
+		flex-direction: row;
+		justify-content: center;
+		margin-top: 360;
+	}
+	.no-remind-img{
+		width: 233;
+		height: 244;
+	}
+	.add-remind{
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		margin-top: 55;
+	}
+	.add-remind-t{
+		background-color:#58bf65;
+		border-radius: 16;
+		width: 330;
+		height: 96;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+	}
+	.add-remind-text{
+		font-size: 48;
+		color: #fff;
+	}
+	.top{
+		margin-top: 88;
+		background-color: #f8f8f8;
+		height:90px;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		padding-left: 35;
+		padding-right: 35;
+	}
+	.top-text{
+		font-size: 36;
+		color: #333;
+	}
+	.scroller{
+		background-color: #fff;
+	}
+	.item{
+		height: 140;
+		background-color: #fff;
+		border-top-width: 1;
+		border-bottom-width: 1;
+		border-color: #ebebeb;
+		position: relative;
+		flex-direction: row;
+		justify-content: flex-end;
+	}
+	.content{
+		width: 750;
+		height: 138;
+		flex-direction: row;
+		padding-left: 30;
+		padding-right: 30;
+		position: absolute;
+		left: 0;
+		top: 0;
+		background-color: #fff;
+	}
+	.left{
+		flex: 1;
+	}
+	.time{
+		margin-top: 24;
+		height: 50;
+		flex-direction: row;
+		align-items: center;
+	}
+	.time-text{
+		font-size: 48;
+		color: #333;
+	}
+	.intro{
+		margin-top: 15;
+		height: 34;
+		flex-direction: row;
+		align-items: center;
+	}
+	.intro-text{
+		font-size: 30;
+		color: #9b9b9b;
+		text-overflow: ellipsis;
+	}
+	.right{
+		width: 145;
+		height: 138;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+	.switch{
+		width: 145;
+		height: 94;
+	}
+	.delete{
+		width: 100;
+		height: 138;
+		background-color: #e64340;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+	.del-text{
+		color: #fff;
+		font-size: 30;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+	var animation = require('@weex-module/animation');
+	var dom = require('@weex-module/dom');
+
+	module.exports = {
+		data: {
+			dir: 'dist',
+			url: api.apiurl.resurl,
+			nav: {
+				title: '吃药提醒',
+				bgColor: '#58bf65',
+				titleColor: '#fff',
+				leftImgSrc: '/images/back.png',
+				rightItemSrc: '/images/add_02.png'
+			},
+			iconClock: '/images/clock.png',
+			iconSwitchOff: '/images/turn_off.png',
+			iconSwitchOn: '/images/turn_on.png',
+			initPageX: 0,
+			endPageX: 0,
+			moveLeft: 0,
+			initPageY: 0,
+			list:[
+				{
+					id: 1,
+					time: '21:00',
+					title: '感冒片',
+					date: '周一 周二 周三 周四 周五 周六',
+					state: 0
+				},
+				{
+					id: 2,
+					time: '22:00',
+					title: '感冒片',
+					date: '周一 周二 周三 周四 周五 周六',
+					state: 0
+				},
+				{
+					id: 3,
+					time: '23:00',
+					title: '感冒片',
+					date: '周一 周二 周三 周四 周五 周六',
+					state: 0
+				},
+				{
+					id: 4,
+					time: '24:00',
+					title: '感冒片',
+					date: '周一 周二 周三 周四 周五 周六',
+					state: 0
+				},
+				{
+					id: 4,
+					time: '00:00',
+					title: '感冒片',
+					date: '周一 周二 周三 周四 周五 周六',
+					state: 0
+				}
+			]
+		},
+		methods:{
+			goNext:function(e){
+				var me = this;
+				var navigator = require('@weex-module/navigator');
+				var nextUrl = me.getBase() + e.target.attr.url;
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+			},
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			},
+			itemStart:function(eventProperties){
+				var self = this;
+				this.initPageX = 0;
+				this.initPageX = eventProperties.changedTouches[0].pageX;
+				for( var i = 0 ; i < self.list.length ; i++ ){
+					var el = this.$el('content-' + i );
+					animation.transition(el, {
+			          	styles: {
+			            	transform: 'translate(0px, 0)'
+			          	},
+			          	duration: 100,
+			          	timingFunction: 'ease-in-out',
+			          	'transform-origin': 'center center',
+			          	delay: 0 
+			        },function(){
+			        	
+			        });
+				}
+			},
+			itemMove:function(eventProperties){
+				var self = this;
+				var obj = eventProperties.target;
+				var left = eventProperties.changedTouches[0].pageX - self.initPageX;
+				self.moveLeft = left;
+				if( left < 0 ){
+					if( -left >= 100 ){
+						left = -100;
+					}
+					animation.transition(obj, {
+			          	styles: {
+			            	transform: 'translate(' + left + 'px, 0)'
+			          	},
+			          	duration: 1,
+			          	timingFunction: 'ease-in-out',
+			          	'transform-origin': 'center center',
+			          	delay: 0 
+			        },function(){
+			        	
+			        });
+				}else if( left > 0 ){
+					if( left >= 0 ){
+						left = 0;
+					}
+					animation.transition(obj, {
+			          	styles: {
+			            	transform: 'translate(' + left + 'px, 0)'
+			          	},
+			          	duration: 1,
+			          	timingFunction: 'ease-in-out',
+			          	'transform-origin': 'center center',
+			          	delay: 0 
+			        },function(){
+			        	
+			        });
+				}
+			},
+			itemEnd:function(eventProperties){
+				var self = this;
+				var obj = eventProperties.target;
+				var left = eventProperties.changedTouches[0].pageX - self.initPageX;
+				if( self.moveLeft > - 99 ){
+					animation.transition(obj, {
+			          	styles: {
+			            	transform: 'translate(0px, 0)'
+			          	},
+			          	duration: 100,
+			          	timingFunction: 'ease-in-out',
+			          	'transform-origin': 'center center',
+			          	delay: 0 
+			        },function(){
+			        	
+			        });
+				}
+			},
+			delItem:function(e){
+				var self = this ;
+				var obj = self.$el('item-' + e.target.attr.index );
+				self.list.splice( e.target.attr.index , 1 );
+				for( var i = 0 ; i < self.list.length ; i++ ){
+					var el = self.$el('content-' + i );
+					animation.transition(el, {
+			          	styles: {
+			            	transform: 'translate(0px, 0)'
+			          	},
+			          	duration: 100,
+			          	timingFunction: 'ease-in-out',
+			          	'transform-origin': 'center center',
+			          	delay: 0 
+			        },function(){
+			        	
+			        });
+				}
+			},
+			switchBtn:function(e){
+				var self = this;
+				var index = e.target.attr.index;
+				if( self.list[index].state == 0 ){
+					self.list[index].state = 1;
+				}else{
+					self.list[index].state = 0;
+				}
+				
+			}
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+	      	this.$on('naviBar.rightItem.click',function(e){
+	      		var self = this;
+	        	var navigator = require('@weex-module/navigator');
+				var nextUrl = self.getBase() + 'home/remind-add.js';
+				navigator.push({'url':nextUrl, 'animated':'true'},null);
+	      	});
+    	}
+	}
+</script>

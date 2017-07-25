@@ -1,0 +1,156 @@
+<template>
+	<div class="wrapper">
+		<wxc-navpage height={{navHeight}} background-color={{bgColor}} title={{title}} title-color={{color}} left-item-src="{{resUrl+lSrc}}"  right-item-title={{rTitle}} right-item-color="#fff"></wxc-navpage>
+		<div class="content">
+			<div class="revise-list">
+				<input type="text" class="input" value="{{ value }}" />
+				<div class="img-wrapper" onclick="goInput" if="{{ state }}">
+					<image src="{{ resUrl + cImg }}" class="img" ></image>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
+
+<style>
+	.wrapper{
+		background-color:#f8f8f8;
+		flex-direction: column;
+		width:750;
+	}
+	.header{
+		background-color:#58bf65;
+		height:88;
+		width:750;
+		position:fixed;
+		top:0;
+		left:0;
+		flex-direction: row;
+	}
+	.back{
+		flex:0.1;
+		height:88;
+		justify-content:center;
+		align-items:center;
+	}
+	.title{
+		flex:1;
+		justify-content: center;
+		align-items: center;
+		height:88;
+	}
+	.next{
+		flex:0.2;
+		justify-content: center;
+		align-items:center;
+	}
+	.content{
+		margin-top:88;
+		flex-direction: column;
+		width:750;
+	}
+	.revise-list{
+		background-color:#fff;
+		border-width:1;
+		border-color:#ebebeb;
+		width:749;
+		height:86;
+		flex-direction: row;
+		justify-content: center;
+		align-items:center;
+		margin-top:24;
+	}
+	.input{
+		flex:1;
+		height:84;
+		outline: none;
+		color:#333;
+		font-size:32;
+		padding-left:40;
+	}
+	.img-wrapper{
+		flex:0.2;
+		justify-content: center;
+		align-items: center;
+	}
+	.img{
+		width:36;
+		height:36;
+	}
+</style>
+
+<script>
+	require('weex-components');
+	var api = require('../lib/api.js');
+	module.exports = {
+		data: {
+			dir: 'dist',
+			resUrl:api.apiurl.resurl,
+			navHeight:88,
+			bgColor:'#58bf65',
+			title:'昵称修改',
+			color:'#fff',
+			lSrc:'/images/back.png',
+			rTitle:'关闭',
+			bImg:'/images/back.png',
+			rImg:'/images/notice.png',
+			cImg:'/images/shanchu.png',
+			value:'喝醉的大侠',
+			state: false
+		},
+		created: function() {
+	      	this.$on('naviBar.leftItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator')
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+	      	this.$on('naviBar.rightItem.click',function(e){
+	        	var navigator = require('@weex-module/navigator');
+				var params = {
+				  animated: 'true'
+				};
+				navigator.pop(params, function () {
+				  // callback
+				});
+	      	});
+    	},
+		methods: {
+			getBase:function() {
+				var bundleUrl = this.$getConfig().bundleUrl;
+				var nativeBase;
+				var isAndroidAssets = bundleUrl.indexOf('file://assets/') >= 0;
+				var isiOSAssets = bundleUrl.indexOf('file:///') >= 0 && bundleUrl.indexOf('WeexDemo.app') > 0;
+				if (isAndroidAssets) {
+				    nativeBase = 'file://assets/' + this.dir + '/';
+				} else if (isiOSAssets) {
+				    nativeBase = bundleUrl.substring(0, bundleUrl.lastIndexOf('/') + 1);
+				} else {
+				    var host = 'localhost:12580';
+				    var matches = /\/\/([^\/]+?)\//.exec(this.$getConfig().bundleUrl);
+				    if (matches && matches.length >= 2) {
+					host = matches[1];
+				    }
+				    nativeBase = 'http://' + host + '/' + this.dir + '/';
+				}
+				var h5Base = './index.html?page=../' + this.dir + '/';
+				// in Native
+				var base = nativeBase;
+				if (typeof window === 'object') {
+				    // in Browser or WebView
+				    base = h5Base;
+				}
+				return base;
+			},
+			goInput: function(){
+				if( this.state == false ){
+					this.value = "";
+					this.state = !this.state;
+				}
+			}
+		},
+	};
+</script>
